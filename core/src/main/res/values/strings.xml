@@ -1,0 +1,7 @@
+<resources>
+    <string name="navigation_home">Home</string>
+    <string name="navigation_search">Search</string>
+    <string name="navigation_presensi">Presensi</string>
+    <string name="navigation_history">History</string>
+    <string name="navigation_profile">Profile</string>
+</resources>
