@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Khanza"
 include(":app")
- 
+include(":core")
