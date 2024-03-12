@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.core.presentation.theme.Khanza50
@@ -38,13 +39,13 @@ fun OnboardingPager(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = onboardingPage.title,
+                text = stringResource(id = onboardingPage.title),
                 color = Khanza50,
                 style = MaterialTheme.typography.titleLarge
             )
             Spacer(modifier = modifier.padding(16.dp))
             Text(
-                text = onboardingPage.description,
+                text = stringResource(id = onboardingPage.description),
                 color = Khanza50,
                 style = MaterialTheme.typography.labelMedium
             )

@@ -1,24 +1,25 @@
 package dev.ikti.onboarding.data.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import dev.ikti.onboarding.R
 
 sealed class OnboardingPage(
-    val title: String,
-    val description: String,
+    @StringRes val title: Int,
+    @StringRes val description: Int,
 ) {
     object First : OnboardingPage(
-        "Title 1",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        R.string.onboard_first,
+        R.string.onboard_first_description
     )
 
     object Second : OnboardingPage(
-        "Title 2",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        R.string.onboard_second,
+        R.string.onboard_second_description
     )
 
     object Third : OnboardingPage(
-        "Title 3",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        R.string.onboard_third,
+        R.string.onboard_third_description
     )
 }
