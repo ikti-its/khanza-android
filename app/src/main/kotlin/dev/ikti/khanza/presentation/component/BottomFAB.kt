@@ -1,4 +1,4 @@
-package dev.ikti.core.presentation.component
+package dev.ikti.khanza.presentation.component
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -15,7 +15,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.R
-import dev.ikti.core.presentation.navigation.model.BottomScreen
+import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.Khanza500
 

@@ -1,4 +1,4 @@
-package dev.ikti.core.presentation.navigation.model
+package dev.ikti.khanza.presentation.navigation.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

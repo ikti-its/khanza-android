@@ -1,26 +1,23 @@
-package dev.ikti.core.presentation.navigation
+package dev.ikti.khanza.presentation.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dev.ikti.core.presentation.navigation.model.BottomScreen
+import dev.ikti.khanza.presentation.MainScreen
+import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    innerPadding: PaddingValues
+    startDestination: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomScreen.Home.route,
-        modifier = Modifier.padding(innerPadding)
+        startDestination = startDestination
     ) {
         composable(BottomScreen.Home.route) {
-            // TODO: HomeScreen()
+            MainScreen(navController = navController)
         }
 
         composable(BottomScreen.Presensi.route) {

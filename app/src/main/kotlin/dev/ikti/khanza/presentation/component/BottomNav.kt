@@ -1,4 +1,4 @@
-package dev.ikti.core.presentation.component
+package dev.ikti.khanza.presentation.component
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.Icon
@@ -19,7 +19,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.presentation.navigation.model.BottomScreen
+import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.Khanza500
 import dev.ikti.core.presentation.theme.KhanzaNavText
