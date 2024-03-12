@@ -16,6 +16,27 @@ val FontPlusJakartaSans = FontFamily(
 )
 
 val typography = Typography(
+    titleLarge = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        lineHeight = 42.sp,
+        letterSpacing = 0.sp,
+        fontFamily = FontPlusJakartaSans
+    ),
+    bodyLarge = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+        fontFamily = FontPlusJakartaSans
+    ),
+    labelLarge = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.sp,
+        fontFamily = FontPlusJakartaSans
+    ),
     labelMedium = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
