@@ -3,7 +3,6 @@ package dev.ikti.khanza.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
@@ -16,18 +15,16 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.component.BottomFAB
 import dev.ikti.core.presentation.component.BottomNav
-import dev.ikti.core.presentation.model.Screen
+import dev.ikti.core.presentation.navigation.NavigationHost
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.KhanzaLight
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun MainApp(
+fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
@@ -59,27 +56,10 @@ fun MainApp(
         isFloatingActionButtonDocked = true,
         backgroundColor = Khanza50 // Temporary
     ) {
-        NavHost(
+        NavigationHost(
             navController = navController,
-            startDestination = Screen.Home.route,
-            modifier = Modifier.padding(it)
-        ) {
-            composable(Screen.Home.route) {
-                // TODO: HomeScreen()
-            }
-
-            composable(Screen.Presensi.route) {
-                // TODO: PresensiScreen()
-            }
-
-            composable(Screen.Profile.route) {
-                // TODO: ProfileScreen()
-            }
-
-            // Temporary
-            composable(Screen.Search.route) {}
-            composable(Screen.History.route) {}
-        }
+            innerPadding = it
+        )
     }
 }
 
@@ -87,7 +67,7 @@ fun MainApp(
 @Composable
 fun MainAppPreview() {
     KhanzaTheme {
-        MainApp(
+        MainScreen(
             Modifier,
             rememberNavController()
         )
