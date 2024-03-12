@@ -5,6 +5,10 @@ plugins {
     alias(libs.plugins.hiltAndroid)
 }
 
+android.sourceSets.all {
+    java.srcDir("src/$name/kotlin")
+}
+
 android {
     namespace = "dev.ikti.khanza"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -66,7 +70,6 @@ android {
             freeCompilerArgs = freeCompilerArgs + listOf(
                 "-opt-in=kotlin.RequiresOptIn",
                 "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-                "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             )
         }
     }
@@ -81,16 +84,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling)
-    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.compose.ui.graphics)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material)
 
 //  Hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
 }
