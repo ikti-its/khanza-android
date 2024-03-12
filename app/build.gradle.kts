@@ -78,6 +78,7 @@ android {
 dependencies {
 //  Module
     implementation(project(":core"))
+    implementation(project(":onboarding"))
 
 //  Compose
     implementation(libs.androidx.core.ktx)
