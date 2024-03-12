@@ -15,7 +15,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.R
-import dev.ikti.core.presentation.model.Screen
+import dev.ikti.core.presentation.navigation.model.BottomScreen
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.Khanza500
 
@@ -26,7 +26,7 @@ fun BottomFAB(
 ) {
     FloatingActionButton(
         onClick = {
-            Screen.Presensi.route.let {
+            BottomScreen.Presensi.route.let {
                 navController.navigate(it) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
@@ -48,7 +48,7 @@ fun BottomFAB(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_scan),
-            contentDescription = Screen.Presensi.route,
+            contentDescription = BottomScreen.Presensi.route,
             modifier = Modifier
                 .size(32.dp)
         )

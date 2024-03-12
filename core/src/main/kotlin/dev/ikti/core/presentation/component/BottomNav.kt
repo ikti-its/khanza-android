@@ -19,7 +19,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.presentation.model.Screen
+import dev.ikti.core.presentation.navigation.model.BottomScreen
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.Khanza500
 import dev.ikti.core.presentation.theme.KhanzaNavText
@@ -30,11 +30,11 @@ fun BottomNav(
     navController: NavHostController,
 ) {
     val items = listOf(
-        Screen.Home,
-        Screen.Search,
-        Screen.Presensi,
-        Screen.History,
-        Screen.Profile
+        BottomScreen.Home,
+        BottomScreen.Search,
+        BottomScreen.Presensi,
+        BottomScreen.History,
+        BottomScreen.Profile
     )
 
     BottomNavigation(
@@ -47,12 +47,12 @@ fun BottomNav(
         items.forEach { screen ->
             val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
             val isPresensi =
-                currentDestination?.hierarchy?.any { it.route == Screen.Presensi.route } == true
+                currentDestination?.hierarchy?.any { it.route == BottomScreen.Presensi.route } == true
 
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    if (screen.route != Screen.Presensi.route) {
+                    if (screen.route != BottomScreen.Presensi.route) {
                         navController.navigate(screen.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
