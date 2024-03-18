@@ -3,7 +3,11 @@ package dev.ikti.onboarding.presentation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -26,7 +30,8 @@ import dev.ikti.onboarding.presentation.component.OnboardingPager
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = hiltViewModel()
+    viewModel: OnboardingViewModel = hiltViewModel(),
+    navigateToLogin: () -> Unit
 ) {
     val pages = listOf(
         OnboardingPage.First,
@@ -40,7 +45,7 @@ fun OnboardingScreen(
 
     Box(
         modifier = modifier
-        .fillMaxSize()
+            .fillMaxSize()
     ) {
         Column(
             modifier = modifier
@@ -86,7 +91,8 @@ fun OnboardingScreen(
             OnboardingButton(
                 modifier = modifier
             ) {
-
+                viewModel.setNewUser(false)
+                navigateToLogin()
             }
         }
     }
@@ -96,6 +102,8 @@ fun OnboardingScreen(
 @Composable
 fun OnboardingScreenPreview() {
     KhanzaTheme {
-        OnboardingScreen()
+        OnboardingScreen(
+            navigateToLogin = {}
+        )
     }
 }
