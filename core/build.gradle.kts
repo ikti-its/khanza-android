@@ -21,6 +21,9 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField("boolean", "DEBUG", "true")
+            buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
+
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -28,6 +31,9 @@ android {
             )
         }
         release {
+            buildConfigField("boolean", "DEBUG", "true")
+            buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
+
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -46,6 +52,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 
@@ -91,4 +98,11 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.datastore.preferences)
+
+//  Network
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.moshi)
+    implementation(libs.moshi.converter)
 }
