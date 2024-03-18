@@ -23,3 +23,4 @@ rootProject.name = "Khanza"
 include(":app")
 include(":core")
 include(":onboarding")
+include(":auth")

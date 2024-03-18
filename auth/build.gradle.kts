@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.hiltAndroid)
@@ -10,19 +10,14 @@ android.sourceSets.all {
 }
 
 android {
-    namespace = "dev.ikti.khanza"
+    namespace = "dev.ikti.auth"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "dev.ikti.khanza"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
 
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -78,7 +73,6 @@ android {
 dependencies {
 //  Module
     implementation(project(":core"))
-    implementation(project(":onboarding"))
 
 //  Compose
     implementation(libs.androidx.core.ktx)
@@ -89,9 +83,13 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.material)
 
-//  Hilt
+//  Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
+
+//  Dependency Injection
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
