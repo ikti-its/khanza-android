@@ -1,13 +1,13 @@
-package dev.ikti.core.domain.service.local.preference
+package dev.ikti.core.domain.usecase.local.preference
 
 import dev.ikti.core.domain.repository.local.preference.PreferenceRepository
-import dev.ikti.core.domain.service.BaseService
+import dev.ikti.core.domain.usecase.BaseUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ObserveIsNewUserService @Inject constructor(
+class ObserveIsNewUserUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
-) : BaseService<String, Flow<Boolean>> {
+) : BaseUseCase<String, Flow<Boolean>> {
     override fun execute(params: String): Flow<Boolean> {
         return preferenceRepository.isNewUser()
     }

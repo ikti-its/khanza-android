@@ -1,14 +1,14 @@
-package dev.ikti.core.domain.service.local.user
+package dev.ikti.core.domain.usecase.local.user
 
 import dev.ikti.core.data.local.entity.LocalUserEntity
 import dev.ikti.core.domain.repository.local.user.LocalUserRepository
-import dev.ikti.core.domain.service.BaseSuspendService
+import dev.ikti.core.domain.usecase.BaseSuspendUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetLocalUserService @Inject constructor(
+class GetLocalUserUseCase @Inject constructor(
     private val localUserRepository: LocalUserRepository
-) : BaseSuspendService<String, Flow<LocalUserEntity>> {
+) : BaseSuspendUseCase<String, Flow<LocalUserEntity>> {
     override suspend fun execute(params: String): Flow<LocalUserEntity> {
         return localUserRepository.getLocalUser(params)
     }

@@ -5,49 +5,49 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.ikti.core.domain.repository.local.user.LocalUserRepository
-import dev.ikti.core.domain.service.local.user.DeleteLocalUserService
-import dev.ikti.core.domain.service.local.user.GetLocalUserLocationService
-import dev.ikti.core.domain.service.local.user.GetLocalUserPhoneService
-import dev.ikti.core.domain.service.local.user.GetLocalUserPhotoService
-import dev.ikti.core.domain.service.local.user.GetLocalUserService
-import dev.ikti.core.domain.service.local.user.InsertLocalUserService
-import dev.ikti.core.domain.service.local.user.UpdateLocalUserService
+import dev.ikti.core.domain.usecase.local.user.DeleteLocalUserUseCase
+import dev.ikti.core.domain.usecase.local.user.GetLocalUserLocationUseCase
+import dev.ikti.core.domain.usecase.local.user.GetLocalUserPhoneUseCase
+import dev.ikti.core.domain.usecase.local.user.GetLocalUserPhotoUseCase
+import dev.ikti.core.domain.usecase.local.user.GetLocalUserUseCase
+import dev.ikti.core.domain.usecase.local.user.InsertLocalUserUseCase
+import dev.ikti.core.domain.usecase.local.user.UpdateLocalUserUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalUserServiceModule {
     @Provides
-    fun provideGetLocalUserService(localUserRepository: LocalUserRepository): GetLocalUserService {
-        return GetLocalUserService(localUserRepository)
+    fun provideGetLocalUserService(localUserRepository: LocalUserRepository): GetLocalUserUseCase {
+        return GetLocalUserUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideGetLocalUserLocationService(localUserRepository: LocalUserRepository): GetLocalUserLocationService {
-        return GetLocalUserLocationService(localUserRepository)
+    fun provideGetLocalUserLocationService(localUserRepository: LocalUserRepository): GetLocalUserLocationUseCase {
+        return GetLocalUserLocationUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideGetLocalUserPhoneService(localUserRepository: LocalUserRepository): GetLocalUserPhoneService {
-        return GetLocalUserPhoneService(localUserRepository)
+    fun provideGetLocalUserPhoneService(localUserRepository: LocalUserRepository): GetLocalUserPhoneUseCase {
+        return GetLocalUserPhoneUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideGetLocalUserPhotoService(localUserRepository: LocalUserRepository): GetLocalUserPhotoService {
-        return GetLocalUserPhotoService(localUserRepository)
+    fun provideGetLocalUserPhotoService(localUserRepository: LocalUserRepository): GetLocalUserPhotoUseCase {
+        return GetLocalUserPhotoUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideInsertLocalUserService(localUserRepository: LocalUserRepository): InsertLocalUserService {
-        return InsertLocalUserService(localUserRepository)
+    fun provideInsertLocalUserService(localUserRepository: LocalUserRepository): InsertLocalUserUseCase {
+        return InsertLocalUserUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideUpdateLocalUserService(localUserRepository: LocalUserRepository): UpdateLocalUserService {
-        return UpdateLocalUserService(localUserRepository)
+    fun provideUpdateLocalUserService(localUserRepository: LocalUserRepository): UpdateLocalUserUseCase {
+        return UpdateLocalUserUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideDeleteLocalUserService(localUserRepository: LocalUserRepository): DeleteLocalUserService {
-        return DeleteLocalUserService(localUserRepository)
+    fun provideDeleteLocalUserService(localUserRepository: LocalUserRepository): DeleteLocalUserUseCase {
+        return DeleteLocalUserUseCase(localUserRepository)
     }
 }

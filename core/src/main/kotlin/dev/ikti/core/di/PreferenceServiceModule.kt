@@ -5,37 +5,37 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.ikti.core.domain.repository.local.preference.PreferenceRepository
-import dev.ikti.core.domain.service.local.preference.ClearUserTokenService
-import dev.ikti.core.domain.service.local.preference.GetUserTokenService
-import dev.ikti.core.domain.service.local.preference.ObserveIsNewUserService
-import dev.ikti.core.domain.service.local.preference.SetNewUserService
-import dev.ikti.core.domain.service.local.preference.SetUserTokenService
+import dev.ikti.core.domain.usecase.local.preference.ClearUserTokenUseCase
+import dev.ikti.core.domain.usecase.local.preference.GetUserTokenUseCase
+import dev.ikti.core.domain.usecase.local.preference.ObserveIsNewUserUseCase
+import dev.ikti.core.domain.usecase.local.preference.SetNewUserUseCase
+import dev.ikti.core.domain.usecase.local.preference.SetUserTokenUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
 object PreferenceServiceModule {
     @Provides
-    fun provideObserveIsNewUserService(preferenceRepository: PreferenceRepository): ObserveIsNewUserService {
-        return ObserveIsNewUserService(preferenceRepository)
+    fun provideObserveIsNewUserService(preferenceRepository: PreferenceRepository): ObserveIsNewUserUseCase {
+        return ObserveIsNewUserUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideSetNewUserService(preferenceRepository: PreferenceRepository): SetNewUserService {
-        return SetNewUserService(preferenceRepository)
+    fun provideSetNewUserService(preferenceRepository: PreferenceRepository): SetNewUserUseCase {
+        return SetNewUserUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideGetUserTokenService(preferenceRepository: PreferenceRepository): GetUserTokenService {
-        return GetUserTokenService(preferenceRepository)
+    fun provideGetUserTokenService(preferenceRepository: PreferenceRepository): GetUserTokenUseCase {
+        return GetUserTokenUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideSetUserTokenService(preferenceRepository: PreferenceRepository): SetUserTokenService {
-        return SetUserTokenService(preferenceRepository)
+    fun provideSetUserTokenService(preferenceRepository: PreferenceRepository): SetUserTokenUseCase {
+        return SetUserTokenUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideClearUserTokenService(preferenceRepository: PreferenceRepository): ClearUserTokenService {
-        return ClearUserTokenService(preferenceRepository)
+    fun provideClearUserTokenService(preferenceRepository: PreferenceRepository): ClearUserTokenUseCase {
+        return ClearUserTokenUseCase(preferenceRepository)
     }
 }

@@ -1,14 +1,14 @@
-package dev.ikti.core.domain.service.local.user
+package dev.ikti.core.domain.usecase.local.user
 
 import dev.ikti.core.domain.repository.local.user.LocalUserRepository
-import dev.ikti.core.domain.service.BaseSuspendService
+import dev.ikti.core.domain.usecase.BaseSuspendUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetLocalUserPhotoService @Inject constructor(
+class GetLocalUserPhoneUseCase @Inject constructor(
     private val localUserRepository: LocalUserRepository
-) : BaseSuspendService<String, Flow<String>> {
+) : BaseSuspendUseCase<String, Flow<String>> {
     override suspend fun execute(params: String): Flow<String> {
-        return localUserRepository.getLocalUserPhoto(params)
+        return localUserRepository.getLocalUserPhone(params)
     }
 }

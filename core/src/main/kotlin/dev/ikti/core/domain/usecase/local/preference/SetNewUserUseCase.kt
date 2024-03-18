@@ -1,12 +1,12 @@
-package dev.ikti.core.domain.service.local.preference
+package dev.ikti.core.domain.usecase.local.preference
 
 import dev.ikti.core.domain.repository.local.preference.PreferenceRepository
-import dev.ikti.core.domain.service.BaseSuspendService
+import dev.ikti.core.domain.usecase.BaseSuspendUseCase
 import javax.inject.Inject
 
-class SetNewUserService @Inject constructor(
+class SetNewUserUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
-) : BaseSuspendService<Boolean, Unit> {
+) : BaseSuspendUseCase<Boolean, Unit> {
     override suspend fun execute(params: Boolean) {
         preferenceRepository.setNewUser(params)
     }
