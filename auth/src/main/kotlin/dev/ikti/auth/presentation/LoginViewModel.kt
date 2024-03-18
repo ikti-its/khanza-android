@@ -1,4 +1,4 @@
-package dev.ikti.auth.presentation.login
+package dev.ikti.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
