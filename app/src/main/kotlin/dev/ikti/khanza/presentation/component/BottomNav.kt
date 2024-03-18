@@ -19,11 +19,11 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.Khanza500
 import dev.ikti.core.presentation.theme.KhanzaNavText
 import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 
 @Composable
 fun BottomNav(

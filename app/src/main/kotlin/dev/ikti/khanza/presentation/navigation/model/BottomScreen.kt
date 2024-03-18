@@ -2,7 +2,7 @@ package dev.ikti.khanza.presentation.navigation.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import dev.ikti.core.R
+import dev.ikti.khanza.R
 
 sealed class BottomScreen(
     val route: String,
@@ -12,7 +12,7 @@ sealed class BottomScreen(
 ) {
     object Home : BottomScreen(
         "home",
-        R.string.navigation_home,
+        R.string.bottom_navigation_home,
         R.drawable.ic_outlined_home,
         R.drawable.ic_filled_home
     )
@@ -20,14 +20,14 @@ sealed class BottomScreen(
     // Temporary
     object Search : BottomScreen(
         "search",
-        R.string.navigation_search,
+        R.string.bottom_navigation_search,
         R.drawable.ic_search,
         R.drawable.ic_search
     )
 
     object Presensi : BottomScreen(
         "presensi",
-        R.string.navigation_presensi,
+        R.string.bottom_navigation_presensi,
         R.drawable.ic_presensi,
         R.drawable.ic_presensi
     )
@@ -35,14 +35,14 @@ sealed class BottomScreen(
     // Temporary
     object History : BottomScreen(
         "history",
-        R.string.navigation_history,
+        R.string.bottom_navigation_history,
         R.drawable.ic_history,
         R.drawable.ic_history
     )
 
     object Profile : BottomScreen(
         "profile",
-        R.string.navigation_profile,
+        R.string.bottom_navigation_profile,
         R.drawable.ic_outlined_person,
         R.drawable.ic_filled_person
     )
