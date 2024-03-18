@@ -1,5 +1,7 @@
 package dev.ikti.core.presentation.theme
 
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val KhanzaLight = Color(0xfffcfcfc)
@@ -18,3 +20,12 @@ val Khanza800 = Color(0xff15307f)
 val Khanza900 = Color(0xff102561)
 val KhanzaOnPrimary = Color(0xff0c203c)
 val KhanzaNavText = Color(0xff9db2ce)
+
+val KhanzaHomeBrush = Brush.linearGradient(
+    colors = listOf(
+        Color(0xff00d1ff),
+        Khanza500
+    ),
+    start = Offset(0f, Float.POSITIVE_INFINITY),
+    end = Offset(Float.POSITIVE_INFINITY, 0f)
+)
