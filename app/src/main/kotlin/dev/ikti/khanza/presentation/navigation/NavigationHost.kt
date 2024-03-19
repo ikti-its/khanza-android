@@ -5,7 +5,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dev.ikti.auth.presentation.login.LoginScreen
+import dev.ikti.auth.presentation.LoginScreen
 import dev.ikti.khanza.presentation.MainScreen
 import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 import dev.ikti.khanza.presentation.navigation.model.ModuleScreen
