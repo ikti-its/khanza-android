@@ -15,39 +15,39 @@ import dev.ikti.core.domain.usecase.local.user.UpdateLocalUserUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
-object LocalUserServiceModule {
+object LocalUserUseCaseModule {
     @Provides
-    fun provideGetLocalUserService(localUserRepository: LocalUserRepository): GetLocalUserUseCase {
+    fun provideGetLocalUserUseCase(localUserRepository: LocalUserRepository): GetLocalUserUseCase {
         return GetLocalUserUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideGetLocalUserLocationService(localUserRepository: LocalUserRepository): GetLocalUserLocationUseCase {
+    fun provideGetLocalUserLocationUseCase(localUserRepository: LocalUserRepository): GetLocalUserLocationUseCase {
         return GetLocalUserLocationUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideGetLocalUserPhoneService(localUserRepository: LocalUserRepository): GetLocalUserPhoneUseCase {
+    fun provideGetLocalUserPhoneUseCase(localUserRepository: LocalUserRepository): GetLocalUserPhoneUseCase {
         return GetLocalUserPhoneUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideGetLocalUserPhotoService(localUserRepository: LocalUserRepository): GetLocalUserPhotoUseCase {
+    fun provideGetLocalUserPhotoUseCase(localUserRepository: LocalUserRepository): GetLocalUserPhotoUseCase {
         return GetLocalUserPhotoUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideInsertLocalUserService(localUserRepository: LocalUserRepository): InsertLocalUserUseCase {
+    fun provideInsertLocalUserUseCase(localUserRepository: LocalUserRepository): InsertLocalUserUseCase {
         return InsertLocalUserUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideUpdateLocalUserService(localUserRepository: LocalUserRepository): UpdateLocalUserUseCase {
+    fun provideUpdateLocalUserUseCase(localUserRepository: LocalUserRepository): UpdateLocalUserUseCase {
         return UpdateLocalUserUseCase(localUserRepository)
     }
 
     @Provides
-    fun provideDeleteLocalUserService(localUserRepository: LocalUserRepository): DeleteLocalUserUseCase {
+    fun provideDeleteLocalUserUseCase(localUserRepository: LocalUserRepository): DeleteLocalUserUseCase {
         return DeleteLocalUserUseCase(localUserRepository)
     }
 }

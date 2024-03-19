@@ -13,29 +13,29 @@ import dev.ikti.core.domain.usecase.local.preference.SetUserTokenUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
-object PreferenceServiceModule {
+object PreferenceUseCaseModule {
     @Provides
-    fun provideObserveIsNewUserService(preferenceRepository: PreferenceRepository): ObserveIsNewUserUseCase {
+    fun provideObserveIsNewUserUseCase(preferenceRepository: PreferenceRepository): ObserveIsNewUserUseCase {
         return ObserveIsNewUserUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideSetNewUserService(preferenceRepository: PreferenceRepository): SetNewUserUseCase {
+    fun provideSetNewUserUseCase(preferenceRepository: PreferenceRepository): SetNewUserUseCase {
         return SetNewUserUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideGetUserTokenService(preferenceRepository: PreferenceRepository): GetUserTokenUseCase {
+    fun provideGetUserTokenUseCase(preferenceRepository: PreferenceRepository): GetUserTokenUseCase {
         return GetUserTokenUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideSetUserTokenService(preferenceRepository: PreferenceRepository): SetUserTokenUseCase {
+    fun provideSetUserTokenUseCase(preferenceRepository: PreferenceRepository): SetUserTokenUseCase {
         return SetUserTokenUseCase(preferenceRepository)
     }
 
     @Provides
-    fun provideClearUserTokenService(preferenceRepository: PreferenceRepository): ClearUserTokenUseCase {
+    fun provideClearUserTokenUseCase(preferenceRepository: PreferenceRepository): ClearUserTokenUseCase {
         return ClearUserTokenUseCase(preferenceRepository)
     }
 }
