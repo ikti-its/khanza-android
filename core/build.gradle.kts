@@ -17,24 +17,21 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
 
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("boolean", "DEBUG", "true")
+        buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
     }
 
     buildTypes {
         debug {
-            buildConfigField("boolean", "DEBUG", "true")
-            buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
-
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
         release {
-            buildConfigField("boolean", "DEBUG", "true")
-            buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
-
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
