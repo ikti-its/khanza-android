@@ -1,10 +1,10 @@
 package dev.ikti.core.data.model.auth
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
 
-@JsonClass(generateAdapter = true)
 data class LoginRequest(
-    @Json(name = "nip") val nip: String,
-    @Json(name = "password") val password: String
+    @SerializedName("nip")
+    val nip: String,
+    @SerializedName("password")
+    val password: String
 )

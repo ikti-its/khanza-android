@@ -1,9 +1,8 @@
 package dev.ikti.core.data.model.auth
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
 
-@JsonClass(generateAdapter = true)
 data class LoginResponse(
-    @Json(name = "token") val token: String
+    @SerializedName("token")
+    val token: String? = null
 )
