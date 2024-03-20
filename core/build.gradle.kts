@@ -17,24 +17,21 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
 
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("boolean", "DEBUG", "true")
+        buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
     }
 
     buildTypes {
         debug {
-            buildConfigField("boolean", "DEBUG", "true")
-            buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
-
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
         release {
-            buildConfigField("boolean", "DEBUG", "true")
-            buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
-
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -77,32 +74,32 @@ android {
 }
 
 dependencies {
+//  Core
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.lifecycle.runtime.ktx)
+
 //  Compose
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui.graphics)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.material3)
+    api(libs.androidx.activity.compose)
+    api(platform(libs.androidx.compose.bom))
+    api(libs.androidx.compose.ui.graphics)
+    debugApi(libs.androidx.compose.ui.tooling)
+    api(libs.androidx.appcompat)
+    api(libs.androidx.material3)
     implementation(libs.androidx.material)
 
-//  Dependency Injection
+//  Hilt
     implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
+    api(libs.hilt.navigation.compose)
 
 //  Data Source
-    implementation(libs.room.ktx)
+    api(libs.room.ktx)
     ksp(libs.room.compiler)
-    implementation(libs.datastore.preferences)
+    api(libs.datastore.preferences)
 
 //  Network
-    implementation(libs.retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
-    implementation(libs.moshi)
-    implementation(libs.moshi.converter)
+    api(libs.retrofit)
+    api(libs.gson)
+    api(libs.okhttp.logging)
 }
