@@ -7,8 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun LoginSubmitLabel(
-) {
+fun LoginSubmitLabel() {
     Text(
         text = "Masuk",
         style = MaterialTheme.typography.labelLarge

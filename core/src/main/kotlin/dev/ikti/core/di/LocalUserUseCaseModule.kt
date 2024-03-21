@@ -4,14 +4,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.ikti.core.domain.repository.local.user.LocalUserRepository
-import dev.ikti.core.domain.usecase.local.user.DeleteLocalUserUseCase
-import dev.ikti.core.domain.usecase.local.user.GetLocalUserLocationUseCase
-import dev.ikti.core.domain.usecase.local.user.GetLocalUserPhoneUseCase
-import dev.ikti.core.domain.usecase.local.user.GetLocalUserPhotoUseCase
-import dev.ikti.core.domain.usecase.local.user.GetLocalUserUseCase
-import dev.ikti.core.domain.usecase.local.user.InsertLocalUserUseCase
-import dev.ikti.core.domain.usecase.local.user.UpdateLocalUserUseCase
+import dev.ikti.core.domain.repository.user.LocalUserRepository
+import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
+import dev.ikti.core.domain.usecase.user.GetLocalUserLocationUseCase
+import dev.ikti.core.domain.usecase.user.GetLocalUserPhoneUseCase
+import dev.ikti.core.domain.usecase.user.GetLocalUserPhotoUseCase
+import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
+import dev.ikti.core.domain.usecase.user.InsertLocalUserUseCase
+import dev.ikti.core.domain.usecase.user.UpdateLocalUserUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
