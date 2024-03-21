@@ -1,4 +1,4 @@
-package dev.ikti.core.data.model.auth
+package dev.ikti.auth.data.model
 
 import com.google.gson.annotations.SerializedName
 
