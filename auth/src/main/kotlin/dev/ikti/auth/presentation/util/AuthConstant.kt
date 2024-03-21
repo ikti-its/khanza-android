@@ -8,6 +8,8 @@ object AuthConstant {
 
     //  Error
     const val ERR_ACCOUNT_NOT_FOUND = "ErrAccountNotFound"
+    const val ERR_EMPTY_USERNAME = "ErrEmptyUsername"
+    const val ERR_EMPTY_PASSWORD = "ErrEmptyPassword"
     const val ERR_FAILED_TO_LOGIN = "ErrFailedToLogin"
     const val ERR_FAILED_TO_SET_USER_TOKEN = "ErrFailedToSetUserToken"
     const val ERR_PASSWORD_INCORRECT = "ErrPasswordIncorrect"
