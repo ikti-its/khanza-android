@@ -1,6 +1,5 @@
 package dev.ikti.auth.presentation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,8 +15,7 @@ fun LoginScreen(
     navigateToMain: () -> Unit
 ) {
     val stateLogin by viewModel.stateLogin.collectAsState(initial = State.Empty)
-
-    Log.d("LoginScreen", "LoginScreen: $stateLogin")
+    
     LoginContent(
         modifier = modifier,
         stateLogin = stateLogin,
