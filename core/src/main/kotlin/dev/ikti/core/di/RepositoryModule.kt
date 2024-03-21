@@ -7,13 +7,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.ikti.core.data.local.dao.LocalUserDao
-import dev.ikti.core.data.remote.AuthService
 import dev.ikti.core.data.repository.local.preference.PreferenceRepositoryImpl
 import dev.ikti.core.data.repository.local.user.LocalUserRepositoryImpl
-import dev.ikti.core.data.repository.remote.auth.AuthRepositoryImpl
 import dev.ikti.core.domain.repository.local.preference.PreferenceRepository
 import dev.ikti.core.domain.repository.local.user.LocalUserRepository
-import dev.ikti.core.domain.repository.remote.auth.AuthRepository
 import javax.inject.Singleton
 
 @Module
@@ -33,13 +30,5 @@ object RepositoryModule {
         localUserDao: LocalUserDao
     ): LocalUserRepository {
         return LocalUserRepositoryImpl(localUserDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAuthRepository(
-        authService: AuthService
-    ): AuthRepository {
-        return AuthRepositoryImpl(authService)
     }
 }

@@ -1,7 +1,7 @@
-package dev.ikti.core.data.remote
+package dev.ikti.auth.data.remote
 
-import dev.ikti.core.data.model.auth.LoginRequest
-import dev.ikti.core.data.model.auth.LoginResponse
+import dev.ikti.auth.data.model.LoginRequest
+import dev.ikti.auth.data.model.LoginResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
