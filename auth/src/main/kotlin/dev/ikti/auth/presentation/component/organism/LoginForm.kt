@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import dev.ikti.auth.presentation.component.atom.LoginToast
 import dev.ikti.auth.presentation.component.molecule.LoginFormField
 import dev.ikti.auth.presentation.component.molecule.LoginSubmitButton
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_EMPTY_PASSWORD
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_EMPTY_USERNAME
-import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_NIP
-import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_PASSWORD
+import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_PASSWORD
+import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_USERNAME
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_NIP
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable

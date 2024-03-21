@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.auth.R
-import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_PASSWORD
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.core.presentation.theme.Khanza50
 
 @Composable

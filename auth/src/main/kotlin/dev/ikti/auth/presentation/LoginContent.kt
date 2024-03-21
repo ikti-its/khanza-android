@@ -1,7 +1,6 @@
 package dev.ikti.auth.presentation
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +16,11 @@ import dev.ikti.auth.presentation.component.atom.LoginProgress
 import dev.ikti.auth.presentation.component.atom.LoginToast
 import dev.ikti.auth.presentation.component.molecule.LoginAppBar
 import dev.ikti.auth.presentation.component.organism.LoginForm
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_ACCOUNT_NOT_FOUND
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_FAILED_TO_LOGIN
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_PASSWORD_INCORRECT
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_UNKNOWN_ERROR
+import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_NOT_FOUND
+import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
+import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
+import dev.ikti.auth.util.AuthConstant.ERR_PASSWORD_INCORRECT
+import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.core.presentation.theme.KhanzaDark
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.State
@@ -64,15 +63,14 @@ fun LoginContent(
                         is State.Error -> {
                             when (state.error) {
                                 ERR_ACCOUNT_NOT_FOUND -> {
-                                    Toast.makeText(
-                                        LocalContext.current,
-                                        "Akun tidak ditemukan",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    LoginToast(context = context, type = ERR_ACCOUNT_NOT_FOUND)
                                 }
 
                                 ERR_FAILED_TO_SET_USER_TOKEN -> {
-                                    LoginToast(context = context, type = ERR_FAILED_TO_SET_USER_TOKEN)
+                                    LoginToast(
+                                        context = context,
+                                        type = ERR_FAILED_TO_SET_USER_TOKEN
+                                    )
                                 }
 
                                 ERR_FAILED_TO_LOGIN -> {

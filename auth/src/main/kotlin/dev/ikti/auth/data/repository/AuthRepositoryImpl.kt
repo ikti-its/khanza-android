@@ -4,7 +4,7 @@ import dev.ikti.auth.data.model.LoginRequest
 import dev.ikti.auth.data.model.LoginResponse
 import dev.ikti.auth.data.remote.AuthService
 import dev.ikti.auth.domain.repository.AuthRepository
-import dev.ikti.auth.presentation.util.AuthException
+import dev.ikti.auth.util.AuthException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

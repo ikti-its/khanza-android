@@ -2,12 +2,12 @@ package dev.ikti.auth.presentation.component.atom
 
 import android.content.Context
 import android.widget.Toast
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_ACCOUNT_NOT_FOUND
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_EMPTY_PASSWORD
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_EMPTY_USERNAME
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_FAILED_TO_LOGIN
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
-import dev.ikti.auth.presentation.util.AuthConstant.ERR_PASSWORD_INCORRECT
+import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_NOT_FOUND
+import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_PASSWORD
+import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_USERNAME
+import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
+import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
+import dev.ikti.auth.util.AuthConstant.ERR_PASSWORD_INCORRECT
 
 fun LoginToast(
     context: Context,

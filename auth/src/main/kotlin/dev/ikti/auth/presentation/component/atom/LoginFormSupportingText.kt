@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import dev.ikti.auth.presentation.util.AuthConstant
+import dev.ikti.auth.util.AuthConstant
 import dev.ikti.core.presentation.theme.FontPlusJakartaSans
 import dev.ikti.core.presentation.theme.Khanza50
 import dev.ikti.core.presentation.theme.KhanzaTheme

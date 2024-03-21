@@ -21,11 +21,11 @@ import dev.ikti.auth.presentation.component.atom.LoginFormLabel
 import dev.ikti.auth.presentation.component.atom.LoginFormLeadingIcon
 import dev.ikti.auth.presentation.component.atom.LoginFormSupportingText
 import dev.ikti.auth.presentation.component.atom.LoginFormTrailingIcon
-import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_NIP
-import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_PASSWORD
-import dev.ikti.auth.presentation.util.AuthConstant.MAXIMUM_NIP_LENGTH
-import dev.ikti.auth.presentation.util.AuthConstant.MAXIMUM_PASSWORD_LENGTH
-import dev.ikti.auth.presentation.util.validateInput
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_NIP
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
+import dev.ikti.auth.util.AuthConstant.MAXIMUM_NIP_LENGTH
+import dev.ikti.auth.util.AuthConstant.MAXIMUM_PASSWORD_LENGTH
+import dev.ikti.auth.util.validateInput
 import dev.ikti.core.presentation.theme.Khanza50
 
 @Composable
