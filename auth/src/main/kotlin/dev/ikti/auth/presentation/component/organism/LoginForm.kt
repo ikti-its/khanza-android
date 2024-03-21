@@ -1,5 +1,6 @@
 package dev.ikti.auth.presentation.component.organism
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,16 +13,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.ikti.auth.presentation.component.atom.LoginToast
 import dev.ikti.auth.presentation.component.molecule.LoginFormField
 import dev.ikti.auth.presentation.component.molecule.LoginSubmitButton
+import dev.ikti.auth.presentation.util.AuthConstant.ERR_EMPTY_PASSWORD
+import dev.ikti.auth.presentation.util.AuthConstant.ERR_EMPTY_USERNAME
 import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_NIP
 import dev.ikti.auth.presentation.util.AuthConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
 fun LoginForm(
+    context: Context = LocalContext.current,
     modifier: Modifier,
     onSubmit: (nip: String, password: String) -> Unit
 ) {
@@ -71,7 +77,15 @@ fun LoginForm(
         ) {
             LoginSubmitButton(
                 modifier = modifier,
-                onSubmit = { onSubmit(username, password) },
+                onSubmit = {
+                    if (username.isEmpty()) {
+                        LoginToast(context = context, type = ERR_EMPTY_USERNAME)
+                    } else if (password.isEmpty()) {
+                        LoginToast(context = context, type = ERR_EMPTY_PASSWORD)
+                    } else if (username.isNotEmpty() && password.isNotEmpty() && !isUsernameError && !isPasswordError) {
+                        onSubmit(username, password)
+                    }
+                },
             )
         }
     }

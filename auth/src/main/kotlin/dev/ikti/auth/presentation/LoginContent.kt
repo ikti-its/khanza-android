@@ -1,6 +1,6 @@
 package dev.ikti.auth.presentation
 
-import android.util.Log
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,14 +28,13 @@ import dev.ikti.core.util.State
 
 @Composable
 fun LoginContent(
+    context: Context = LocalContext.current,
     modifier: Modifier,
     stateLogin: State<Unit>,
     onSubmit: (nip: String, password: String) -> Unit,
     navigateBack: () -> Unit,
     navigateToMain: () -> Unit
 ) {
-    val context = LocalContext.current
-    Log.d("LoginContent", "LoginScreen: $stateLogin")
     Scaffold(
         topBar = {
             LoginAppBar(navigateBack = navigateBack)
@@ -73,10 +72,7 @@ fun LoginContent(
                                 }
 
                                 ERR_FAILED_TO_SET_USER_TOKEN -> {
-                                    LoginToast(
-                                        context = context,
-                                        type = ERR_FAILED_TO_SET_USER_TOKEN
-                                    )
+                                    LoginToast(context = context, type = ERR_FAILED_TO_SET_USER_TOKEN)
                                 }
 
                                 ERR_FAILED_TO_LOGIN -> {
