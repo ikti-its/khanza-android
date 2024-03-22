@@ -1,6 +1,5 @@
-package dev.ikti.onboarding.data.model
+package dev.ikti.onboarding.presentation.model
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import dev.ikti.onboarding.R
 

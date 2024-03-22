@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.onboarding.data.model.OnboardingPage
+import dev.ikti.onboarding.presentation.model.OnboardingPage
 import dev.ikti.onboarding.presentation.component.atom.OnboardingTextDescription
 import dev.ikti.onboarding.presentation.component.atom.OnboardingTextTitle
 

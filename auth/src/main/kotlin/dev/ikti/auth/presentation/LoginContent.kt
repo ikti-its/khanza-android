@@ -4,9 +4,6 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +18,7 @@ import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
 import dev.ikti.auth.util.AuthConstant.ERR_PASSWORD_INCORRECT
 import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
+import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.KhanzaDark
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.State
@@ -34,71 +32,64 @@ fun LoginContent(
     navigateBack: () -> Unit,
     navigateToMain: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            LoginAppBar(navigateBack = navigateBack)
-        }
+    MainScaffold(
+        modifier = modifier,
+        topBar = { LoginAppBar(navigateBack = navigateBack) },
+        background = KhanzaDark
     ) {
-        Surface(
-            modifier = modifier
-                .padding(it)
-                .fillMaxSize(),
-            color = KhanzaDark
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
         ) {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                LoginForm(
-                    modifier = modifier,
-                    onSubmit = onSubmit
-                )
+            LoginForm(
+                modifier = modifier,
+                onSubmit = onSubmit
+            )
 
-                stateLogin.let { state ->
-                    when (state) {
-                        is State.Success -> {
-                            navigateToMain()
-                        }
-
-                        is State.Error -> {
-                            when (state.error) {
-                                ERR_ACCOUNT_NOT_FOUND -> {
-                                    LoginToast(context = context, type = ERR_ACCOUNT_NOT_FOUND)
-                                }
-
-                                ERR_FAILED_TO_SET_USER_TOKEN -> {
-                                    LoginToast(
-                                        context = context,
-                                        type = ERR_FAILED_TO_SET_USER_TOKEN
-                                    )
-                                }
-
-                                ERR_FAILED_TO_LOGIN -> {
-                                    LoginToast(context = context, type = ERR_FAILED_TO_LOGIN)
-                                }
-
-                                ERR_PASSWORD_INCORRECT -> {
-                                    LoginToast(context = context, type = ERR_PASSWORD_INCORRECT)
-                                }
-
-                                else -> {
-                                    LoginToast(context = context, type = ERR_UNKNOWN_ERROR)
-                                }
-                            }
-                        }
-
-                        State.Loading -> {
-                            Box(
-                                modifier = modifier
-                                    .fillMaxSize()
-                                    .background(KhanzaDark.copy(alpha = 0.5f))
-                            ) {
-                                LoginProgress(modifier = modifier)
-                            }
-                        }
-
-                        State.Empty -> {}
+            stateLogin.let { state ->
+                when (state) {
+                    is State.Success -> {
+                        navigateToMain()
                     }
+
+                    is State.Error -> {
+                        when (state.error) {
+                            ERR_ACCOUNT_NOT_FOUND -> {
+                                LoginToast(context = context, type = ERR_ACCOUNT_NOT_FOUND)
+                            }
+
+                            ERR_FAILED_TO_SET_USER_TOKEN -> {
+                                LoginToast(
+                                    context = context,
+                                    type = ERR_FAILED_TO_SET_USER_TOKEN
+                                )
+                            }
+
+                            ERR_FAILED_TO_LOGIN -> {
+                                LoginToast(context = context, type = ERR_FAILED_TO_LOGIN)
+                            }
+
+                            ERR_PASSWORD_INCORRECT -> {
+                                LoginToast(context = context, type = ERR_PASSWORD_INCORRECT)
+                            }
+
+                            else -> {
+                                LoginToast(context = context, type = ERR_UNKNOWN_ERROR)
+                            }
+                        }
+                    }
+
+                    State.Loading -> {
+                        Box(
+                            modifier = modifier
+                                .fillMaxSize()
+                                .background(KhanzaDark.copy(alpha = 0.5f))
+                        ) {
+                            LoginProgress(modifier = modifier)
+                        }
+                    }
+
+                    State.Empty -> {}
                 }
             }
         }
