@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.core.presentation.theme.Khanza50
-import dev.ikti.onboarding.data.model.OnboardingPage
+import dev.ikti.onboarding.presentation.model.OnboardingPage
 
 @Composable
 fun OnboardingTextTitle(
