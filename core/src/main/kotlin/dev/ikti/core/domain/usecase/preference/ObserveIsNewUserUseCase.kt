@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class ObserveIsNewUserUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
-) : BaseUseCase<String, Flow<Boolean>> {
-    override fun execute(params: String): Flow<Boolean> {
+) : BaseUseCase<Unit, Flow<Boolean>> {
+    override fun execute(params: Unit): Flow<Boolean> {
         return preferenceRepository.isNewUser()
     }
 }

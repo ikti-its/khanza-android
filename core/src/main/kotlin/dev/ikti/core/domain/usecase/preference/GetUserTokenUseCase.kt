@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class GetUserTokenUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
-) : BaseUseCase<String, Flow<String>> {
-    override fun execute(params: String): Flow<String> {
+) : BaseUseCase<Unit, Flow<String>> {
+    override fun execute(params: Unit): Flow<String> {
         return preferenceRepository.getUserToken()
     }
 }
