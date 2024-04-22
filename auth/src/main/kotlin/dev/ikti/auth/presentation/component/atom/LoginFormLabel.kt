@@ -2,23 +2,23 @@ package dev.ikti.auth.presentation.component.atom
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_NIP
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.core.presentation.theme.FontPlusJakartaSans
-import dev.ikti.core.presentation.theme.Khanza50
 
 @Composable
 fun LoginFormLabel(
     field: String
 ) {
     when (field) {
-        FIELD_TYPE_NIP -> {
+        FIELD_TYPE_EMAIL -> {
             Text(
-                text = "NIP",
+                text = "Email",
                 style = TextStyle(
-                    color = Khanza50,
+                    color = Color(0xFF272727),
                     fontFamily = FontPlusJakartaSans
                 )
             )
@@ -26,9 +26,9 @@ fun LoginFormLabel(
 
         FIELD_TYPE_PASSWORD -> {
             Text(
-                text = "Kata Sandi",
+                text = "Password",
                 style = TextStyle(
-                    color = Khanza50,
+                    color = Color(0xFF272727),
                     fontFamily = FontPlusJakartaSans
                 )
             )
@@ -39,5 +39,5 @@ fun LoginFormLabel(
 @Preview
 @Composable
 fun LoginFormLabelPreview() {
-    LoginFormLabel(FIELD_TYPE_NIP)
+    LoginFormLabel(FIELD_TYPE_EMAIL)
 }

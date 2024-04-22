@@ -21,12 +21,11 @@ import dev.ikti.auth.presentation.component.atom.LoginFormLabel
 import dev.ikti.auth.presentation.component.atom.LoginFormLeadingIcon
 import dev.ikti.auth.presentation.component.atom.LoginFormSupportingText
 import dev.ikti.auth.presentation.component.atom.LoginFormTrailingIcon
-import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_NIP
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
-import dev.ikti.auth.util.AuthConstant.MAXIMUM_NIP_LENGTH
 import dev.ikti.auth.util.AuthConstant.MAXIMUM_PASSWORD_LENGTH
+import dev.ikti.auth.util.validateEmail
 import dev.ikti.auth.util.validateInput
-import dev.ikti.core.presentation.theme.Khanza50
 
 @Composable
 fun LoginFormField(
@@ -44,8 +43,8 @@ fun LoginFormField(
             value = input
 
             when (field) {
-                FIELD_TYPE_NIP -> {
-                    isError = validateInput(input, MAXIMUM_NIP_LENGTH)
+                FIELD_TYPE_EMAIL -> {
+                    isError = validateEmail(input)
                 }
 
                 FIELD_TYPE_PASSWORD -> {
@@ -83,17 +82,18 @@ fun LoginFormField(
             else -> VisualTransformation.None
         },
         keyboardOptions = when (field) {
+            FIELD_TYPE_EMAIL -> KeyboardOptions(keyboardType = KeyboardType.Email)
             FIELD_TYPE_PASSWORD -> KeyboardOptions(keyboardType = KeyboardType.Password)
             else -> KeyboardOptions.Default
         },
         singleLine = true,
         shape = RoundedCornerShape(10.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Khanza50,
-            focusedBorderColor = Khanza50,
-            unfocusedTextColor = Khanza50,
-            unfocusedBorderColor = Khanza50,
-            errorTextColor = Color(0xffd32f2f),
+            focusedTextColor = Color(0xFF272727),
+            focusedBorderColor = Color(0xFFC4C4C4),
+            unfocusedTextColor = Color(0xFF272727),
+            unfocusedBorderColor = Color(0xFFC4C4C4),
+            errorTextColor = Color(0xFFFF1300),
         ),
     )
 }
@@ -103,7 +103,7 @@ fun LoginFormField(
 fun LoginFormFieldPreview() {
     LoginFormField(
         modifier = Modifier,
-        field = FIELD_TYPE_NIP
+        field = FIELD_TYPE_EMAIL
     ) { _, _ -> }
 }
 

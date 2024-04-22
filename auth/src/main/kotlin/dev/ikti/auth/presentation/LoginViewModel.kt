@@ -5,10 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.auth.data.model.LoginRequest
 import dev.ikti.auth.domain.usecase.LoginUseCase
-import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_NOT_FOUND
+import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_UNAUTHORIZED
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
-import dev.ikti.auth.util.AuthConstant.ERR_PASSWORD_INCORRECT
 import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.auth.util.AuthException
 import dev.ikti.core.domain.usecase.preference.SetUserTokenUseCase
@@ -45,11 +44,8 @@ class LoginViewModel @Inject constructor(
                 _stateLogin.value = State.Success(Unit)
             } catch (e: Exception) {
                 when (e) {
-                    AuthException.AccountNotFoundException -> _stateLogin.value =
-                        State.Error(ERR_ACCOUNT_NOT_FOUND)
-
-                    AuthException.PasswordIncorrectException -> _stateLogin.value =
-                        State.Error(ERR_PASSWORD_INCORRECT)
+                    AuthException.EmailInvalidException, AuthException.AccountNotFoundException, AuthException.PasswordIncorrectException -> _stateLogin.value =
+                        State.Error(ERR_ACCOUNT_UNAUTHORIZED)
 
                     AuthException.FailedToLoginException -> _stateLogin.value =
                         State.Error(ERR_FAILED_TO_LOGIN)

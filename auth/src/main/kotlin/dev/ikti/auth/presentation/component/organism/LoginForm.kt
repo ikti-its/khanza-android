@@ -20,8 +20,8 @@ import dev.ikti.auth.presentation.component.atom.LoginToast
 import dev.ikti.auth.presentation.component.molecule.LoginFormField
 import dev.ikti.auth.presentation.component.molecule.LoginSubmitButton
 import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_PASSWORD
-import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_USERNAME
-import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_NIP
+import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_EMAIL
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
@@ -47,7 +47,7 @@ fun LoginForm(
         ) {
             LoginFormField(
                 modifier = modifier,
-                field = FIELD_TYPE_NIP,
+                field = FIELD_TYPE_EMAIL,
                 onValueChange = { value, error ->
                     username = value
                     isUsernameError = error
@@ -69,7 +69,7 @@ fun LoginForm(
             )
         }
 
-        Spacer(modifier = modifier.padding(vertical = 72.dp))
+        Spacer(modifier = modifier.padding(vertical = 24.dp))
 
         Row(
             modifier = modifier
@@ -79,7 +79,7 @@ fun LoginForm(
                 modifier = modifier,
                 onSubmit = {
                     if (username.isEmpty()) {
-                        LoginToast(context = context, type = ERR_EMPTY_USERNAME)
+                        LoginToast(context = context, type = ERR_EMPTY_EMAIL)
                     } else if (password.isEmpty()) {
                         LoginToast(context = context, type = ERR_EMPTY_PASSWORD)
                     } else if (username.isNotEmpty() && password.isNotEmpty() && !isUsernameError && !isPasswordError) {
@@ -91,7 +91,7 @@ fun LoginForm(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LoginFormPreview() {
     KhanzaTheme {

@@ -21,6 +21,7 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(authService.login(request))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
+                    400 -> throw AuthException.EmailInvalidException
                     401 -> throw AuthException.PasswordIncorrectException
                     404 -> throw AuthException.AccountNotFoundException
                     else -> throw AuthException.FailedToLoginException
