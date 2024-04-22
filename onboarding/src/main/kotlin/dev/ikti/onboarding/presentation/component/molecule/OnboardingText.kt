@@ -29,7 +29,7 @@ fun OnboardingText(
     ) {
         OnboardingTextTitle(onboardingPage = onboardingPage)
 
-        Spacer(modifier = modifier.padding(16.dp))
+        Spacer(modifier = modifier.padding(12.dp))
 
         OnboardingTextDescription(onboardingPage = onboardingPage)
     }

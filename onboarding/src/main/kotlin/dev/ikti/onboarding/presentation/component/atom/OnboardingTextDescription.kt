@@ -1,11 +1,14 @@
 package dev.ikti.onboarding.presentation.component.atom
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import dev.ikti.core.presentation.theme.Khanza50
+import androidx.compose.ui.unit.sp
+import dev.ikti.core.presentation.theme.FontPlusJakartaSans
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.onboarding.presentation.model.OnboardingPage
 
@@ -15,8 +18,14 @@ fun OnboardingTextDescription(
 ) {
     Text(
         text = stringResource(id = onboardingPage.description),
-        color = Khanza50,
-        style = MaterialTheme.typography.labelMedium
+        style = TextStyle(
+            color = Color(0xFF272727),
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.sp,
+            fontFamily = FontPlusJakartaSans
+        )
     )
 }
 
