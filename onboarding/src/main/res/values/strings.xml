@@ -1,9 +1,10 @@
 <resources>
-    <string name="onboard_first">Selamat Datang di SIMKES Khanza</string>
+    <string name="onboard_first">Selamat Datang di SIMKES</string>
     <string name="onboard_first_description">Pintu gerbang Anda ke pengelolaan perawatan kesehatan yang tertata</string>
     <string name="onboard_second">Perawatan Pasien Tanpa Hambatan</string>
     <string name="onboard_second_description">Memberdayakan tenaga profesional kesehatan dengan efisien</string>
     <string name="onboard_third">Optimasi Operasional</string>
     <string name="onboard_third_description">Mentransformasi pelayanan kesehatan melalui inovasi dan teknologi</string>
-    <string name="login_button">Log In</string>
+    <string name="next_button">Selanjutnya</string>
+    <string name="login_button">Masuk</string>
 </resources>

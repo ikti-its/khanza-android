@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
@@ -16,10 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.onboarding.presentation.component.atom.OnboardingBackground
 import dev.ikti.onboarding.presentation.component.molecule.OnboardingButton
 import dev.ikti.onboarding.presentation.component.molecule.OnboardingIndicator
 import dev.ikti.onboarding.presentation.component.molecule.OnboardingText
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -30,7 +31,7 @@ fun OnboardingContent(
 ) {
     MainScaffold(
         modifier = modifier,
-        background = Color(0xff000000)
+        background = Color(0xFFF7F7F7)
     ) {
         val pages = listOf(
             dev.ikti.onboarding.presentation.model.OnboardingPage.First,
@@ -38,11 +39,12 @@ fun OnboardingContent(
             dev.ikti.onboarding.presentation.model.OnboardingPage.Third
         )
 
+        val coroutineScope = rememberCoroutineScope()
         val pagerState = rememberPagerState { pages.size }
 
-        Column(modifier = modifier.fillMaxSize()) {
-            OnboardingBackground(modifier = modifier)
-        }
+//        Column(modifier = modifier.fillMaxSize()) {
+//            OnboardingBackground(modifier = modifier)
+//        }
 
         Column(modifier = modifier.fillMaxSize()) {
             HorizontalPager(
@@ -70,9 +72,18 @@ fun OnboardingContent(
                 selectedIndex = pagerState.currentPage
             )
 
-            OnboardingButton(modifier = modifier.padding(horizontal = 24.dp)) {
-                onSetNewUser(false)
-                navigateToLogin()
+            OnboardingButton(
+                modifier = modifier.padding(horizontal = 24.dp),
+                selectedIndex = pagerState.currentPage
+            ) {
+                if (pagerState.currentPage != 2) {
+                    coroutineScope.launch {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
+                    }
+                } else {
+                    onSetNewUser(false)
+                    navigateToLogin()
+                }
             }
         }
     }

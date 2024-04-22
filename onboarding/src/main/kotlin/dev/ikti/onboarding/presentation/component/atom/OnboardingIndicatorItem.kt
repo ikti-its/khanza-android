@@ -11,14 +11,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.Khanza500
 
 @Composable
 fun OnboardingIndicatorItem(
     modifier: Modifier,
     width: Int = 100,
     height: Int = 4,
-    color: Color = Khanza500
+    color: Color = Color(0xFF007AFF)
 ) {
     Box(
         modifier = modifier
