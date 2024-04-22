@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -18,8 +20,11 @@ android {
 
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("boolean", "DEBUG", "true")
-        buildConfigField("String", "BASE_URL", "\"https://simkes.fathoor.dev/v1/\"")
+        val properties = Properties()
+        properties.load(project.rootProject.file("secrets.properties").inputStream())
+
+        buildConfigField("boolean", "DEBUG", properties.getProperty("DEBUG", "false"))
+        buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
     }
 
     buildTypes {
