@@ -10,6 +10,7 @@ import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
 import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.auth.util.AuthException
+import dev.ikti.core.domain.usecase.preference.ClearUserTokenUseCase
 import dev.ikti.core.domain.usecase.preference.SetUserTokenUseCase
 import dev.ikti.core.util.State
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,11 +21,16 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val setUserTokenUseCase: SetUserTokenUseCase
+    private val setUserTokenUseCase: SetUserTokenUseCase,
+    private val clearUserTokenUseCase: ClearUserTokenUseCase
 ) : ViewModel() {
     private val _stateLogin: MutableStateFlow<State<Unit>> =
         MutableStateFlow(State.Empty)
     val stateLogin: StateFlow<State<Unit>> = _stateLogin
+
+    init {
+        clearUserToken(Unit)
+    }
 
     fun login(email: String, password: String) {
         _stateLogin.value = State.Loading
@@ -35,7 +41,7 @@ class LoginViewModel @Inject constructor(
                 val response = loginUseCase.execute(request)
                 response.collect { token ->
                     try {
-                        setUserTokenUseCase.execute(token.token ?: "")
+                        setUserTokenUseCase.execute(token.data.token)
                     } catch (_: Exception) {
                         _stateLogin.value = State.Error(ERR_FAILED_TO_SET_USER_TOKEN)
                     }
@@ -53,6 +59,12 @@ class LoginViewModel @Inject constructor(
                     else -> _stateLogin.value = State.Error(ERR_UNKNOWN_ERROR)
                 }
             }
+        }
+    }
+
+    private fun clearUserToken(state: Unit) {
+        viewModelScope.launch {
+            clearUserTokenUseCase.execute(state)
         }
     }
 }
