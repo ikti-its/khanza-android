@@ -84,6 +84,9 @@ dependencies {
 //  Compose
     implementation(libs.androidx.material)
 
+//  SplashScreen
+    implementation(libs.splash.screen)
+
 //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
