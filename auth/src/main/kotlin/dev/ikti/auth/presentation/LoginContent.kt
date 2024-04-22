@@ -7,16 +7,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.auth.presentation.component.atom.LoginProgress
 import dev.ikti.auth.presentation.component.atom.LoginToast
 import dev.ikti.auth.presentation.component.molecule.LoginAppBar
 import dev.ikti.auth.presentation.component.organism.LoginForm
-import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_NOT_FOUND
+import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_UNAUTHORIZED
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
-import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
-import dev.ikti.auth.util.AuthConstant.ERR_PASSWORD_INCORRECT
 import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.KhanzaDark
@@ -35,7 +34,7 @@ fun LoginContent(
     MainScaffold(
         modifier = modifier,
         topBar = { LoginAppBar(navigateBack = navigateBack) },
-        background = KhanzaDark
+        background = Color(0xFFF7F7F7)
     ) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -54,23 +53,12 @@ fun LoginContent(
 
                     is State.Error -> {
                         when (state.error) {
-                            ERR_ACCOUNT_NOT_FOUND -> {
-                                LoginToast(context = context, type = ERR_ACCOUNT_NOT_FOUND)
-                            }
-
-                            ERR_FAILED_TO_SET_USER_TOKEN -> {
-                                LoginToast(
-                                    context = context,
-                                    type = ERR_FAILED_TO_SET_USER_TOKEN
-                                )
+                            ERR_ACCOUNT_UNAUTHORIZED -> {
+                                LoginToast(context = context, type = ERR_ACCOUNT_UNAUTHORIZED)
                             }
 
                             ERR_FAILED_TO_LOGIN -> {
                                 LoginToast(context = context, type = ERR_FAILED_TO_LOGIN)
-                            }
-
-                            ERR_PASSWORD_INCORRECT -> {
-                                LoginToast(context = context, type = ERR_PASSWORD_INCORRECT)
                             }
 
                             else -> {

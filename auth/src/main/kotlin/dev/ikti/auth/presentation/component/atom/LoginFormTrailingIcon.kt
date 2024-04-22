@@ -7,11 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.auth.R
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
-import dev.ikti.core.presentation.theme.Khanza50
 
 @Composable
 fun LoginFormTrailingIcon(
@@ -34,7 +34,7 @@ fun LoginFormTrailingIcon(
                     painterResource(id = R.drawable.ic_outlined_eye)
                 },
                 contentDescription = "Toggle password visibility",
-                tint = Khanza50
+                tint = Color(0xFFC4C4C4)
             )
         }
     }

@@ -21,7 +21,7 @@ fun LoginTitle() {
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun LoginTitlePreview() {
     KhanzaTheme {

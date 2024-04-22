@@ -1,17 +1,12 @@
 package dev.ikti.auth.presentation.component.atom
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
-import dev.ikti.core.presentation.theme.Khanza50
-import dev.ikti.core.presentation.theme.Khanza500
-import dev.ikti.core.presentation.theme.KhanzaDark
 
 @Composable
 fun LoginProgress(
@@ -19,8 +14,8 @@ fun LoginProgress(
 ) {
     LinearProgressIndicator(
         modifier = modifier.fillMaxWidth(),
-        color = Khanza500,
-        trackColor = Khanza50,
+        color = Color(0xFF007AFF),
+        trackColor = Color(0xFFF7F7F7),
         strokeCap = StrokeCap.Round
     )
 }

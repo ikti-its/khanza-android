@@ -5,21 +5,21 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_NIP
+import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
-import dev.ikti.core.presentation.theme.Khanza50
 
 @Composable
 fun LoginFormLeadingIcon(
     field: String
 ) {
     when (field) {
-        FIELD_TYPE_NIP -> {
+        FIELD_TYPE_EMAIL -> {
             Icon(
                 imageVector = Icons.Default.Person,
-                contentDescription = FIELD_TYPE_NIP,
-                tint = Khanza50
+                contentDescription = FIELD_TYPE_EMAIL,
+                tint = Color(0xFFC4C4C4)
             )
         }
 
@@ -27,7 +27,7 @@ fun LoginFormLeadingIcon(
             Icon(
                 imageVector = Icons.Default.Lock,
                 contentDescription = FIELD_TYPE_PASSWORD,
-                tint = Khanza50
+                tint = Color(0xFFC4C4C4)
             )
         }
     }
@@ -36,6 +36,6 @@ fun LoginFormLeadingIcon(
 @Preview
 @Composable
 fun LoginFormLeadingIconPreview() {
-    LoginFormLeadingIcon(FIELD_TYPE_NIP)
+    LoginFormLeadingIcon(FIELD_TYPE_EMAIL)
 }
 
