@@ -4,27 +4,19 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val KhanzaLight = Color(0xfffcfcfc)
 val KhanzaDark = Color(0xff0c0c0c)
 
 // Temporary
 val Khanza50 = Color(0xffe9eefd)
-val Khanza100 = Color(0xffbccbf8)
-val Khanza200 = Color(0xff9cb2f4)
-val Khanza300 = Color(0xff6e8fef)
-val Khanza400 = Color(0xff5279ec)
 val Khanza500 = Color(0xff2758e7)
-val Khanza600 = Color(0xff2350d2)
-val Khanza700 = Color(0xff1c3ea4)
-val Khanza800 = Color(0xff15307f)
 val Khanza900 = Color(0xff102561)
 val KhanzaOnPrimary = Color(0xff0c203c)
 val KhanzaNavText = Color(0xff9db2ce)
 
 val KhanzaHomeBrush = Brush.linearGradient(
     colors = listOf(
-        Color(0xff00d1ff),
-        Khanza500
+        Color(0xFF007AFF),
+        Color(0xFF30B0C7)
     ),
     start = Offset(0f, Float.POSITIVE_INFINITY),
     end = Offset(Float.POSITIVE_INFINITY, 0f)
