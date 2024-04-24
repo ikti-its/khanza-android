@@ -4,7 +4,7 @@
     <string name="home_user">%s</string>
 
     <string name="bottom_navigation_home">Beranda</string>
-    <string name="bottom_navigation_dummy">Dummy</string>
+    <string name="bottom_navigation_dummy">Fitur</string>
     <string name="bottom_navigation_presensi">Presensi</string>
     <string name="bottom_navigation_profile">Profil</string>
 

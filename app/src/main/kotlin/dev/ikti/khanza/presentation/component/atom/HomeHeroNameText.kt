@@ -11,14 +11,13 @@ import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun HomeFeatureItemLabel(label: String) {
+fun HomeHeroNameText(name: String) {
     Text(
-        text = label,
-        color = Color(0xFF0C203C),
+        text = name,
+        color = Color(0xFF0A2D27),
         style = TextStyle(
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
-            letterSpacing = 0.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp,
             fontFamily = FontGilroy
         )
     )
@@ -26,8 +25,8 @@ fun HomeFeatureItemLabel(label: String) {
 
 @Preview
 @Composable
-fun HomeFeatureItemLabelPreview() {
+fun HomeHeroNameTextPreview() {
     KhanzaTheme {
-        HomeFeatureItemLabel(label = "DEV")
+        HomeHeroNameText(name = "Fathoor")
     }
 }

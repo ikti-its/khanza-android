@@ -29,7 +29,7 @@ fun HomeDropdown(
     Box(
         modifier = modifier
             .background(
-                Color(0xFFF2F2F7),
+                Color(0xFFE8E8E8),
                 RoundedCornerShape(32.dp)
             )
             .height(44.dp)

@@ -25,7 +25,6 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.presentation.component.molecule.HomeDropdown
 import dev.ikti.khanza.presentation.component.molecule.HomeFeatureGrid
 import dev.ikti.khanza.presentation.component.molecule.HomeHeroCard
-import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 
 @Composable
 fun HomeContent(
@@ -44,9 +43,7 @@ fun HomeContent(
                 .fillMaxWidth()
                 .padding(top = 48.dp, bottom = 24.dp, start = 24.dp, end = 24.dp)
         ) {
-            HomeHeroCard(modifier = modifier, height = 150.dp, token = token) {
-                navController.navigate(BottomScreen.Profile.route.replace("{token}", it))
-            }
+            HomeHeroCard(modifier = modifier)
         }
         Column(
             modifier = modifier

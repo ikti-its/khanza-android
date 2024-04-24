@@ -58,7 +58,7 @@ fun MainContent(
         },
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
-        backgroundColor = Color(0xFFE9F6FF)
+        backgroundColor = Color(0xFF0A2D27)
     ) {
         HomeContent(
             modifier = modifier,
