@@ -7,7 +7,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
-import dev.ikti.core.presentation.theme.FontPlusJakartaSans
+import dev.ikti.core.presentation.theme.FontGilroy
 
 @Composable
 fun LoginFormLabel(
@@ -19,7 +19,7 @@ fun LoginFormLabel(
                 text = "Email",
                 style = TextStyle(
                     color = Color(0xFF272727),
-                    fontFamily = FontPlusJakartaSans
+                    fontFamily = FontGilroy
                 )
             )
         }
@@ -29,7 +29,7 @@ fun LoginFormLabel(
                 text = "Password",
                 style = TextStyle(
                     color = Color(0xFF272727),
-                    fontFamily = FontPlusJakartaSans
+                    fontFamily = FontGilroy
                 )
             )
         }

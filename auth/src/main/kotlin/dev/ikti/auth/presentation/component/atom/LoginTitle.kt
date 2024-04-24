@@ -6,7 +6,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import dev.ikti.core.presentation.theme.FontPlusJakartaSans
+import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
@@ -16,7 +16,7 @@ fun LoginTitle() {
         style = TextStyle(
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
-            fontFamily = FontPlusJakartaSans
+            fontFamily = FontGilroy
         )
     )
 }
