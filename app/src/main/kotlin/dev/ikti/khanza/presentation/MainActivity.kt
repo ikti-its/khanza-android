@@ -73,6 +73,8 @@ class MainActivity : ComponentActivity() {
             isLoading.observe(this@MainActivity) { isLoading ->
                 hasLoaded = !isLoading
             }
+
+            observeIsNewUser(Unit)
         }
     }
 }
