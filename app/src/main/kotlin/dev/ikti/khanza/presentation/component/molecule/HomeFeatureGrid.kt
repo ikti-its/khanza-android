@@ -44,9 +44,9 @@ fun HomeFeatureGrid(
                 HomeFeatureItem(
                     label = "Akun",
                     active = true,
-                    color = Color(0xFFE9F6FF),
+                    color = Color(0xFFACF2E7),
                     icon = R.drawable.ic_feature_c_akun,
-                    iconColor = Color(0xFF007AFF),
+                    iconColor = Color.Unspecified,
                     onClick = {
                         navController.navigate(
                             CScreen.Akun.route.replace(
@@ -59,9 +59,9 @@ fun HomeFeatureGrid(
                 HomeFeatureItem(
                     label = "Kehadiran",
                     active = true,
-                    color = Color(0xFFE9F6FF),
+                    color = Color(0xFFACF2E7),
                     icon = R.drawable.ic_feature_c_kehadiran,
-                    iconColor = Color(0xFF007AFF),
+                    iconColor = Color.Unspecified,
                     onClick = {
                         navController.navigate(
                             CScreen.Kehadiran.route.replace(
@@ -74,9 +74,9 @@ fun HomeFeatureGrid(
                 HomeFeatureItem(
                     label = "Pegawai",
                     active = true,
-                    color = Color(0xFFE9F6FF),
+                    color = Color(0xFFACF2E7),
                     icon = R.drawable.ic_feature_c_kepegawaian,
-                    iconColor = Color(0xFF007AFF),
+                    iconColor = Color.Unspecified,
                     onClick = {
                         navController.navigate(
                             CScreen.Pegawai.route.replace(
@@ -86,23 +86,28 @@ fun HomeFeatureGrid(
                         )
                     }
                 )
-                HomeFeatureItem(label = "Modul A")
-            }
-            Spacer(modifier = modifier.height(18.dp))
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                HomeFeatureItem(label = "Modul B")
-                HomeFeatureItem(label = "Modul D")
-                HomeFeatureItem(label = "Modul E")
                 HomeFeatureItem(
                     label = "Lainnya",
                     icon = R.drawable.ic_feature_other,
                     onClick = { navController.navigate(BottomScreen.Home.route) }
                 )
+//                HomeFeatureItem(label = "Modul A")
             }
+//            Spacer(modifier = modifier.height(18.dp))
+//            Row(
+//                modifier = modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                HomeFeatureItem(label = "Modul B")
+//                HomeFeatureItem(label = "Modul D")
+//                HomeFeatureItem(label = "Modul E")
+//                HomeFeatureItem(
+//                    label = "Lainnya",
+//                    icon = R.drawable.ic_feature_other,
+//                    onClick = { navController.navigate(BottomScreen.Home.route) }
+//                )
+//            }
         }
     }
 }

@@ -35,10 +35,10 @@ fun HomeBottomFAB(
             }
         },
         modifier = modifier
-            .size(64.dp),
+            .size(68.dp),
         shape = CircleShape,
-        containerColor = Color(0xFF007AFF),
-        contentColor = Color(0xFFF7F7F7),
+        containerColor = Color(0xFF0A2D27),
+        contentColor = Color(0xFFACF2E7),
         elevation = FloatingActionButtonDefaults.elevation(
             defaultElevation = 3.dp,
             pressedElevation = 5.dp
@@ -47,7 +47,7 @@ fun HomeBottomFAB(
         Icon(
             painter = painterResource(id = R.drawable.ic_scan),
             contentDescription = BottomScreen.Presensi.route,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier.size(34.dp)
         )
     }
 }

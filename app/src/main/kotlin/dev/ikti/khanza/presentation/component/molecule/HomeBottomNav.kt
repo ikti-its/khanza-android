@@ -19,8 +19,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.presentation.theme.Khanza50
-import dev.ikti.core.presentation.theme.KhanzaNavText
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 
@@ -74,7 +72,7 @@ fun HomeBottomNav(
                         screen.unfocusedIcon?.let {
                             Icon(
                                 painter = painterResource(id = it),
-                                contentDescription = screen.label.toString()
+                                contentDescription = screen.label.toString(),
                             )
                         }
                     }
@@ -82,17 +80,18 @@ fun HomeBottomNav(
                 label = {
                     Text(
                         text = screen.label?.let { stringResource(it) } ?: "",
+                        color = if (isSelected) Color(0xFF0A2D27) else Color(0xFFCACACA),
                         style = MaterialTheme.typography.labelMedium,
                     )
                 },
                 colors = NavigationBarItemColors(
-                    selectedIconColor = Color(0xFF007AFF),
-                    selectedTextColor = Color(0xFF007AFF),
-                    selectedIndicatorColor = if (isPresensi) Color.Transparent else Khanza50,
-                    unselectedIconColor = KhanzaNavText,
-                    unselectedTextColor = KhanzaNavText,
-                    disabledIconColor = KhanzaNavText,
-                    disabledTextColor = KhanzaNavText
+                    selectedIconColor = Color.Unspecified,
+                    selectedTextColor = Color(0xFF0A2D27),
+                    selectedIndicatorColor = if (isPresensi) Color.Transparent else Color.Unspecified,
+                    unselectedIconColor = Color(0xFFCACACA),
+                    unselectedTextColor = Color(0xFFCACACA),
+                    disabledIconColor = Color(0xFFCACACA),
+                    disabledTextColor = Color(0xFFCACACA)
                 )
             )
         }
