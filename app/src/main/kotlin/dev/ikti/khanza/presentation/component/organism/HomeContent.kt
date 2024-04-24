@@ -51,7 +51,7 @@ fun HomeContent(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .fillMaxHeight(1f)
+                .fillMaxHeight()
                 .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
                 .background(Color(0xFFF7F7F7))
         ) {

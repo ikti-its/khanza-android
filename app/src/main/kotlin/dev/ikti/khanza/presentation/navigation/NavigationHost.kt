@@ -17,6 +17,7 @@ import dev.ikti.onboarding.presentation.OnboardingScreen
 @Composable
 fun NavigationHost(
     navController: NavHostController,
+    token: String,
     startDestination: String
 ) {
     NavHost(
@@ -31,7 +32,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val userToken = it.arguments?.getString("token") ?: ""
+            val userToken = it.arguments?.getString("token") ?: token
             MainScreen(token = userToken, navController = navController)
         }
 
@@ -82,7 +83,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val token = it.arguments?.getString("token") ?: ""
+            val userToken = it.arguments?.getString("token") ?: token
         }
 
         composable(
@@ -93,7 +94,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val token = it.arguments?.getString("token") ?: ""
+            val userToken = it.arguments?.getString("token") ?: token
         }
 
         composable(
@@ -104,7 +105,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val token = it.arguments?.getString("token") ?: ""
+            val userToken = it.arguments?.getString("token") ?: token
         }
     }
 }
