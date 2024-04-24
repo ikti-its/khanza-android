@@ -10,38 +10,38 @@ sealed class BottomScreen(
     @DrawableRes val unfocusedIcon: Int?,
     @DrawableRes val focusedIcon: Int?,
 ) {
-    object Home : BottomScreen(
-        "home",
+    data object Home : BottomScreen(
+        "home/{token}",
         R.string.bottom_navigation_home,
         R.drawable.ic_outlined_home,
         R.drawable.ic_filled_home
     )
 
     // Temporary
-    object Search : BottomScreen(
-        "search",
-        R.string.bottom_navigation_search,
+    data object Search : BottomScreen(
+        "dummy",
+        R.string.bottom_navigation_dummy,
         R.drawable.ic_search,
         R.drawable.ic_search
     )
 
-    object Presensi : BottomScreen(
-        "presensi",
+    data object Presensi : BottomScreen(
+        "presensi/{token}",
         R.string.bottom_navigation_presensi,
         R.drawable.ic_presensi,
         R.drawable.ic_presensi
     )
 
     // Temporary
-    object History : BottomScreen(
-        "history",
-        R.string.bottom_navigation_history,
+    data object History : BottomScreen(
+        "dummy",
+        R.string.bottom_navigation_dummy,
         R.drawable.ic_history,
         R.drawable.ic_history
     )
 
-    object Profile : BottomScreen(
-        "profile",
+    data object Profile : BottomScreen(
+        "profile/{token}",
         R.string.bottom_navigation_profile,
         R.drawable.ic_outlined_person,
         R.drawable.ic_filled_person
