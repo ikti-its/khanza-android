@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
                         KhanzaTheme {
                             Surface {
                                 if (token != "" && !isNew) {
-                                    MainApp(BottomScreen.Home.route)
+                                    MainApp(token, BottomScreen.Home.route)
                                 } else {
-                                    MainApp(ModuleScreen.Onboarding.route)
+                                    MainApp(token, ModuleScreen.Onboarding.route)
                                 }
                             }
                         }
@@ -51,9 +51,9 @@ class MainActivity : ComponentActivity() {
                     KhanzaTheme {
                         Surface {
                             if (token != "" && !isNew) {
-                                MainApp(BottomScreen.Home.route)
+                                MainApp(token, BottomScreen.Home.route)
                             } else {
-                                MainApp(ModuleScreen.Onboarding.route)
+                                MainApp(token, ModuleScreen.Onboarding.route)
                             }
                         }
                     }

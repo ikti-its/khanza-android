@@ -6,10 +6,12 @@ import dev.ikti.khanza.presentation.navigation.NavigationHost
 
 @Composable
 fun MainApp(
+    token: String,
     startDestination: String
 ) {
     NavigationHost(
         navController = rememberNavController(),
+        token = token,
         startDestination = startDestination
     )
 }
