@@ -20,16 +20,17 @@ import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.KhanzaDark
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.core.util.State
+import dev.ikti.core.util.UIState
 
 @Composable
 fun LoginContent(
     context: Context = LocalContext.current,
     modifier: Modifier,
-    stateLogin: State<Unit>,
+    stateLogin: UIState<Unit>,
+    userToken: String,
     onSubmit: (nip: String, password: String) -> Unit,
     navigateBack: () -> Unit,
-    navigateToMain: () -> Unit
+    navigateToMain: (token: String) -> Unit
 ) {
     MainScaffold(
         modifier = modifier,
@@ -47,11 +48,11 @@ fun LoginContent(
 
             stateLogin.let { state ->
                 when (state) {
-                    is State.Success -> {
-                        navigateToMain()
+                    is UIState.Success -> {
+                        navigateToMain(userToken)
                     }
 
-                    is State.Error -> {
+                    is UIState.Error -> {
                         when (state.error) {
                             ERR_ACCOUNT_UNAUTHORIZED -> {
                                 LoginToast(context = context, type = ERR_ACCOUNT_UNAUTHORIZED)
@@ -67,7 +68,7 @@ fun LoginContent(
                         }
                     }
 
-                    State.Loading -> {
+                    UIState.Loading -> {
                         Box(
                             modifier = modifier
                                 .fillMaxSize()
@@ -77,7 +78,7 @@ fun LoginContent(
                         }
                     }
 
-                    State.Empty -> {}
+                    UIState.Empty -> {}
                 }
             }
         }
@@ -90,10 +91,11 @@ fun LoginContentPreview() {
     KhanzaTheme {
         LoginContent(
             modifier = Modifier,
-            stateLogin = State.Empty,
+            stateLogin = UIState.Empty,
+            userToken = "",
             onSubmit = { _, _ -> },
             navigateBack = {},
-            navigateToMain = {}
+            navigateToMain = { _ -> }
         )
     }
 }
