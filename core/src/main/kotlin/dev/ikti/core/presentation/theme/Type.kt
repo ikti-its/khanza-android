@@ -8,11 +8,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.R
 
-val FontPlusJakartaSans = FontFamily(
-    Font(R.font.plusjakartasans_regular, FontWeight.Normal),
-    Font(R.font.plusjakartasans_medium, FontWeight.Medium),
-    Font(R.font.plusjakartasans_semibold, FontWeight.SemiBold),
-    Font(R.font.plusjakartasans_bold, FontWeight.Bold),
+val FontGilroy = FontFamily(
+    Font(R.font.gilroy_light, FontWeight.Light),
+    Font(R.font.gilroy_regular, FontWeight.Normal),
+    Font(R.font.gilroy_medium, FontWeight.Medium),
+    Font(R.font.gilroy_semibold, FontWeight.SemiBold),
+    Font(R.font.gilroy_bold, FontWeight.Bold),
 )
 
 val typography = Typography(
@@ -21,27 +22,27 @@ val typography = Typography(
         fontSize = 32.sp,
         lineHeight = 42.sp,
         letterSpacing = 0.sp,
-        fontFamily = FontPlusJakartaSans
+        fontFamily = FontGilroy
     ),
     bodyLarge = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.sp,
-        fontFamily = FontPlusJakartaSans
+        fontFamily = FontGilroy
     ),
     labelLarge = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.sp,
-        fontFamily = FontPlusJakartaSans
+        fontFamily = FontGilroy
     ),
     labelMedium = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
-        fontFamily = FontPlusJakartaSans
+        fontFamily = FontGilroy
     )
 )

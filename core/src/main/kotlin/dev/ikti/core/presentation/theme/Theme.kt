@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 
 // Temporary
 private val LightColorScheme = lightColorScheme(
-    primary = Khanza500,
+    primary = Union200,
     onPrimary = KhanzaOnPrimary,
-    secondary = Khanza900,
+    secondary = Union900,
 )
 
 @Composable
@@ -17,7 +17,6 @@ fun KhanzaTheme(
 ) {
     MaterialTheme(
         colorScheme = LightColorScheme,
-        shapes = shapes,
         typography = typography,
         content = content
     )

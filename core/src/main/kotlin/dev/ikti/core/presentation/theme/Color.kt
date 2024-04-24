@@ -4,6 +4,21 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
+val Union100 = Color(0xFFD6F9F3)
+val Union200 = Color(0xFFACF2E7)
+val Union300 = Color(0xFF83ECDC)
+val Union400 = Color(0xFF59E5D0)
+val Union500 = Color(0xFF30DFC4)
+val Union600 = Color(0xFF26B29D)
+val Union700 = Color(0xFF1D8676)
+val Union800 = Color(0xFF13594E)
+val Union900 = Color(0xFF0A2D27)
+
+//val UnionNavText
+
+val UnionLight = Color(0xFFF7F7F7)
+val UnionDark = Color(0xFF272727)
+
 val KhanzaDark = Color(0xff0c0c0c)
 
 // Temporary
