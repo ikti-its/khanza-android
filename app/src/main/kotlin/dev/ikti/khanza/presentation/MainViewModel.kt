@@ -26,7 +26,6 @@ class MainViewModel @Inject constructor(
 
     init {
         getUserToken(Unit)
-        observeIsNewUser(Unit)
     }
 
     private fun getUserToken(state: Unit) {
@@ -38,7 +37,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun observeIsNewUser(state: Unit) {
+    fun observeIsNewUser(state: Unit) {
         _isLoading.value = true
         viewModelScope.launch {
             observeIsNewUserUseCase.execute(state)

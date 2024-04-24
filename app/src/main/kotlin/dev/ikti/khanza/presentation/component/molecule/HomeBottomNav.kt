@@ -1,5 +1,6 @@
-package dev.ikti.khanza.presentation.component
+package dev.ikti.khanza.presentation.component.molecule
 
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -20,13 +20,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.Khanza50
-import dev.ikti.core.presentation.theme.Khanza500
 import dev.ikti.core.presentation.theme.KhanzaNavText
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 
 @Composable
-fun BottomNav(
+fun HomeBottomNav(
+    token: String,
     navController: NavHostController,
 ) {
     val items = listOf(
@@ -53,7 +53,7 @@ fun BottomNav(
                 selected = isSelected,
                 onClick = {
                     if (screen.route != BottomScreen.Presensi.route) {
-                        navController.navigate(screen.route) {
+                        navController.navigate(screen.route.replace("{token}", token)) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -86,8 +86,8 @@ fun BottomNav(
                     )
                 },
                 colors = NavigationBarItemColors(
-                    selectedIconColor = Khanza500,
-                    selectedTextColor = Khanza500,
+                    selectedIconColor = Color(0xFF007AFF),
+                    selectedTextColor = Color(0xFF007AFF),
                     selectedIndicatorColor = if (isPresensi) Color.Transparent else Khanza50,
                     unselectedIconColor = KhanzaNavText,
                     unselectedTextColor = KhanzaNavText,
@@ -99,11 +99,12 @@ fun BottomNav(
     }
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL_7_PRO)
+@Preview
 @Composable
-fun BottomNavPreview() {
+fun HomeBottomNavPreview() {
     KhanzaTheme {
-        BottomNav(
+        HomeBottomNav(
+            "",
             rememberNavController()
         )
     }
