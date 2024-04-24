@@ -7,7 +7,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.auth.util.AuthConstant
-import dev.ikti.core.presentation.theme.FontPlusJakartaSans
+import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
@@ -22,7 +22,7 @@ fun LoginFormSupportingText(
         },
         style = TextStyle(
             color = Color(0xFFFF1300),
-            fontFamily = FontPlusJakartaSans
+            fontFamily = FontGilroy
         ),
         textAlign = TextAlign.End
     )
