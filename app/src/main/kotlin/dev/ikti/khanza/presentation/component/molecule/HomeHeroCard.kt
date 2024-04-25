@@ -1,7 +1,7 @@
 package dev.ikti.khanza.presentation.component.molecule
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.EaseInOutElastic
+import androidx.compose.animation.core.EaseOutElastic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +31,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.R
+import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailShift
+import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailShiftLabel
+import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailStatus
+import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailStatusIndicator
+import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailStatusLabel
 import dev.ikti.khanza.presentation.component.atom.HomeHeroNameText
 import dev.ikti.khanza.presentation.component.atom.HomeHeroWelcomeText
 
@@ -47,15 +47,18 @@ import dev.ikti.khanza.presentation.component.atom.HomeHeroWelcomeText
 fun HomeHeroCard(
     modifier: Modifier,
     expanded: Boolean = true,
-    name: String = "PENGGUNA"
+    nama: String = "PENGGUNA",
+    status: Boolean = false,
+    masuk: String = "08:00",
+    pulang: String = "16:00",
 ) {
     var isExpanded by remember { mutableStateOf(expanded) }
     Box {
         Box(
             modifier = modifier
-                .animateContentSize(tween(durationMillis = 500, easing = EaseInOutElastic))
+                .animateContentSize(tween(durationMillis = 700, easing = EaseOutElastic))
                 .fillMaxWidth()
-                .background(color = Color.Unspecified, shape = RoundedCornerShape(16.dp))
+                .background(color = Color.Unspecified)
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { isExpanded = !isExpanded }
                 .height(if (isExpanded) 200.dp else 120.dp)
@@ -63,60 +66,37 @@ fun HomeHeroCard(
             Box {
                 Column(
                     modifier = modifier
-                        .animateContentSize(tween(durationMillis = 500, easing = EaseInOutElastic))
+                        .animateContentSize(tween(durationMillis = 700, easing = EaseOutElastic))
                         .fillMaxWidth()
                         .fillMaxHeight(if (isExpanded) 1f else 0f)
-                        .background(color = Color(0xFF26B29D), shape = RoundedCornerShape(16.dp))
+                        .background(color = Color(0xFF26B29D))
                         .padding(top = 20.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
                     verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Column {
-                            Text(
-                                text = "Status",
-                                color = Color(0xFFACF2E7),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 14.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                            Text(
-                                text = "BELUM HADIR",
-                                color = Color(0xFFACF2E7),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 24.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
+                            HomeHeroDetailStatusLabel()
+                            Spacer(modifier = modifier.size(5.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                HomeHeroDetailStatusIndicator(status)
+                                Spacer(modifier = modifier.size(5.dp))
+                                HomeHeroDetailStatus(status)
+                            }
                         }
                         Column(horizontalAlignment = Alignment.End) {
-                            Text(
-                                text = "Shift",
-                                color = Color(0xFFACF2E7),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 14.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                            Text(
-                                text = "08:00 - 16:00",
-                                color = Color(0xFFACF2E7),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 24.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
+                            HomeHeroDetailShiftLabel()
+                            Spacer(modifier = modifier.size(5.dp))
+                            HomeHeroDetailShift(masuk = masuk, pulang = pulang)
                         }
                     }
                 }
                 Column(
                     modifier = modifier
-                        .animateContentSize(tween(durationMillis = 200, easing = EaseInOutElastic))
+                        .animateContentSize(tween(durationMillis = 700, easing = EaseOutElastic))
                         .fillMaxWidth()
                         .fillMaxHeight(if (isExpanded) 0.6f else 1f)
                         .background(color = Color(0xFFACF2E7), shape = RoundedCornerShape(16.dp))
@@ -126,7 +106,7 @@ fun HomeHeroCard(
                 ) {
                     HomeHeroWelcomeText()
                     Spacer(modifier = modifier.height(5.dp))
-                    HomeHeroNameText(name)
+                    HomeHeroNameText(nama)
                     Spacer(modifier = modifier.height(35.dp))
                     Column(
                         modifier = modifier.fillMaxWidth(),

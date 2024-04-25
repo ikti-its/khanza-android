@@ -1,50 +1,76 @@
 package dev.ikti.khanza.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
-import dev.ikti.core.domain.usecase.preference.ObserveIsNewUserUseCase
+import dev.ikti.core.util.UIState
+import dev.ikti.khanza.data.model.HomeResponse
+import dev.ikti.khanza.domain.usecase.HomeUseCase
+import dev.ikti.khanza.util.HomeConstant.ERR_UNKNOWN_ERROR
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getUserTokenUseCase: GetUserTokenUseCase,
-    private val observeIsNewUserUseCase: ObserveIsNewUserUseCase
+    private val homeUseCase: HomeUseCase
 ) : ViewModel() {
-    private val _userToken = MutableLiveData<String>()
-    val userToken: LiveData<String> = _userToken
+    private val _stateHome: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
+    val stateHome: StateFlow<UIState<Unit>> = _stateHome
 
-    private val _isNewUser = MutableLiveData<Boolean>()
-    val isNewUser: LiveData<Boolean> = _isNewUser
+    private val _userHome =
+        mutableStateOf(HomeResponse("", "", "", "", "", "", 0.0f, 0.0f, "", "", "", "", false))
+    val userHome: State<HomeResponse> get() = _userHome
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    data class DateInfo(val day: Int, val date: String)
 
-    init {
-        getUserToken(Unit)
-    }
+    fun getUserHome(token: String) {
+        _stateHome.value = UIState.Loading
+        val today = retrieveDate()
 
-    private fun getUserToken(state: Unit) {
         viewModelScope.launch {
-            getUserTokenUseCase.execute(state)
-                .collect { token ->
-                    _userToken.postValue(token)
+            try {
+                val response = homeUseCase.execute(token, today.day, today.date)
+                response.collect { home ->
+                    _userHome.value = HomeResponse(
+                        home.data.akun,
+                        home.data.pegawai,
+                        home.data.nama,
+                        home.data.nip,
+                        home.data.profil,
+                        home.data.alamat,
+                        home.data.alamatLat,
+                        home.data.alamatLon,
+                        home.data.foto,
+                        home.data.shift,
+                        home.data.jamMasuk,
+                        home.data.jamPulang,
+                        home.data.status
+                    )
                 }
+
+                _stateHome.value = UIState.Success(Unit)
+            } catch (_: Exception) {
+                // TODO: Verbose error handling
+                _stateHome.value = UIState.Error(ERR_UNKNOWN_ERROR)
+            }
         }
     }
 
-    fun observeIsNewUser(state: Unit) {
-        _isLoading.value = true
-        viewModelScope.launch {
-            observeIsNewUserUseCase.execute(state)
-                .collect { isNew ->
-                    _isNewUser.postValue(isNew)
-                    _isLoading.postValue(false)
-                }
-        }
+    private fun retrieveDate(): DateInfo {
+        val calendar = Calendar.getInstance()
+        val dayOfWeek =
+            calendar.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY // e.g. Monday = 1, Tuesday = 2, etc.
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1 // e.g. January = 01, February = 02, etc.
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val date = String.format("%04d-%02d-%02d", year, month, day)
+
+        return DateInfo(dayOfWeek, date)
     }
 }

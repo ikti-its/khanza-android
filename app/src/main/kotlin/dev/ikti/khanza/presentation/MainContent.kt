@@ -1,15 +1,15 @@
 package dev.ikti.khanza.presentation
 
+//noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.CircleShape
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomAppBar
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FabPosition
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,6 +30,10 @@ import dev.ikti.khanza.presentation.component.organism.HomeContent
 fun MainContent(
     modifier: Modifier,
     token: String,
+    userNama: String = "PENGGUNA",
+    userStatus: Boolean = false,
+    userMasuk: String = "08:00",
+    userPulang: String = "16:00",
     navController: NavHostController
 ) {
     Scaffold(
@@ -65,6 +69,10 @@ fun MainContent(
         HomeContent(
             modifier = modifier,
             token = token,
+            userNama = userNama,
+            userStatus = userStatus,
+            userMasuk = userMasuk,
+            userPulang = userPulang,
             navController = navController
         )
     }
@@ -75,9 +83,9 @@ fun MainContent(
 fun MainContentPreview() {
     KhanzaTheme {
         MainContent(
-            Modifier,
-            "",
-            rememberNavController()
+            modifier = Modifier,
+            token = "",
+            navController = rememberNavController()
         )
     }
 }
