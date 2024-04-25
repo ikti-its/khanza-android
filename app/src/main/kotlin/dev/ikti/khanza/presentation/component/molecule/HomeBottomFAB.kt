@@ -16,7 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.R
-import dev.ikti.khanza.presentation.navigation.model.BottomScreen
+import dev.ikti.khanza.presentation.navigation.model.NavScreen
 
 @Composable
 fun HomeBottomFAB(
@@ -26,7 +26,7 @@ fun HomeBottomFAB(
 ) {
     FloatingActionButton(
         onClick = {
-            navController.navigate(BottomScreen.Presensi.route.replace("{token}", token)) {
+            navController.navigate(NavScreen.Presensi.route.replace("{token}", token)) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
                 }
@@ -46,7 +46,7 @@ fun HomeBottomFAB(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_scan),
-            contentDescription = BottomScreen.Presensi.route,
+            contentDescription = NavScreen.Presensi.route,
             modifier = Modifier.size(34.dp)
         )
     }

@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.presentation.navigation.model.BottomScreen
+import dev.ikti.khanza.presentation.navigation.model.NavScreen
 
 @Composable
 fun HomeBottomNav(
@@ -28,11 +28,11 @@ fun HomeBottomNav(
     navController: NavHostController,
 ) {
     val items = listOf(
-        BottomScreen.Home,
-        BottomScreen.Search,
-        BottomScreen.Presensi,
-        BottomScreen.History,
-        BottomScreen.Profile
+        NavScreen.Home,
+        NavScreen.Search,
+        NavScreen.Presensi,
+        NavScreen.History,
+        NavScreen.Profile
     )
 
     BottomNavigation(
@@ -45,12 +45,12 @@ fun HomeBottomNav(
         items.forEach { screen ->
             val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
             val isPresensi =
-                currentDestination?.hierarchy?.any { it.route == BottomScreen.Presensi.route } == true
+                currentDestination?.hierarchy?.any { it.route == NavScreen.Presensi.route } == true
 
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    if (screen.route != BottomScreen.Presensi.route) {
+                    if (screen.route != NavScreen.Presensi.route) {
                         navController.navigate(screen.route.replace("{token}", token)) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -77,6 +77,7 @@ fun HomeBottomNav(
                         }
                     }
                 },
+                enabled = screen.route != NavScreen.Presensi.route,
                 label = {
                     Text(
                         text = screen.label?.let { stringResource(it) } ?: "",

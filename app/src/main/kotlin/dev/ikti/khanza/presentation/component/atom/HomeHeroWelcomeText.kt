@@ -18,7 +18,7 @@ fun HomeHeroWelcomeText() {
         text = stringResource(id = R.string.home_welcome),
         color = Color(0xFF0A2D27),
         style = TextStyle(
-            fontWeight = FontWeight.Light,
+            fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             fontFamily = FontGilroy
         )

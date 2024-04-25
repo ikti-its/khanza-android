@@ -35,10 +35,11 @@ fun HomeDropdown(
             .height(44.dp)
             .clip(RoundedCornerShape(32.dp))
             .clickable { onClick() },
+        contentAlignment = Alignment.Center
     ) {
         Row(
             modifier = modifier
-                .padding(horizontal = 24.dp, vertical = 8.dp)
+                .padding(horizontal = 20.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -57,9 +58,6 @@ fun HomeDropdown(
 @Composable
 fun HomeDropdownPreview() {
     KhanzaTheme {
-        HomeDropdown(
-            modifier = Modifier,
-            onClick = {}
-        )
+        HomeDropdown(Modifier) {}
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,8 +46,8 @@ import dev.ikti.khanza.presentation.component.atom.HomeHeroWelcomeText
 @Composable
 fun HomeHeroCard(
     modifier: Modifier,
-    expanded: Boolean = false,
-    name: String = "Pengguna"
+    expanded: Boolean = true,
+    name: String = "PENGGUNA"
 ) {
     var isExpanded by remember { mutableStateOf(expanded) }
     Box {
@@ -66,19 +67,52 @@ fun HomeHeroCard(
                         .fillMaxWidth()
                         .fillMaxHeight(if (isExpanded) 1f else 0f)
                         .background(color = Color(0xFF26B29D), shape = RoundedCornerShape(16.dp))
-                        .padding(top = 24.dp, bottom = 28.dp, start = 24.dp, end = 24.dp),
+                        .padding(top = 20.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
                     verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(
-                        text = "Test",
-                        color = Color(0xFFACF2E7),
-                        style = TextStyle(
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 24.sp,
-                            fontFamily = FontGilroy
-                        )
-                    )
+                    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Column {
+                            Text(
+                                text = "Status",
+                                color = Color(0xFFACF2E7),
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 14.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Text(
+                                text = "BELUM HADIR",
+                                color = Color(0xFFACF2E7),
+                                style = TextStyle(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 24.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
+                        Column(horizontalAlignment = Alignment.End) {
+                            Text(
+                                text = "Shift",
+                                color = Color(0xFFACF2E7),
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 14.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Text(
+                                text = "08:00 - 16:00",
+                                color = Color(0xFFACF2E7),
+                                style = TextStyle(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 24.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
+                    }
                 }
                 Column(
                     modifier = modifier
@@ -86,14 +120,14 @@ fun HomeHeroCard(
                         .fillMaxWidth()
                         .fillMaxHeight(if (isExpanded) 0.6f else 1f)
                         .background(color = Color(0xFFACF2E7), shape = RoundedCornerShape(16.dp))
-                        .padding(top = 24.dp, bottom = 0.dp, start = 24.dp, end = 24.dp),
+                        .padding(top = 20.dp, bottom = 0.dp, start = 20.dp, end = 20.dp),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start
                 ) {
                     HomeHeroWelcomeText()
-                    Spacer(modifier = modifier.height(4.dp))
+                    Spacer(modifier = modifier.height(5.dp))
                     HomeHeroNameText(name)
-                    Spacer(modifier = modifier.height(24.dp))
+                    Spacer(modifier = modifier.height(35.dp))
                     Column(
                         modifier = modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -101,13 +135,18 @@ fun HomeHeroCard(
                         Icon(
                             if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
                             contentDescription = null,
-                            modifier = modifier.size(18.dp),
+                            modifier = modifier.size(20.dp),
                             tint = Color(0xFF0A2D27)
                         )
                     }
                 }
             }
-            Box(modifier = modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.TopEnd) {
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentAlignment = Alignment.TopEnd
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.home_card),
                     contentDescription = null

@@ -9,44 +9,56 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.ikti.auth.presentation.LoginScreen
 import dev.ikti.khanza.presentation.MainScreen
-import dev.ikti.khanza.presentation.navigation.model.BottomScreen
 import dev.ikti.khanza.presentation.navigation.model.CScreen
 import dev.ikti.khanza.presentation.navigation.model.ModuleScreen
+import dev.ikti.khanza.presentation.navigation.model.NavScreen
+import dev.ikti.khanza.presentation.splash.AppSplashScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
 
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    token: String,
     startDestination: String
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        composable(ModuleScreen.Splash.route) {
+            AppSplashScreen(
+                navigateToHome = { token ->
+                    navController.popBackStack()
+                    navController.navigate(NavScreen.Home.route.replace("{token}", token))
+                },
+                navigateToOnboarding = {
+                    navController.navigate(ModuleScreen.Onboarding.route)
+                }
+            )
+        }
+
         composable(
-            route = BottomScreen.Home.route,
+            route = NavScreen.Home.route,
             arguments = listOf(
                 navArgument("token") {
                     type = NavType.StringType
                 }
             )
         ) {
-            val userToken = it.arguments?.getString("token") ?: token
+            val userToken = it.arguments?.getString("token") ?: ""
             MainScreen(token = userToken, navController = navController)
         }
 
-        composable(BottomScreen.Presensi.route) {
+        composable(NavScreen.Presensi.route) {
             // TODO: PresensiScreen()
         }
 
-        composable(BottomScreen.Profile.route) {
+        composable(NavScreen.Profile.route) {
             // TODO: ProfileScreen()
         }
 
         // Temporary
-        composable(BottomScreen.Search.route) {}
-        composable(BottomScreen.History.route) {}
+        composable(NavScreen.Search.route) {}
+        composable(NavScreen.History.route) {}
 
         // Onboarding
         composable(ModuleScreen.Onboarding.route) {
@@ -64,7 +76,7 @@ fun NavigationHost(
                     navController.popBackStack()
                 },
                 navigateToMain = { token ->
-                    navController.navigate(BottomScreen.Home.route.replace("{token}", token)) {
+                    navController.navigate(NavScreen.Home.route.replace("{token}", token)) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }
@@ -83,7 +95,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val userToken = it.arguments?.getString("token") ?: token
+            val userToken = it.arguments?.getString("token") ?: ""
         }
 
         composable(
@@ -94,7 +106,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val userToken = it.arguments?.getString("token") ?: token
+            val userToken = it.arguments?.getString("token") ?: ""
         }
 
         composable(
@@ -105,7 +117,7 @@ fun NavigationHost(
                 }
             )
         ) {
-            val userToken = it.arguments?.getString("token") ?: token
+            val userToken = it.arguments?.getString("token") ?: ""
         }
     }
 }

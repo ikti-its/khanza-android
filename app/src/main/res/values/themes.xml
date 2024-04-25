@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Khanza.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#FFF7F7F7</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/dummy_logo</item>
+    <style name="Theme.Khanza.Starting" parent="Theme.SplashScreen">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowSplashScreenBackground">@android:color/transparent</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_presensi</item>
+        <item name="windowSplashScreenAnimationDuration">0</item>
         <item name="postSplashScreenTheme">@style/Theme.Khanza</item>
     </style>
 
