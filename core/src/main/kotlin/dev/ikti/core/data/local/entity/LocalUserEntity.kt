@@ -11,4 +11,13 @@ data class LocalUserEntity(
     @ColumnInfo(name = "alamat_lon") val alamatLon: Double,
     @ColumnInfo(name = "telepon") val telepon: String,
     @ColumnInfo(name = "foto") val foto: String,
+//    @PrimaryKey @ColumnInfo(name = "akun") val akun: String,
+//    @ColumnInfo(name = "pegawai") val pegawai: String,
+//    @ColumnInfo(name = "nama") val nama: String,
+//    @ColumnInfo(name = "nip") val nip: String,
+//    @ColumnInfo(name = "profil") val profil: String,
+//    @ColumnInfo(name = "alamat") val alamat: String,
+//    @ColumnInfo(name = "alamat_lat") val alamatLat: Float,
+//    @ColumnInfo(name = "alamat_lon") val alamatLon: Float,
+//    @ColumnInfo(name = "foto") val foto: String
 )

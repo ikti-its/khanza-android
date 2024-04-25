@@ -33,6 +33,10 @@ fun HomeContent(
     modifier: Modifier,
     innerPadding: PaddingValues = PaddingValues(20.dp),
     token: String,
+    userNama: String = "PENGGUNA",
+    userStatus: Boolean = false,
+    userMasuk: String = "08:00",
+    userPulang: String = "16:00",
     navController: NavHostController
 ) {
 //    val pullRefreshState = rememberPullRefreshState(
@@ -49,7 +53,13 @@ fun HomeContent(
                 .fillMaxWidth()
                 .padding(top = 60.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
         ) {
-            HomeHeroCard(modifier = modifier)
+            HomeHeroCard(
+                modifier = modifier,
+                nama = userNama,
+                status = userStatus,
+                masuk = userMasuk,
+                pulang = userPulang
+            )
         }
         Column(
             modifier = modifier
