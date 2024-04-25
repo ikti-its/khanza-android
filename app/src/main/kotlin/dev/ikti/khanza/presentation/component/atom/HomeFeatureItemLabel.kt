@@ -16,9 +16,8 @@ fun HomeFeatureItemLabel(label: String) {
         text = label,
         color = Color(0xFF0C203C),
         style = TextStyle(
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
-            letterSpacing = 0.sp,
             fontFamily = FontGilroy
         )
     )

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,13 +27,18 @@ import dev.ikti.khanza.presentation.component.molecule.HomeDropdown
 import dev.ikti.khanza.presentation.component.molecule.HomeFeatureGrid
 import dev.ikti.khanza.presentation.component.molecule.HomeHeroCard
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeContent(
     modifier: Modifier,
-    innerPadding: PaddingValues = PaddingValues(24.dp),
+    innerPadding: PaddingValues = PaddingValues(20.dp),
     token: String,
     navController: NavHostController
 ) {
+//    val pullRefreshState = rememberPullRefreshState(
+//        refreshing = ,
+//        onRefresh = {}
+//    )
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -41,7 +47,7 @@ fun HomeContent(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 48.dp, bottom = 24.dp, start = 24.dp, end = 24.dp)
+                .padding(top = 60.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
         ) {
             HomeHeroCard(modifier = modifier)
         }
@@ -49,7 +55,7 @@ fun HomeContent(
             modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+                .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
                 .background(Color(0xFFF7F7F7))
         ) {
             Column(
@@ -61,7 +67,7 @@ fun HomeContent(
                 HomeDropdown(modifier = modifier) {
 //                    TODO: Open up bottom sheet on click
                 }
-                Spacer(modifier = modifier.height(24.dp))
+                Spacer(modifier = modifier.height(20.dp))
                 HomeFeatureGrid(
                     modifier = modifier,
                     token = token,

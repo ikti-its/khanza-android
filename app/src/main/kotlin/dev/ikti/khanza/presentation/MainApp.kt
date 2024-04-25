@@ -5,13 +5,9 @@ import androidx.navigation.compose.rememberNavController
 import dev.ikti.khanza.presentation.navigation.NavigationHost
 
 @Composable
-fun MainApp(
-    token: String,
-    startDestination: String
-) {
+fun MainApp(startDestination: String) {
     NavigationHost(
         navController = rememberNavController(),
-        token = token,
         startDestination = startDestination
     )
 }

@@ -50,7 +50,7 @@ fun HomeFeatureItem(
                 HomeFeatureItemIcon(icon = icon, iconColor = iconColor)
             }
         }
-        Spacer(modifier = modifier.height(4.dp))
+        Spacer(modifier = modifier.height(6.dp))
         HomeFeatureItemLabel(label)
     }
 }

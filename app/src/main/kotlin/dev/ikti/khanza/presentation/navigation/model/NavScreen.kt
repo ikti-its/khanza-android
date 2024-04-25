@@ -4,13 +4,13 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import dev.ikti.khanza.R
 
-sealed class BottomScreen(
+sealed class NavScreen(
     val route: String,
     @StringRes val label: Int?,
     @DrawableRes val unfocusedIcon: Int?,
     @DrawableRes val focusedIcon: Int?,
 ) {
-    data object Home : BottomScreen(
+    data object Home : NavScreen(
         "home/{token}",
         R.string.bottom_navigation_home,
         R.drawable.ic_outlined_home,
@@ -18,14 +18,14 @@ sealed class BottomScreen(
     )
 
     // Temporary
-    data object Search : BottomScreen(
+    data object Search : NavScreen(
         "dummy",
         R.string.bottom_navigation_dummy,
         R.drawable.ic_search,
         R.drawable.ic_search
     )
 
-    data object Presensi : BottomScreen(
+    data object Presensi : NavScreen(
         "presensi/{token}",
         R.string.bottom_navigation_presensi,
         R.drawable.ic_presensi,
@@ -33,14 +33,14 @@ sealed class BottomScreen(
     )
 
     // Temporary
-    data object History : BottomScreen(
+    data object History : NavScreen(
         "dummy",
         R.string.bottom_navigation_dummy,
         R.drawable.ic_history,
         R.drawable.ic_history
     )
 
-    data object Profile : BottomScreen(
+    data object Profile : NavScreen(
         "profile/{token}",
         R.string.bottom_navigation_profile,
         R.drawable.ic_outlined_person,

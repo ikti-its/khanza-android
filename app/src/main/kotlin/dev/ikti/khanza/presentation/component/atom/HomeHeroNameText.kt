@@ -17,7 +17,7 @@ fun HomeHeroNameText(name: String) {
         color = Color(0xFF0A2D27),
         style = TextStyle(
             fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
+            fontSize = 20.sp,
             fontFamily = FontGilroy
         )
     )
@@ -27,6 +27,6 @@ fun HomeHeroNameText(name: String) {
 @Composable
 fun HomeHeroNameTextPreview() {
     KhanzaTheme {
-        HomeHeroNameText(name = "Fathoor")
+        HomeHeroNameText(name = "PENGGUNA")
     }
 }

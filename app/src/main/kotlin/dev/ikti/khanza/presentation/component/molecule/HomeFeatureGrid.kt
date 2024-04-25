@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.R
 import dev.ikti.khanza.presentation.component.atom.HomeFeatureLabel
-import dev.ikti.khanza.presentation.navigation.model.BottomScreen
+import dev.ikti.khanza.presentation.navigation.model.NavScreen
 import dev.ikti.khanza.presentation.navigation.model.CScreen
 
 @Composable
@@ -89,7 +89,7 @@ fun HomeFeatureGrid(
                 HomeFeatureItem(
                     label = "Lainnya",
                     icon = R.drawable.ic_feature_other,
-                    onClick = { navController.navigate(BottomScreen.Home.route) }
+                    onClick = { navController.navigate(NavScreen.Home.route) }
                 )
 //                HomeFeatureItem(label = "Modul A")
             }

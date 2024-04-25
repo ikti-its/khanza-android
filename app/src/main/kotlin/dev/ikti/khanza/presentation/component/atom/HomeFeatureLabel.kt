@@ -16,10 +16,8 @@ fun HomeFeatureLabel() {
         text = "Aplikasi",
         color = Color(0xFF0C203C),
         style = TextStyle(
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.sp,
             fontFamily = FontGilroy
         )
     )
