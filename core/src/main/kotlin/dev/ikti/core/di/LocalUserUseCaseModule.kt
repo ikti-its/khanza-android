@@ -7,7 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.ikti.core.domain.repository.user.LocalUserRepository
 import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserLocationUseCase
-import dev.ikti.core.domain.usecase.user.GetLocalUserPhoneUseCase
+import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserPhotoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.InsertLocalUserUseCase
@@ -20,15 +20,15 @@ object LocalUserUseCaseModule {
     fun provideGetLocalUserUseCase(localUserRepository: LocalUserRepository): GetLocalUserUseCase {
         return GetLocalUserUseCase(localUserRepository)
     }
+    
+    @Provides
+    fun provideGetLocalUserInfoUseCase(localUserRepository: LocalUserRepository): GetLocalUserInfoUseCase {
+        return GetLocalUserInfoUseCase(localUserRepository)
+    }
 
     @Provides
     fun provideGetLocalUserLocationUseCase(localUserRepository: LocalUserRepository): GetLocalUserLocationUseCase {
         return GetLocalUserLocationUseCase(localUserRepository)
-    }
-
-    @Provides
-    fun provideGetLocalUserPhoneUseCase(localUserRepository: LocalUserRepository): GetLocalUserPhoneUseCase {
-        return GetLocalUserPhoneUseCase(localUserRepository)
     }
 
     @Provides
