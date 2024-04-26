@@ -126,8 +126,6 @@ fun HomeHeroCard(
                         .background(
                             color = Color(0xFFACF2E7)
                         )
-                        .padding(top = 32.dp, bottom = 0.dp, start = 20.dp, end = 20.dp),
-                    verticalArrangement = Arrangement.Top,
                 ) {}
                 Column(
                     modifier = modifier
