@@ -1,15 +1,15 @@
 package dev.ikti.khanza.presentation
 
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.CircleShape
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomAppBar
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FabPosition
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.util.UIState
 import dev.ikti.khanza.presentation.component.molecule.HomeBottomFAB
 import dev.ikti.khanza.presentation.component.molecule.HomeBottomNav
 import dev.ikti.khanza.presentation.component.organism.HomeContent
@@ -29,6 +30,7 @@ import dev.ikti.khanza.presentation.component.organism.HomeContent
 @Composable
 fun MainContent(
     modifier: Modifier,
+    stateHome: UIState<Unit> = UIState.Empty,
     token: String,
     userNama: String = "PENGGUNA",
     userStatus: Boolean = false,
@@ -68,6 +70,7 @@ fun MainContent(
     ) {
         HomeContent(
             modifier = modifier,
+            stateHome = stateHome,
             token = token,
             userNama = userNama,
             userStatus = userStatus,

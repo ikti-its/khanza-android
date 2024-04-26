@@ -14,7 +14,7 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 fun HomeHeroDetailShift(masuk: String = "08:00", pulang: String = "16:00") {
     Text(
         text = "$masuk - $pulang",
-        color = Color(0xFFACF2E7),
+        color = Color(0xFFF7F7F7),
         style = TextStyle(
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,

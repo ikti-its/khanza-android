@@ -12,11 +12,10 @@ class HomeUseCase @Inject constructor(
 ) {
     suspend fun execute(
         token: String,
-        hari: Int,
         tanggal: String
     ): Flow<BaseResponse<HomeResponse>> {
         return try {
-            homeRepository.home(token, hari, tanggal)
+            homeRepository.home(token, tanggal)
         } catch (e: Exception) {
             flow {
                 throw e

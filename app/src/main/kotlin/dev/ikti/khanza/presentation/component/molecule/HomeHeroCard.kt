@@ -22,6 +22,7 @@ import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.util.UIState
 import dev.ikti.khanza.R
 import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailShift
 import dev.ikti.khanza.presentation.component.atom.HomeHeroDetailShiftLabel
@@ -46,6 +49,7 @@ import dev.ikti.khanza.presentation.component.atom.HomeHeroWelcomeText
 @Composable
 fun HomeHeroCard(
     modifier: Modifier,
+    stateHome: UIState<Unit> = UIState.Empty,
     expanded: Boolean = true,
     nama: String = "PENGGUNA",
     status: Boolean = false,
@@ -53,6 +57,16 @@ fun HomeHeroCard(
     pulang: String = "16:00",
 ) {
     var isExpanded by remember { mutableStateOf(expanded) }
+
+    LaunchedEffect(stateHome) {
+        stateHome.let { state ->
+            isExpanded = when (state) {
+                is UIState.Success -> true
+                else -> false
+            }
+        }
+    }
+
     Box {
         Box(
             modifier = modifier
@@ -60,19 +74,30 @@ fun HomeHeroCard(
                 .fillMaxWidth()
                 .background(color = Color.Unspecified)
                 .clip(RoundedCornerShape(16.dp))
-                .clickable { isExpanded = !isExpanded }
+                .clickable {
+                    stateHome.let { state ->
+                        when (state) {
+                            is UIState.Success -> isExpanded = !isExpanded
+                            else -> {}
+                        }
+                    }
+                }
                 .height(if (isExpanded) 200.dp else 120.dp)
         ) {
             Box {
                 Column(
                     modifier = modifier
-                        .animateContentSize(tween(durationMillis = 700, easing = EaseOutElastic))
+                        .animateContentSize(
+                            tween(
+                                durationMillis = 700,
+                                easing = EaseOutElastic
+                            )
+                        )
                         .fillMaxWidth()
                         .fillMaxHeight(if (isExpanded) 1f else 0f)
                         .background(color = Color(0xFF26B29D))
-                        .padding(top = 20.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.Start
+                        .padding(top = 20.dp, bottom = 22.dp, start = 20.dp, end = 20.dp),
+                    verticalArrangement = Arrangement.Bottom
                 ) {
                     Row(
                         modifier = modifier.fillMaxWidth(),
@@ -96,28 +121,67 @@ fun HomeHeroCard(
                 }
                 Column(
                     modifier = modifier
-                        .animateContentSize(tween(durationMillis = 700, easing = EaseOutElastic))
                         .fillMaxWidth()
                         .fillMaxHeight(if (isExpanded) 0.6f else 1f)
-                        .background(color = Color(0xFFACF2E7), shape = RoundedCornerShape(16.dp))
-                        .padding(top = 20.dp, bottom = 0.dp, start = 20.dp, end = 20.dp),
+                        .background(
+                            color = Color(0xFFACF2E7)
+                        )
+                        .padding(top = 32.dp, bottom = 0.dp, start = 20.dp, end = 20.dp),
+                    verticalArrangement = Arrangement.Top,
+                ) {}
+                Column(
+                    modifier = modifier
+                        .animateContentSize(
+                            tween(
+                                durationMillis = 700,
+                                easing = EaseOutElastic
+                            )
+                        )
+                        .fillMaxWidth()
+                        .fillMaxHeight(if (isExpanded) 0.6f else 1f)
+                        .background(
+                            color = Color(0xFFACF2E7),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(top = 32.dp, bottom = 0.dp, start = 20.dp, end = 20.dp),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start
                 ) {
                     HomeHeroWelcomeText()
                     Spacer(modifier = modifier.height(5.dp))
-                    HomeHeroNameText(nama)
-                    Spacer(modifier = modifier.height(35.dp))
-                    Column(
-                        modifier = modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                            contentDescription = null,
-                            modifier = modifier.size(20.dp),
-                            tint = Color(0xFF0A2D27)
-                        )
+                    stateHome.let { state ->
+                        when (state) {
+                            is UIState.Success -> {
+                                HomeHeroNameText(nama)
+                                Spacer(modifier = modifier.height(25.dp))
+                                Column(
+                                    modifier = modifier.fillMaxWidth(),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Icon(
+                                        if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                                        contentDescription = null,
+                                        modifier = modifier.size(28.dp),
+                                        tint = Color(0xFF0A2D27)
+                                    )
+                                }
+                            }
+
+                            is UIState.Error -> {
+                                HomeHeroNameText("Pengguna")
+                            }
+
+                            UIState.Loading -> {
+                                Shimmer(
+                                    height = 35.dp,
+                                    width = 200.dp,
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = Color(0xFF26B29D)
+                                )
+                            }
+
+                            UIState.Empty -> {}
+                        }
                     }
                 }
             }
@@ -138,16 +202,21 @@ fun HomeHeroCard(
 
 @Preview
 @Composable
-fun HomeHeroCardPreviewNormal() {
+fun HomeHeroCardPreviewNormalLoading() {
     KhanzaTheme {
-        HomeHeroCard(Modifier, false)
+        HomeHeroCard(
+            modifier = Modifier,
+            stateHome = UIState.Loading,
+            expanded = false,
+            status = false
+        )
     }
 }
 
 @Preview
 @Composable
-fun HomeHeroCardPreviewExpanded() {
+fun HomeHeroCardPreviewExpandedSuccess() {
     KhanzaTheme {
-        HomeHeroCard(Modifier, true)
+        HomeHeroCard(modifier = Modifier, stateHome = UIState.Success(Unit), status = true)
     }
 }

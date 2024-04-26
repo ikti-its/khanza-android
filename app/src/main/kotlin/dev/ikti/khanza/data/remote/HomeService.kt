@@ -10,7 +10,6 @@ interface HomeService {
     @GET("m/home/pegawai")
     suspend fun home(
         @Header("Authorization") token: String,
-        @Query("hari") hari: Int,
         @Query("tanggal") tanggal: String,
     ): BaseResponse<HomeResponse>
 }

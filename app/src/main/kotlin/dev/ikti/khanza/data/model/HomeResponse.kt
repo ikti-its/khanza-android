@@ -11,6 +11,10 @@ data class HomeResponse(
     val nama: String,
     @SerializedName("nip")
     val nip: String,
+    @SerializedName("email")
+    val email: String,
+    @SerializedName("telepon")
+    val telepon: String,
     @SerializedName("profil")
     val profil: String,
     @SerializedName("alamat")

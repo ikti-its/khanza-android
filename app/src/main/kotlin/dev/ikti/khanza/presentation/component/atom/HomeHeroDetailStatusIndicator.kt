@@ -1,6 +1,7 @@
 package dev.ikti.khanza.presentation.component.atom
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -21,6 +22,7 @@ fun HomeHeroDetailStatusIndicator(status: Boolean = false) {
             .width(8.dp)
             .height(8.dp)
             .background(color = if (status) Color(0xFF83ECDC) else Color(0xFFEF4444))
+            .border(width = 1.dp, color = Color(0xFF26B29D).copy(0.5f), shape = RoundedCornerShape(30.dp))
     ) {}
 }
 

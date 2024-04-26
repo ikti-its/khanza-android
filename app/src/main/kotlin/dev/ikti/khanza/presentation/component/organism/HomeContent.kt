@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,15 +22,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.util.UIState
 import dev.ikti.khanza.presentation.component.molecule.HomeDropdown
 import dev.ikti.khanza.presentation.component.molecule.HomeFeatureGrid
 import dev.ikti.khanza.presentation.component.molecule.HomeHeroCard
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeContent(
     modifier: Modifier,
     innerPadding: PaddingValues = PaddingValues(20.dp),
+    stateHome: UIState<Unit> = UIState.Empty,
     token: String,
     userNama: String = "PENGGUNA",
     userStatus: Boolean = false,
@@ -39,10 +39,6 @@ fun HomeContent(
     userPulang: String = "16:00",
     navController: NavHostController
 ) {
-//    val pullRefreshState = rememberPullRefreshState(
-//        refreshing = ,
-//        onRefresh = {}
-//    )
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -55,6 +51,7 @@ fun HomeContent(
         ) {
             HomeHeroCard(
                 modifier = modifier,
+                stateHome = stateHome,
                 nama = userNama,
                 status = userStatus,
                 masuk = userMasuk,

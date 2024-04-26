@@ -17,17 +17,14 @@ class HomeRepositoryImpl @Inject constructor(
 ) : HomeRepository {
     override suspend fun home(
         token: String,
-        hari: Int,
         tanggal: String
     ): Flow<BaseResponse<HomeResponse>> {
         val bearer = "Bearer $token"
         return flow {
             try {
-                emit(homeService.home(bearer, hari, tanggal))
+                emit(homeService.home(bearer, tanggal))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
-                    400 -> throw HomeException.QueryInvalidException
-                    401 -> throw HomeException.AccountUnauthorizedException
                     404 -> throw HomeException.AccountNotFoundException
                 }
             }

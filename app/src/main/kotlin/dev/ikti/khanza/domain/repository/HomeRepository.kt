@@ -5,5 +5,5 @@ import dev.ikti.khanza.data.model.HomeResponse
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    suspend fun home(token: String, hari: Int, tanggal: String): Flow<BaseResponse<HomeResponse>>
+    suspend fun home(token: String, tanggal: String): Flow<BaseResponse<HomeResponse>>
 }
