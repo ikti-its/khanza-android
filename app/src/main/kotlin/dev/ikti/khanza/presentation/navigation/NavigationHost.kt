@@ -1,6 +1,7 @@
 package dev.ikti.khanza.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,12 +9,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.ikti.auth.presentation.LoginScreen
+import dev.ikti.core.util.SetSystemUI
 import dev.ikti.khanza.presentation.MainScreen
 import dev.ikti.khanza.presentation.navigation.model.CScreen
 import dev.ikti.khanza.presentation.navigation.model.ModuleScreen
 import dev.ikti.khanza.presentation.navigation.model.NavScreen
-import dev.ikti.khanza.presentation.splash.AppSplashScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
+import dev.ikti.onboarding.presentation.splash.AppSplashScreen
 
 @Composable
 fun NavigationHost(
@@ -25,6 +27,7 @@ fun NavigationHost(
         startDestination = startDestination
     ) {
         composable(ModuleScreen.Splash.route) {
+            SetSystemUI(fullScreen = true)
             AppSplashScreen(
                 navigateToHome = { token ->
                     navController.popBackStack()
@@ -62,6 +65,7 @@ fun NavigationHost(
 
         // Onboarding
         composable(ModuleScreen.Onboarding.route) {
+            SetSystemUI(fullScreen = true)
             OnboardingScreen(
                 navigateToLogin = {
                     navController.navigate(ModuleScreen.Login.route)
@@ -71,10 +75,11 @@ fun NavigationHost(
 
         // Auth
         composable(ModuleScreen.Login.route) {
+            SetSystemUI(
+                navigationColor = Color.Transparent,
+                fullScreen = true
+            )
             LoginScreen(
-                navigateBack = {
-                    navController.popBackStack()
-                },
                 navigateToMain = { token ->
                     navController.navigate(NavScreen.Home.route.replace("{token}", token)) {
                         popUpTo(navController.graph.findStartDestination().id) {
