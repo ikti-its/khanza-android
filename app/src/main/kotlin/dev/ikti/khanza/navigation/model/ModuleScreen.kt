@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.navigation.model
+package dev.ikti.khanza.navigation.model
 
 sealed class ModuleScreen(
     val route: String

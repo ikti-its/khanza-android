@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.navigation.model
+package dev.ikti.khanza.navigation.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -41,7 +41,7 @@ sealed class NavScreen(
     )
 
     data object Profile : NavScreen(
-        "profile/{token}",
+        "kepegawaian/akun/{token}",
         R.string.bottom_navigation_profile,
         R.drawable.ic_outlined_person,
         R.drawable.ic_filled_person

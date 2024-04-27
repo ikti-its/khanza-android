@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.navigation
+package dev.ikti.khanza.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -10,10 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.ikti.auth.presentation.LoginScreen
 import dev.ikti.core.util.SetSystemUI
+import dev.ikti.khanza.navigation.model.CScreen
+import dev.ikti.khanza.navigation.model.ModuleScreen
+import dev.ikti.khanza.navigation.model.NavScreen
 import dev.ikti.khanza.presentation.MainScreen
-import dev.ikti.khanza.presentation.navigation.model.CScreen
-import dev.ikti.khanza.presentation.navigation.model.ModuleScreen
-import dev.ikti.khanza.presentation.navigation.model.NavScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
 import dev.ikti.onboarding.presentation.splash.AppSplashScreen
 

@@ -8,7 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.presentation.navigation.model.ModuleScreen
+import dev.ikti.khanza.navigation.model.ModuleScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

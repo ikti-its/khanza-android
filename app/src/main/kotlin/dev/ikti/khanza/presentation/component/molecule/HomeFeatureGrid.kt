@@ -17,9 +17,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.R
+import dev.ikti.khanza.navigation.model.CScreen
+import dev.ikti.khanza.navigation.model.NavScreen
 import dev.ikti.khanza.presentation.component.atom.HomeFeatureLabel
-import dev.ikti.khanza.presentation.navigation.model.NavScreen
-import dev.ikti.khanza.presentation.navigation.model.CScreen
 
 @Composable
 fun HomeFeatureGrid(

@@ -2,7 +2,7 @@ package dev.ikti.khanza.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.khanza.presentation.navigation.NavigationHost
+import dev.ikti.khanza.navigation.NavigationHost
 
 @Composable
 fun MainApp(startDestination: String) {

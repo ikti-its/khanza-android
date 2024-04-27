@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.presentation.navigation.model.NavScreen
+import dev.ikti.khanza.navigation.model.NavScreen
 
 @Composable
 fun HomeBottomNav(
