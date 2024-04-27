@@ -11,9 +11,7 @@ import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
 
 @Composable
-fun LoginFormLeadingIcon(
-    field: String
-) {
+fun LoginFormLeadingIcon(field: String) {
     when (field) {
         FIELD_TYPE_EMAIL -> {
             Icon(
@@ -35,7 +33,12 @@ fun LoginFormLeadingIcon(
 
 @Preview
 @Composable
-fun LoginFormLeadingIconPreview() {
+fun LoginFormLeadingIconEmailPreview() {
     LoginFormLeadingIcon(FIELD_TYPE_EMAIL)
 }
 
+@Preview
+@Composable
+fun LoginFormLeadingIconPasswordPreview() {
+    LoginFormLeadingIcon(FIELD_TYPE_PASSWORD)
+}

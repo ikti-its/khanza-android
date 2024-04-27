@@ -1,4 +1,4 @@
-package dev.ikti.auth.presentation.component.atom
+package dev.ikti.auth.util
 
 import android.content.Context
 import android.widget.Toast
@@ -8,7 +8,7 @@ import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_PASSWORD
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
 import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
 
-fun LoginToast(
+fun loginToast(
     context: Context,
     type: String
 ) {

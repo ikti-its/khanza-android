@@ -1,30 +1,35 @@
 package dev.ikti.auth.presentation.component.atom
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun LoginSubmitLabel() {
+fun LoginForgotText(modifier: Modifier = Modifier) {
     Text(
-        text = "Masuk",
+        "Lupa kata sandi?",
+        modifier = modifier.clickable { },
         style = TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            fontFamily = FontGilroy
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            fontFamily = FontGilroy,
+            textDecoration = TextDecoration.Underline
         )
     )
 }
 
 @Preview
 @Composable
-fun LoginSubmitLabelPreview() {
+fun LoginForgotTextPreview() {
     KhanzaTheme {
-        LoginSubmitLabel()
+        LoginForgotText()
     }
 }

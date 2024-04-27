@@ -1,12 +1,13 @@
 package dev.ikti.auth.presentation.component.organism
 
 import android.content.Context
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,19 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.auth.presentation.component.atom.LoginToast
+import dev.ikti.auth.presentation.component.atom.LoginForgotText
 import dev.ikti.auth.presentation.component.molecule.LoginFormField
 import dev.ikti.auth.presentation.component.molecule.LoginSubmitButton
-import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_PASSWORD
 import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_EMAIL
+import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_PASSWORD
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
+import dev.ikti.auth.util.loginToast
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
 fun LoginForm(
+    modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
-    modifier: Modifier,
     onSubmit: (nip: String, password: String) -> Unit
 ) {
     var username by rememberSaveable { mutableStateOf("") }
@@ -36,68 +38,46 @@ fun LoginForm(
     var isUsernameError by rememberSaveable { mutableStateOf(false) }
     var isPasswordError by rememberSaveable { mutableStateOf(false) }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 16.dp)
-    ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
-            LoginFormField(
-                modifier = modifier,
-                field = FIELD_TYPE_EMAIL,
-                onValueChange = { value, error ->
-                    username = value
-                    isUsernameError = error
-                }
-            )
+    Column(modifier = modifier.fillMaxSize()) {
+        Row(modifier = modifier.fillMaxWidth()) {
+            LoginFormField(field = FIELD_TYPE_EMAIL) { value, error ->
+                username = value
+                isUsernameError = error
+            }
         }
-
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
-            LoginFormField(
-                modifier = modifier,
-                field = FIELD_TYPE_PASSWORD,
-                onValueChange = { value, error ->
-                    password = value
-                    isPasswordError = error
-                }
-            )
+        Spacer(modifier = modifier.size(5.dp))
+        Row(modifier = modifier.fillMaxWidth()) {
+            LoginFormField(field = FIELD_TYPE_PASSWORD) { value, error ->
+                password = value
+                isPasswordError = error
+            }
         }
-
-        Spacer(modifier = modifier.padding(vertical = 24.dp))
-
+        Spacer(modifier = modifier.size(30.dp))
         Row(
-            modifier = modifier
-                .fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
-            LoginSubmitButton(
-                modifier = modifier,
-                onSubmit = {
-                    if (username.isEmpty()) {
-                        LoginToast(context = context, type = ERR_EMPTY_EMAIL)
-                    } else if (password.isEmpty()) {
-                        LoginToast(context = context, type = ERR_EMPTY_PASSWORD)
-                    } else if (username.isNotEmpty() && password.isNotEmpty() && !isUsernameError && !isPasswordError) {
-                        onSubmit(username, password)
-                    }
-                },
-            )
+            LoginForgotText()
+        }
+        Spacer(modifier = modifier.size(30.dp))
+        Row(modifier = modifier.fillMaxWidth()) {
+            LoginSubmitButton {
+                if (username.isEmpty()) {
+                    loginToast(context = context, type = ERR_EMPTY_EMAIL)
+                } else if (password.isEmpty()) {
+                    loginToast(context = context, type = ERR_EMPTY_PASSWORD)
+                } else if (username.isNotEmpty() && password.isNotEmpty() && !isUsernameError && !isPasswordError) {
+                    onSubmit(username, password)
+                }
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun LoginFormPreview() {
     KhanzaTheme {
-        LoginForm(
-            modifier = Modifier,
-            onSubmit = { _, _ -> }
-        )
+        LoginForm { _, _ -> }
     }
 }

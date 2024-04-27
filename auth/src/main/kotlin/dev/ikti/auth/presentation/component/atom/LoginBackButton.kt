@@ -10,15 +10,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun LoginBackButton(
-    navigateBack: () -> Unit
-) {
-    IconButton(
-        onClick = navigateBack
-    ) {
+fun LoginBackButton(navigateBack: () -> Unit) {
+    IconButton(onClick = navigateBack) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-            contentDescription = "Kembali", // TODO: i18n
+            contentDescription = null,
             tint = Color(0xFF272727)
         )
     }
@@ -28,6 +24,6 @@ fun LoginBackButton(
 @Composable
 fun LoginBackButtonPreview() {
     KhanzaTheme {
-        LoginBackButton(navigateBack = {})
+        LoginBackButton {}
     }
 }

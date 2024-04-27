@@ -2,6 +2,7 @@ package dev.ikti.auth.presentation.component.atom
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -10,12 +11,14 @@ import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun LoginSubmitLabel() {
+fun LoginWelcomeHeading() {
     Text(
-        text = "Masuk",
+        text = "Selamat datang kembali!",
+        color = Color(0xFF272727),
         style = TextStyle(
+            color = Color(0xFF272727),
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
+            fontSize = 24.sp,
             fontFamily = FontGilroy
         )
     )
@@ -23,8 +26,8 @@ fun LoginSubmitLabel() {
 
 @Preview
 @Composable
-fun LoginSubmitLabelPreview() {
+fun LoginWelcomeHeadingPreview() {
     KhanzaTheme {
-        LoginSubmitLabel()
+        LoginWelcomeHeading()
     }
 }

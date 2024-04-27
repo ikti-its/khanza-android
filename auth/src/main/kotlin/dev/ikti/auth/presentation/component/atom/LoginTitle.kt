@@ -12,7 +12,7 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 @Composable
 fun LoginTitle() {
     Text(
-        "Masuk", // TODO: i18n
+        "Masuk",
         style = TextStyle(
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,

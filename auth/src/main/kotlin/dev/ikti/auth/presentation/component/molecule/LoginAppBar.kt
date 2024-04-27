@@ -1,5 +1,6 @@
 package dev.ikti.auth.presentation.component.molecule
 
+import android.annotation.SuppressLint
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -12,9 +13,7 @@ import dev.ikti.auth.presentation.component.atom.LoginTitle
 import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
-fun LoginAppBar(
-    navigateBack: () -> Unit
-) {
+fun LoginAppBar(navigateBack: () -> Unit) {
     CenterAlignedTopAppBar(
         title = {
             LoginTitle()
@@ -30,15 +29,14 @@ fun LoginAppBar(
 }
 
 @Preview(device = Devices.PIXEL_7_PRO)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginAppBarPreview() {
     KhanzaTheme {
         Scaffold(
             topBar = {
-                LoginAppBar(navigateBack = {})
+                LoginAppBar {}
             },
-        ) {
-            it
-        }
+        ) {}
     }
 }

@@ -9,12 +9,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun LoginProgress(
-    modifier: Modifier,
-) {
+fun LoginProgress(modifier: Modifier = Modifier) {
     LinearProgressIndicator(
         modifier = modifier.fillMaxWidth(),
-        color = Color(0xFF007AFF),
+        color = Color(0xFF0A2D27),
         trackColor = Color(0xFFF7F7F7),
         strokeCap = StrokeCap.Round
     )
@@ -23,5 +21,5 @@ fun LoginProgress(
 @Preview
 @Composable
 fun LoginProgressPreview() {
-    LoginProgress(modifier = Modifier)
+    LoginProgress()
 }

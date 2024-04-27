@@ -33,7 +33,7 @@ fun LoginFormTrailingIcon(
                 } else {
                     painterResource(id = R.drawable.ic_outlined_eye)
                 },
-                contentDescription = "Toggle password visibility",
+                contentDescription = null,
                 tint = Color(0xFFC4C4C4)
             )
         }

@@ -15,8 +15,7 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 
 @Composable
 fun LoginSubmitButton(
-    modifier: Modifier,
-    label: @Composable () -> Unit = { LoginSubmitLabel() },
+    modifier: Modifier = Modifier,
     onSubmit: () -> Unit
 ) {
     Button(
@@ -24,15 +23,15 @@ fun LoginSubmitButton(
         modifier = modifier
             .height(48.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(30.dp),
         colors = ButtonColors(
-            containerColor = Color(0xFF007AFF),
-            contentColor = Color(0xFFFFFFFF),
+            containerColor = Color(0xFF0A2D27),
+            contentColor = Color(0xFFACF2E7),
             disabledContainerColor = Color(0xFF8A8A8E),
             disabledContentColor = Color(0xFFFFFFFF)
         )
     ) {
-        label()
+        LoginSubmitLabel()
     }
 }
 
@@ -40,6 +39,6 @@ fun LoginSubmitButton(
 @Composable
 fun LoginSubmitButtonPreview() {
     KhanzaTheme {
-        LoginSubmitButton(modifier = Modifier) {}
+        LoginSubmitButton {}
     }
 }

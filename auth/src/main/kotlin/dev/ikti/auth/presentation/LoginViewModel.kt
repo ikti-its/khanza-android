@@ -13,6 +13,7 @@ import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
 import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.auth.util.AuthException
 import dev.ikti.core.domain.usecase.preference.ClearUserTokenUseCase
+import dev.ikti.core.domain.usecase.preference.SetNewUserUseCase
 import dev.ikti.core.domain.usecase.preference.SetUserTokenUseCase
 import dev.ikti.core.util.UIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
+    private val setNewUserUseCase: SetNewUserUseCase,
     private val setUserTokenUseCase: SetUserTokenUseCase,
     private val clearUserTokenUseCase: ClearUserTokenUseCase
 ) : ViewModel() {
@@ -46,6 +48,7 @@ class LoginViewModel @Inject constructor(
                 val response = loginUseCase.execute(request)
                 response.collect { token ->
                     try {
+                        setNewUser()
                         setUserTokenUseCase.execute(token.data.token)
                         _userToken.value = token.data.token
                     } catch (_: Exception) {
@@ -71,6 +74,12 @@ class LoginViewModel @Inject constructor(
     private fun clearUserToken(state: Unit) {
         viewModelScope.launch {
             clearUserTokenUseCase.execute(state)
+        }
+    }
+
+    private fun setNewUser() {
+        viewModelScope.launch {
+            setNewUserUseCase.execute(false)
         }
     }
 }
