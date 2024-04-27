@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.splash
+package dev.ikti.onboarding.presentation.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,8 +30,5 @@ fun AppSplashScreen(
             navigateToHome(token)
         }
     }
-    AppSplashContent(
-        navigateToHome = navigateToHome,
-        navigateToOnboarding = navigateToOnboarding
-    )
+    AppSplashContent()
 }

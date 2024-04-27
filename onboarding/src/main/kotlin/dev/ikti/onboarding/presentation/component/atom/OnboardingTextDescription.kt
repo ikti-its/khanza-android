@@ -13,13 +13,11 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.onboarding.presentation.model.OnboardingPage
 
 @Composable
-fun OnboardingTextDescription(
-    onboardingPage: OnboardingPage
-) {
+fun OnboardingTextDescription(onboardingPage: OnboardingPage) {
     Text(
         text = stringResource(id = onboardingPage.description),
         style = TextStyle(
-            color = Color(0xFF272727),
+            color = Color(0xFF535353),
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             lineHeight = 24.sp,
@@ -31,8 +29,24 @@ fun OnboardingTextDescription(
 
 @Preview
 @Composable
-fun OnboardingTextDescriptionPreview() {
+fun OnboardingTextDescriptionFirstPreview() {
     KhanzaTheme {
         OnboardingTextDescription(onboardingPage = OnboardingPage.First)
+    }
+}
+
+@Preview
+@Composable
+fun OnboardingTextDescriptionSecondPreview() {
+    KhanzaTheme {
+        OnboardingTextDescription(onboardingPage = OnboardingPage.Second)
+    }
+}
+
+@Preview
+@Composable
+fun OnboardingTextDescriptionThirdPreview() {
+    KhanzaTheme {
+        OnboardingTextDescription(onboardingPage = OnboardingPage.Third)
     }
 }

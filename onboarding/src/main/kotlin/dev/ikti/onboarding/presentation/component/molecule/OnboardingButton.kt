@@ -25,10 +25,10 @@ fun OnboardingButton(
         modifier = modifier
             .height(48.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(30.dp),
         colors = ButtonColors(
-            containerColor = Color(0xFF007AFF),
-            contentColor = Color(0xFFFFFFFF),
+            containerColor = Color(0xFF0A2D27),
+            contentColor = Color(0xFFACF2E7),
             disabledContainerColor = Color(0xFF8A8A8E),
             disabledContentColor = Color(0xFFFFFFFF)
         )
@@ -37,7 +37,7 @@ fun OnboardingButton(
     }
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 fun OnboardingButtonPreview() {
     KhanzaTheme {

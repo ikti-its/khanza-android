@@ -14,8 +14,8 @@ fun OnboardingIndicator(
     modifier: Modifier = Modifier,
     size: Int,
     selectedIndex: Int,
-    selectedColor: Color = Color(0xFF007AFF),
-    unselectedColor: Color = Color(0x50007AFF)
+    selectedColor: Color = Color(0xFF0A2D27),
+    unselectedColor: Color = Color(0xFFACF2E7)
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),

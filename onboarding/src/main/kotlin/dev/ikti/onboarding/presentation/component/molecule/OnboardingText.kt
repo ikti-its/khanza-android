@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.onboarding.presentation.model.OnboardingPage
 import dev.ikti.onboarding.presentation.component.atom.OnboardingTextDescription
 import dev.ikti.onboarding.presentation.component.atom.OnboardingTextTitle
+import dev.ikti.onboarding.presentation.model.OnboardingPage
 
 @Composable
 fun OnboardingText(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onboardingPage: OnboardingPage
 ) {
     Column(
@@ -37,11 +37,30 @@ fun OnboardingText(
 
 @Preview(showBackground = false)
 @Composable
-fun OnboardingTextPreview() {
+fun OnboardingTextFirstPreview() {
     KhanzaTheme {
         OnboardingText(
-            modifier = Modifier,
             onboardingPage = OnboardingPage.First
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun OnboardingTextSecondPreview() {
+    KhanzaTheme {
+        OnboardingText(
+            onboardingPage = OnboardingPage.Second
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun OnboardingTextThirdPreview() {
+    KhanzaTheme {
+        OnboardingText(
+            onboardingPage = OnboardingPage.Third
         )
     }
 }

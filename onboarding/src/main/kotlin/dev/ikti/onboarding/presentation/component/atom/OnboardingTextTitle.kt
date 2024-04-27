@@ -12,9 +12,7 @@ import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.onboarding.presentation.model.OnboardingPage
 
 @Composable
-fun OnboardingTextTitle(
-    onboardingPage: OnboardingPage
-) {
+fun OnboardingTextTitle(onboardingPage: OnboardingPage) {
     Text(
         text = stringResource(id = onboardingPage.title),
         color = Color(0xFF272727),
@@ -31,6 +29,18 @@ fun OnboardingTextTitle(
 
 @Preview
 @Composable
-fun OnboardingTextTitlePreview() {
+fun OnboardingTextTitleFirstPreview() {
     OnboardingTextTitle(onboardingPage = OnboardingPage.First)
+}
+
+@Preview
+@Composable
+fun OnboardingTextTitleSecondPreview() {
+    OnboardingTextTitle(onboardingPage = OnboardingPage.Second)
+}
+
+@Preview
+@Composable
+fun OnboardingTextTitleThirdPreview() {
+    OnboardingTextTitle(onboardingPage = OnboardingPage.Third)
 }

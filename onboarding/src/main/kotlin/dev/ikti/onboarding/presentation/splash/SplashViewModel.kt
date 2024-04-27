@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.splash
+package dev.ikti.onboarding.presentation.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ class SplashViewModel @Inject constructor(
     private val _isNewUser = MutableStateFlow(false)
     val isNewUser: StateFlow<Boolean> = _isNewUser
 
-    private val _isLoading = MutableStateFlow<Boolean>(true)
+    private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
     init {

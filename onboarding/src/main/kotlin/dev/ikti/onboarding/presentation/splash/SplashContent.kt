@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.splash
+package dev.ikti.onboarding.presentation.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -8,35 +8,24 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.R
+import dev.ikti.onboarding.R
 
 @Composable
-fun AppSplashContent(
-    modifier: Modifier = Modifier,
-    navigateToHome: (String) -> Unit,
-    navigateToOnboarding: () -> Unit
-) {
+fun AppSplashContent(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.onboarding_splash),
+            painter = painterResource(id = R.drawable.background),
             contentDescription = null,
             modifier = modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -46,20 +35,14 @@ fun AppSplashContent(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.onboarding_logo),
-                contentDescription = null,
-                tint = Color(0xFF201B21)
+            Image(
+                painter = painterResource(id = R.drawable.ic_splash_logo),
+                contentDescription = null
             )
             Spacer(modifier = modifier.size(20.dp))
-            Text(
-                text = "UNION",
-                color = Color(0xFF0A2D27),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 32.sp,
-                    fontFamily = FontGilroy
-                )
+            Image(
+                painter = painterResource(id = R.drawable.ic_splash_text),
+                contentDescription = null
             )
         }
     }
@@ -69,6 +52,6 @@ fun AppSplashContent(
 @Composable
 fun AppSplashContentPreview() {
     KhanzaTheme {
-        AppSplashContent(Modifier, { _ -> }, {})
+        AppSplashContent(Modifier)
     }
 }

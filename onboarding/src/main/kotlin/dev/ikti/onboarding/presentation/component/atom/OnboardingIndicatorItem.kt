@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,19 +16,18 @@ fun OnboardingIndicatorItem(
     modifier: Modifier,
     width: Int = 100,
     height: Int = 4,
-    color: Color = Color(0xFF007AFF)
+    color: Color = Color(0xFF0A2D27)
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(4.dp))
             .width(width.dp)
             .height(height.dp)
-            .background(color)
+            .background(color, RoundedCornerShape(4.dp))
     )
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 fun OnboardingIndicatorItemPreview() {
-    OnboardingIndicatorItem(modifier = Modifier)
+    OnboardingIndicatorItem(Modifier)
 }
