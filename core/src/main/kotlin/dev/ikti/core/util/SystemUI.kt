@@ -7,17 +7,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 @Composable
-fun SetSystemUI(statusColor: Color, navigationColor: Color, lightStatusBar: Boolean = false) {
+fun SetSystemUI(
+    statusColor: Color = Color.Transparent,
+    navigationColor: Color = Color(0xFFF7F7F7),
+    lightStatusBar: Boolean = false,
+    fullScreen: Boolean = false
+) {
     val view = LocalView.current
     if (!view.isInEditMode) {
         LaunchedEffect(view) {
             val window = (view.context as Activity).window
+            val insetsController = WindowCompat.getInsetsController(window, view)
+
             window.statusBarColor = statusColor.toArgb()
             window.navigationBarColor = navigationColor.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
-                lightStatusBar
+            insetsController.isAppearanceLightStatusBars = lightStatusBar
+
+            if (fullScreen) {
+                insetsController.hide(WindowInsetsCompat.Type.navigationBars())
+                insetsController.hide(WindowInsetsCompat.Type.statusBars())
+                insetsController.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            } else {
+                insetsController.show(WindowInsetsCompat.Type.navigationBars())
+                insetsController.show(WindowInsetsCompat.Type.statusBars())
+            }
         }
     }
 }
