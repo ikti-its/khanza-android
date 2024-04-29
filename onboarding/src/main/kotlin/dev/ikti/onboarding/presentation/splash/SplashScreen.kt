@@ -11,7 +11,7 @@ import kotlinx.coroutines.delay
 fun AppSplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
     navigateToHome: (String) -> Unit,
-    navigateToOnboarding: () -> Unit
+    navigateToOnboarding: (Boolean) -> Unit
 ) {
     val token by viewModel.userToken.collectAsState("")
     val isNew by viewModel.isNewUser.collectAsState(false)
@@ -20,14 +20,12 @@ fun AppSplashScreen(
     viewModel.observeIsNewUser(Unit)
 
     LaunchedEffect(isLoading) {
-        delay(500)
-
-        if (isNew) {
-            navigateToOnboarding()
-        }
+        delay(500L)
 
         if (token != "") {
             navigateToHome(token)
+        } else {
+            navigateToOnboarding(isNew)
         }
     }
     AppSplashContent()

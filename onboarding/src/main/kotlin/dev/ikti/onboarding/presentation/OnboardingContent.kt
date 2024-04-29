@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingContent(
     modifier: Modifier,
+    type: String = "",
     pages: List<OnboardingPage> = listOf(
         OnboardingPage.First,
         OnboardingPage.Second,
