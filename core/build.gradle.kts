@@ -91,6 +91,7 @@ dependencies {
     api(libs.androidx.appcompat)
     api(libs.androidx.material3)
     implementation(libs.androidx.material)
+    api(libs.androidx.navigation.compose)
 
 //  Hilt
     implementation(libs.hilt.android)

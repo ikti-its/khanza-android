@@ -8,15 +8,15 @@ import dev.ikti.core.domain.model.user.UserLocation
 
 @Dao
 interface LocalUserDao : BaseDao<LocalUserEntity> {
-    @Query("SELECT * FROM user WHERE akun = :akun")
-    suspend fun getLocalUser(akun: String): LocalUserEntity
+    @Query("SELECT * FROM user WHERE token = :token")
+    suspend fun getLocalUser(token: String): LocalUserEntity
 
-    @Query("SELECT akun, pegawai, nama, nip, email, telepon, foto_pegawai FROM user WHERE akun = :akun")
-    suspend fun getLocalUserInfo(akun: String): UserInfo
+    @Query("SELECT akun, nama, email, role, foto, alamat, alamat_lat, alamat_lon FROM user WHERE token = :token")
+    suspend fun getLocalUserInfo(token: String): UserInfo
 
-    @Query("SELECT alamat, alamat_lat, alamat_lon FROM user WHERE akun = :akun")
-    suspend fun getLocalUserLocation(akun: String): UserLocation
+    @Query("SELECT alamat, alamat_lat, alamat_lon FROM user WHERE token = :token")
+    suspend fun getLocalUserLocation(token: String): UserLocation
 
-    @Query("SELECT foto_pegawai FROM user WHERE akun = :akun")
-    suspend fun getLocalUserPhoto(akun: String): String
+    @Query("SELECT foto_pegawai FROM user WHERE token = :token")
+    suspend fun getLocalUserPhoto(token: String): String
 }

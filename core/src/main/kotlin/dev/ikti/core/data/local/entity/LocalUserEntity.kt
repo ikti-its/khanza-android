@@ -6,10 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user")
 data class LocalUserEntity(
-    @PrimaryKey @ColumnInfo(name = "akun") val akun: String,
+    @PrimaryKey @ColumnInfo(name = "token") val token: String,
+    @ColumnInfo(name = "akun") val akun: String,
     @ColumnInfo(name = "pegawai") val pegawai: String,
     @ColumnInfo(name = "nama") val nama: String,
     @ColumnInfo(name = "nip") val nip: String,
+    @ColumnInfo(name = "role") val role: String,
     @ColumnInfo(name = "email") val email: String,
     @ColumnInfo(name = "telepon") val telepon: String,
     @ColumnInfo(name = "foto") val foto: String,

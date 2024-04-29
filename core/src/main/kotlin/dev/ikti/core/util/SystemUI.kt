@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 @Composable
 fun SetSystemUI(
     statusColor: Color = Color.Transparent,
-    navigationColor: Color = Color(0xFFF7F7F7),
+    navigationColor: Color = Color(0xFFFFFFFF),
     lightStatusBar: Boolean = false,
     fullScreen: Boolean = false
 ) {
