@@ -7,8 +7,8 @@ import dev.ikti.core.domain.repository.BaseLocalRepository
 import kotlinx.coroutines.flow.Flow
 
 interface LocalUserRepository : BaseLocalRepository<LocalUserEntity> {
-    suspend fun getLocalUser(akun: String): Flow<LocalUserEntity>
-    suspend fun getLocalUserInfo(akun: String): Flow<UserInfo>
-    suspend fun getLocalUserLocation(akun: String): Flow<UserLocation>
-    suspend fun getLocalUserPhoto(akun: String): Flow<String>
+    suspend fun getLocalUser(token: String): Flow<LocalUserEntity>
+    suspend fun getLocalUserInfo(token: String): Flow<UserInfo>
+    suspend fun getLocalUserLocation(token: String): Flow<UserLocation>
+    suspend fun getLocalUserPhoto(token: String): Flow<String>
 }

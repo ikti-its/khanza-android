@@ -12,20 +12,20 @@ import javax.inject.Inject
 class LocalUserRepositoryImpl @Inject constructor(
     private val localUserDao: LocalUserDao
 ) : LocalUserRepository {
-    override suspend fun getLocalUser(akun: String): Flow<LocalUserEntity> {
-        return flowOf(localUserDao.getLocalUser(akun))
+    override suspend fun getLocalUser(token: String): Flow<LocalUserEntity> {
+        return flowOf(localUserDao.getLocalUser(token))
     }
 
-    override suspend fun getLocalUserInfo(akun: String): Flow<UserInfo> {
-        return flowOf(localUserDao.getLocalUserInfo(akun))
+    override suspend fun getLocalUserInfo(token: String): Flow<UserInfo> {
+        return flowOf(localUserDao.getLocalUserInfo(token))
     }
 
-    override suspend fun getLocalUserLocation(akun: String): Flow<UserLocation> {
-        return flowOf(localUserDao.getLocalUserLocation(akun))
+    override suspend fun getLocalUserLocation(token: String): Flow<UserLocation> {
+        return flowOf(localUserDao.getLocalUserLocation(token))
     }
 
-    override suspend fun getLocalUserPhoto(akun: String): Flow<String> {
-        return flowOf(localUserDao.getLocalUserPhoto(akun))
+    override suspend fun getLocalUserPhoto(token: String): Flow<String> {
+        return flowOf(localUserDao.getLocalUserPhoto(token))
     }
 
     override suspend fun insert(data: LocalUserEntity) {
