@@ -41,19 +41,36 @@ fun NavigationHost(
                 navigateToHome = { token ->
                     navController.popBackStack()
                     navController.navigate(
-                        Nav.Home.route.replace("{token}", token)
+                        Nav.Home.route.replace(
+                            "{token}",
+                            token
+                        )
                     )
                 },
-                navigateToOnboarding = {
-                    navController.navigate(ModuleScreen.Onboarding.route)
+                navigateToOnboarding = { type ->
+                    navController.navigate(
+                        ModuleScreen.Onboarding.route.replace(
+                            "{type}",
+                            if (type) "new" else "old"
+                        )
+                    )
                 }
             )
         }
 
         // Onboarding
-        composable(ModuleScreen.Onboarding.route) {
+        composable(
+            route = ModuleScreen.Onboarding.route,
+            arguments = listOf(
+                navArgument("type") {
+                    type = NavType.StringType
+                }
+            ),
+        ) {
+            val type = it.arguments?.getString("type") ?: "new"
             SetSystemUI(fullScreen = true)
             OnboardingScreen(
+                type = type,
                 navigateToLogin = {
                     navController.navigate(ModuleScreen.Login.route)
                 }
