@@ -14,6 +14,9 @@ import dev.ikti.core.domain.model.screen.AkunScreen
 import dev.ikti.core.domain.model.user.UserInfo
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
+import dev.ikti.profile.presentation.component.organism.ProfileDetail
+import dev.ikti.profile.presentation.component.organism.ProfileDetailHeader
+import dev.ikti.profile.presentation.component.organism.ProfileEdit
 import dev.ikti.profile.presentation.component.organism.ProfileView
 import dev.ikti.profile.presentation.component.organism.ProfileViewHeader
 
@@ -21,9 +24,11 @@ import dev.ikti.profile.presentation.component.organism.ProfileViewHeader
 fun ProfileSection(
     modifier: Modifier = Modifier,
     type: String = "view",
+    token: String = "",
     stateProfile: UIState<Unit> = UIState.Empty,
     userInfo: UserInfo,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    onLogout: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -47,8 +52,10 @@ fun ProfileSection(
                     )
                 }
 
-                "detail" -> {}
-                "edit" -> {}
+                "detail", "edit" -> {
+                    ProfileDetailHeader(url = userInfo.foto)
+                }
+
                 else -> {}
             }
         }
@@ -56,12 +63,32 @@ fun ProfileSection(
             when (current) {
                 "view" -> {
                     ProfileView(
-
+                        token = token,
+                        navigateToDetail = {
+                            navController.navigate(AkunScreen.Detail.route)
+                        },
+                        onLogout = { userToken ->
+                            onLogout(userToken)
+                        }
                     )
                 }
 
-                "detail" -> {}
-                "edit" -> {}
+                "detail" -> {
+                    ProfileDetail(
+                        email = userInfo.email,
+                        role = userInfo.role,
+                        alamat = userInfo.alamat
+                    )
+                }
+
+                "edit" -> {
+                    ProfileEdit(
+                        email = userInfo.email,
+                        role = userInfo.role,
+                        alamat = userInfo.alamat,
+                    )
+                }
+
                 else -> {}
             }
         }
@@ -83,7 +110,7 @@ fun ProfileSectionLoadingViewPreview() {
                 "Kampus ITS Surabaya",
                 Float.NaN,
                 Float.NaN
-            ),
+            )
         )
     }
 }
@@ -104,7 +131,7 @@ fun ProfileSectionSuccessViewPreview() {
                 "Kampus ITS Surabaya",
                 Float.NaN,
                 Float.NaN
-            ),
+            )
         )
     }
 }
@@ -125,7 +152,131 @@ fun ProfileSectionErrorViewPreview() {
                 "Kampus ITS Surabaya",
                 Float.NaN,
                 Float.NaN
-            ),
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileSectionLoadingDetailPreview() {
+    KhanzaTheme {
+        ProfileSection(
+            type = "detail",
+            userInfo = UserInfo(
+                "",
+                "IKTI",
+                "ikti@fathoor.dev",
+                "Developer",
+                "https://api.fathoor.dev/v1/file/img/default.png",
+                "Kampus ITS Surabaya",
+                Float.NaN,
+                Float.NaN
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileSectionSuccessDetailPreview() {
+    KhanzaTheme {
+        ProfileSection(
+            type = "detail",
+            stateProfile = UIState.Success(Unit),
+            userInfo = UserInfo(
+                "",
+                "IKTI",
+                "ikti@fathoor.dev",
+                "Developer",
+                "https://api.fathoor.dev/v1/file/img/default.png",
+                "Kampus ITS Surabaya",
+                Float.NaN,
+                Float.NaN
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileSectionErrorDetailPreview() {
+    KhanzaTheme {
+        ProfileSection(
+            type = "detail",
+            stateProfile = UIState.Error(""),
+            userInfo = UserInfo(
+                "",
+                "IKTI",
+                "ikti@fathoor.dev",
+                "Developer",
+                "https://api.fathoor.dev/v1/file/img/default.png",
+                "Kampus ITS Surabaya",
+                Float.NaN,
+                Float.NaN
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileSectionLoadingEditPreview() {
+    KhanzaTheme {
+        ProfileSection(
+            type = "edit",
+            userInfo = UserInfo(
+                "",
+                "IKTI",
+                "ikti@fathoor.dev",
+                "Developer",
+                "https://api.fathoor.dev/v1/file/img/default.png",
+                "Kampus ITS Surabaya",
+                Float.NaN,
+                Float.NaN
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileSectionSuccessEditPreview() {
+    KhanzaTheme {
+        ProfileSection(
+            type = "edit",
+            stateProfile = UIState.Success(Unit),
+            userInfo = UserInfo(
+                "",
+                "IKTI",
+                "ikti@fathoor.dev",
+                "Developer",
+                "https://api.fathoor.dev/v1/file/img/default.png",
+                "Kampus ITS Surabaya",
+                Float.NaN,
+                Float.NaN
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileSectionErrorEditPreview() {
+    KhanzaTheme {
+        ProfileSection(
+            type = "edit",
+            stateProfile = UIState.Error(""),
+            userInfo = UserInfo(
+                "",
+                "IKTI",
+                "ikti@fathoor.dev",
+                "Developer",
+                "https://api.fathoor.dev/v1/file/img/default.png",
+                "Kampus ITS Surabaya",
+                Float.NaN,
+                Float.NaN
+            )
         )
     }
 }

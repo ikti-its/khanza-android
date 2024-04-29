@@ -5,9 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.ikti.core.data.local.entity.LocalUserEntity
 import dev.ikti.core.domain.model.user.UserInfo
+import dev.ikti.core.domain.usecase.preference.ClearUserTokenUseCase
 import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
+import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
+import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.util.UIState
 import dev.ikti.profile.util.ProfileConstant.ERR_ACCOUNT_NOT_FOUND
 import dev.ikti.profile.util.ProfileConstant.ERR_UNKNOWN_ERROR
@@ -20,6 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
+    private val clearUserTokenUseCase: ClearUserTokenUseCase,
+    private val deleteLocalUserUseCase: DeleteLocalUserUseCase,
+    private val getLocalUserUseCase: GetLocalUserUseCase,
     private val getLocalUserInfoUseCase: GetLocalUserInfoUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase,
 ) : ViewModel() {
@@ -28,6 +35,29 @@ class ProfileViewModel @Inject constructor(
 
     private val _stateProfile: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
     val stateProfile: StateFlow<UIState<Unit>> = _stateProfile
+
+    private val _stateLogout: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
+    val stateLogout: StateFlow<UIState<Unit>> = _stateLogout
+
+    private val _localUser =
+        mutableStateOf(
+            LocalUserEntity(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                Float.NaN,
+                Float.NaN,
+                ""
+            )
+        )
+    val localUser: State<LocalUserEntity> get() = _localUser
 
     private val _userInfo =
         mutableStateOf(
@@ -83,6 +113,25 @@ class ProfileViewModel @Inject constructor(
 
                     else -> _stateProfile.value = UIState.Error(ERR_UNKNOWN_ERROR)
                 }
+            }
+        }
+    }
+
+    fun userLogout(token: String) {
+        _stateLogout.value = UIState.Loading
+
+        viewModelScope.launch {
+            try {
+                val response = getLocalUserUseCase.execute(token)
+                response.collect { data ->
+                    deleteLocalUserUseCase.execute(data)
+                    clearUserTokenUseCase.execute(Unit)
+                    delay(500L)
+                }
+
+                _stateLogout.value = UIState.Success(Unit)
+            } catch (e: Exception) {
+                _stateLogout.value = UIState.Error(ERR_UNKNOWN_ERROR)
             }
         }
     }

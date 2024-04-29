@@ -17,7 +17,9 @@ fun ProfileScreen(
 ) {
     val token by viewModel.token.collectAsState("")
     val stateProfile by viewModel.stateProfile.collectAsState(UIState.Loading)
+    val stateLogout by viewModel.stateLogout.collectAsState(UIState.Loading)
     val userInfo by viewModel.userInfo
+    val localUser by viewModel.localUser
 
     LaunchedEffect(token) {
         if (token == "") {
@@ -28,8 +30,13 @@ fun ProfileScreen(
     }
     ProfileContent(
         type = type,
+        token = token,
         stateProfile = stateProfile,
+        stateLogout = stateLogout,
         userInfo = userInfo,
-        navController = navController
+        navController = navController,
+        onLogout = { userToken ->
+            viewModel.userLogout(userToken)
+        }
     )
 }

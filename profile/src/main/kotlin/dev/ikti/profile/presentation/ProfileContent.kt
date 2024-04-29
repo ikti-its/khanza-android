@@ -6,13 +6,17 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.domain.model.screen.AkunScreen
+import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.domain.model.user.UserInfo
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.util.UIState
@@ -24,9 +28,12 @@ import dev.ikti.profile.presentation.component.template.ProfileSection
 fun ProfileContent(
     modifier: Modifier = Modifier,
     type: String = "view",
+    token: String = "",
     stateProfile: UIState<Unit> = UIState.Empty,
+    stateLogout: UIState<Unit> = UIState.Empty,
     userInfo: UserInfo,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    onLogout: (String) -> Unit = {}
 ) {
     MainScaffold(
         modifier = modifier.navigationBarsPadding(),
@@ -55,10 +62,40 @@ fun ProfileContent(
             ProfileTopHero()
             ProfileSection(
                 type = type,
+                token = token,
                 stateProfile = stateProfile,
                 userInfo = userInfo,
-                navController = navController
+                navController = navController,
+                onLogout = { userToken ->
+                    onLogout(userToken)
+                }
             )
+        }
+        when (stateLogout) {
+            is UIState.Success -> {
+                navController.navigate(ModuleScreen.Onboarding.route) {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+            }
+
+            UIState.Loading -> {
+                Box(
+                    modifier = modifier
+                        .fillMaxSize()
+                ) {
+                    LinearProgressIndicator(
+                        modifier = modifier.fillMaxWidth(),
+                        color = Color(0xFFACF2E7),
+                        trackColor = Color(0xFF0A2D27),
+                        strokeCap = StrokeCap.Round
+                    )
+                }
+            }
+
+            is UIState.Error, UIState.Empty -> {}
         }
     }
 }

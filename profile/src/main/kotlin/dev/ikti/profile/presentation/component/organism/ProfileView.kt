@@ -37,6 +37,9 @@ import dev.ikti.profile.presentation.component.atom.ProfileSpacer
 @Composable
 fun ProfileView(
     modifier: Modifier = Modifier,
+    token: String = "",
+    navigateToDetail: () -> Unit = {},
+    onLogout: (String) -> Unit = {}
 ) {
     Column(modifier.fillMaxSize()) {
         Spacer(modifier.size(32.dp))
@@ -56,11 +59,12 @@ fun ProfileView(
             modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .clickable { }) {
+                .clickable { navigateToDetail() }) {
             Box(
                 modifier
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp), Alignment.CenterStart) {
+                    .padding(vertical = 10.dp), Alignment.CenterStart
+            ) {
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -101,7 +105,9 @@ fun ProfileView(
         ProfileSpacer()
         Spacer(modifier.size(50.dp))
         Button(
-            onClick = { },
+            onClick = {
+                onLogout(token)
+            },
             modifier = modifier
                 .height(48.dp)
                 .fillMaxWidth(),
