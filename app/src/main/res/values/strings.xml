@@ -1,12 +1,3 @@
 <resources>
     <string name="app_name">Khanza</string>
-    <string name="home_welcome">Halo,</string>
-    <string name="home_user">%s</string>
-
-    <string name="bottom_navigation_home">Beranda</string>
-    <string name="bottom_navigation_dummy">Fitur</string>
-    <string name="bottom_navigation_presensi">Presensi</string>
-    <string name="bottom_navigation_profile">Profil</string>
-
-    <string name="feature_navigation_main_test">Test</string>
 </resources>

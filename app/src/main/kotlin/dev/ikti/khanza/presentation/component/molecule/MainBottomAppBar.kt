@@ -1,6 +1,8 @@
 package dev.ikti.khanza.presentation.component.molecule
 
-//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -9,32 +11,43 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.navigation.model.NavScreen
+import dev.ikti.core.domain.model.screen.Nav
 
 @Composable
-fun HomeBottomNav(
-    token: String,
-    navController: NavHostController,
+fun MainBottomAppBar(
+    modifier: Modifier = Modifier,
+    screens: List<Nav> = listOf(),
+    navController: NavHostController = rememberNavController()
 ) {
-    val items = listOf(
-        NavScreen.Home,
-        NavScreen.Search,
-        NavScreen.Presensi,
-        NavScreen.History,
-        NavScreen.Profile
-    )
+    BottomAppBar(
+        modifier = modifier
+            .height(80.dp)
+            .shadow(50.dp),
+        backgroundColor = Color(0xFFFFFFFF),
+        cutoutShape = CircleShape,
+        elevation = 0.dp,
+    ) {
+        MainBottomAppBarNavigation(
+            screens = screens,
+            navController = navController
+        )
+    }
+}
 
+@Composable
+fun MainBottomAppBarNavigation(
+    screens: List<Nav>,
+    navController: NavHostController
+) {
     BottomNavigation(
         backgroundColor = Color.Transparent,
         elevation = 0.dp
@@ -42,21 +55,28 @@ fun HomeBottomNav(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-        items.forEach { screen ->
+        screens.forEach { screen ->
             val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
             val isPresensi =
-                currentDestination?.hierarchy?.any { it.route == NavScreen.Presensi.route } == true
+                currentDestination?.route == Nav.Presensi.route
 
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    if (screen.route != NavScreen.Presensi.route) {
-                        navController.navigate(screen.route.replace("{token}", token)) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                    navController.navigate(
+                        when (screen.route) {
+                            Nav.Profile.route -> screen.route.replace("{type}", "view")
+                            else -> screen.route
+                        }
+                    ) {
+                        when (screen.route) {
+                            Nav.Profile.route -> {}
+                            Nav.Home.route, Nav.Presensi.route -> {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
                     }
                 },
@@ -65,22 +85,25 @@ fun HomeBottomNav(
                         screen.focusedIcon?.let {
                             Icon(
                                 painter = painterResource(id = it),
-                                contentDescription = screen.label.toString()
+                                contentDescription = null
                             )
                         }
                     } else {
                         screen.unfocusedIcon?.let {
                             Icon(
                                 painter = painterResource(id = it),
-                                contentDescription = screen.label.toString(),
+                                contentDescription = null,
                             )
                         }
                     }
                 },
-                enabled = screen.route != NavScreen.Presensi.route,
+                enabled = when (screen.route) {
+                    Nav.Presensi.route, Nav.Dummy.route -> false
+                    else -> true
+                },
                 label = {
                     Text(
-                        text = screen.label?.let { stringResource(it) } ?: "",
+                        text = screen.label,
                         color = if (isSelected) Color(0xFF0A2D27) else Color(0xFFCACACA),
                         style = MaterialTheme.typography.labelMedium,
                     )
@@ -96,16 +119,5 @@ fun HomeBottomNav(
                 )
             )
         }
-    }
-}
-
-@Preview
-@Composable
-fun HomeBottomNavPreview() {
-    KhanzaTheme {
-        HomeBottomNav(
-            "",
-            rememberNavController()
-        )
     }
 }

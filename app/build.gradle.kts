@@ -78,14 +78,13 @@ android {
 dependencies {
 //  Module
     implementation(project(":core"))
+    implementation(project(":home"))
     implementation(project(":onboarding"))
     implementation(project(":auth"))
+    implementation(project(":profile"))
 
 //  Compose
     implementation(libs.androidx.material)
-
-//  SplashScreen
-    implementation(libs.splash.screen)
 
 //  Hilt
     implementation(libs.hilt.android)

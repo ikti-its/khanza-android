@@ -4,38 +4,33 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import dev.ikti.core.domain.model.screen.Nav
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.R
-import dev.ikti.khanza.navigation.model.NavScreen
+import dev.ikti.khanza.presentation.component.atom.MainBottomFABIcon
 
 @Composable
-fun HomeBottomFAB(
-    modifier: Modifier,
-    token: String,
-    navController: NavHostController,
+fun MainBottomFAB(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
 ) {
     FloatingActionButton(
         onClick = {
-            navController.navigate(NavScreen.Presensi.route.replace("{token}", token)) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
+            navController.navigate(Nav.Presensi.route) {
+                popUpTo(0) {
+                    inclusive = true
                 }
                 launchSingleTop = true
-                restoreState = true
             }
         },
-        modifier = modifier
-            .size(68.dp),
+        modifier = modifier.size(70.dp),
         shape = CircleShape,
         containerColor = Color(0xFF0A2D27),
         contentColor = Color(0xFFACF2E7),
@@ -44,22 +39,14 @@ fun HomeBottomFAB(
             pressedElevation = 5.dp
         )
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_scan),
-            contentDescription = NavScreen.Presensi.route,
-            modifier = Modifier.size(34.dp)
-        )
+        MainBottomFABIcon(modifier)
     }
 }
 
 @Preview
 @Composable
-fun HomeBottomFABPreview() {
+fun MainBottomFABPreview() {
     KhanzaTheme {
-        HomeBottomFAB(
-            Modifier,
-            "",
-            rememberNavController()
-        )
+        MainBottomFAB()
     }
 }

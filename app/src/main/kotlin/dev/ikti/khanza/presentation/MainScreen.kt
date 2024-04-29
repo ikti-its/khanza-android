@@ -1,39 +1,61 @@
 package dev.ikti.khanza.presentation
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.navigationBarsPadding
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.FabPosition
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.util.SetSystemUI
-import dev.ikti.core.util.UIState
+import dev.ikti.core.domain.model.screen.AkunScreen
+import dev.ikti.core.domain.model.screen.Nav
+import dev.ikti.khanza.presentation.component.molecule.MainBottomAppBar
+import dev.ikti.khanza.presentation.component.molecule.MainBottomFAB
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
-    viewModel: MainViewModel = hiltViewModel(),
-    token: String = "",
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    navScreens: List<Nav> = listOf(
+        Nav.Home,
+        Nav.Dummy,
+        Nav.Presensi,
+        Nav.Dummy,
+        Nav.Profile
+    ),
+    currentDestination: NavDestination?,
+    content: @Composable () -> Unit
 ) {
-    val stateHome by viewModel.stateHome.collectAsState(UIState.Empty)
-    val userHome by viewModel.userHome
+    Scaffold(
+        modifier = Modifier.navigationBarsPadding(),
+        bottomBar = {
+            when (currentDestination?.route) {
+                Nav.Home.route, Nav.Presensi.route, Nav.Profile.route -> {
+                    MainBottomAppBar(
+                        screens = navScreens,
+                        navController = navController
+                    )
+                }
 
-    LaunchedEffect(token) {
-        viewModel.getUserHome(token)
-    }
-    SetSystemUI(Color.Transparent, Color(0xFFF7F7F7))
-    MainContent(
-        modifier = modifier,
-        stateHome = stateHome,
-        token = token,
-        userNama = userHome.nama,
-        userStatus = userHome.status,
-        userMasuk = userHome.jamMasuk,
-        userPulang = userHome.jamPulang,
-        navController = navController,
-    )
+                else -> {}
+            }
+        },
+        floatingActionButton = {
+            when (currentDestination?.route) {
+                Nav.Home.route, Nav.Presensi.route, Nav.Profile.route -> {
+                    MainBottomFAB(navController = navController)
+                }
+
+                else -> {}
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        isFloatingActionButtonDocked = true,
+        backgroundColor = Color.Transparent
+    ) { content() }
 }

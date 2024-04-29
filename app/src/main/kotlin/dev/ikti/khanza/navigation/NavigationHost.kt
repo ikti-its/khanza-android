@@ -1,5 +1,10 @@
 package dev.ikti.khanza.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -9,13 +14,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.ikti.auth.presentation.LoginScreen
+import dev.ikti.core.domain.model.screen.CScreen
+import dev.ikti.core.domain.model.screen.ModuleScreen
+import dev.ikti.core.domain.model.screen.Nav
 import dev.ikti.core.util.SetSystemUI
-import dev.ikti.khanza.navigation.model.CScreen
-import dev.ikti.khanza.navigation.model.ModuleScreen
-import dev.ikti.khanza.navigation.model.NavScreen
-import dev.ikti.khanza.presentation.MainScreen
+import dev.ikti.home.presentation.HomeScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
 import dev.ikti.onboarding.presentation.splash.AppSplashScreen
+import dev.ikti.profile.presentation.ProfileScreen
 
 @Composable
 fun NavigationHost(
@@ -24,44 +30,25 @@ fun NavigationHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
     ) {
+        // Splash
         composable(ModuleScreen.Splash.route) {
             SetSystemUI(fullScreen = true)
             AppSplashScreen(
                 navigateToHome = { token ->
                     navController.popBackStack()
-                    navController.navigate(NavScreen.Home.route.replace("{token}", token))
+                    navController.navigate(
+                        Nav.Home.route.replace("{token}", token)
+                    )
                 },
                 navigateToOnboarding = {
                     navController.navigate(ModuleScreen.Onboarding.route)
                 }
             )
         }
-
-        composable(
-            route = NavScreen.Home.route,
-            arguments = listOf(
-                navArgument("token") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            val userToken = it.arguments?.getString("token") ?: ""
-            MainScreen(token = userToken, navController = navController)
-        }
-
-        composable(NavScreen.Presensi.route) {
-            // TODO: PresensiScreen()
-        }
-
-        composable(NavScreen.Profile.route) {
-            // TODO: ProfileScreen()
-        }
-
-        // Temporary
-        composable(NavScreen.Search.route) {}
-        composable(NavScreen.History.route) {}
 
         // Onboarding
         composable(ModuleScreen.Onboarding.route) {
@@ -75,13 +62,12 @@ fun NavigationHost(
 
         // Auth
         composable(ModuleScreen.Login.route) {
-            SetSystemUI(
-                navigationColor = Color.Transparent,
-                fullScreen = true
-            )
+            SetSystemUI(fullScreen = true)
             LoginScreen(
                 navigateToMain = { token ->
-                    navController.navigate(NavScreen.Home.route.replace("{token}", token)) {
+                    navController.navigate(
+                        Nav.Home.route.replace("{token}", token)
+                    ) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }
@@ -91,38 +77,66 @@ fun NavigationHost(
             )
         }
 
+        // Home
+        composable(
+            route = Nav.Home.route,
+            arguments = listOf(
+                navArgument("token") {
+                    type = NavType.StringType
+                }
+            ),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+        ) {
+            val userToken = it.arguments?.getString("token") ?: ""
+            SetSystemUI(
+                Color(0xFF0A2D27),
+                Color(0xFFFFFFFF),
+                lightStatusBar = false,
+                fullScreen = false
+            )
+            HomeScreen(token = userToken, navController = navController)
+        }
+
+        composable(Nav.Presensi.route) {
+            // TODO: PresensiScreen()
+        }
+
         // Modul C
+        // Profile
         composable(
-            route = CScreen.Akun.route,
+            route = Nav.Profile.route,
             arguments = listOf(
-                navArgument("token") {
+                navArgument("type") {
                     type = NavType.StringType
                 }
-            )
+            ),
+            enterTransition = { EnterTransition.None },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = spring(Spring.DampingRatioNoBouncy, Spring.StiffnessMedium)
+                )
+            },
         ) {
-            val userToken = it.arguments?.getString("token") ?: ""
+            val type = it.arguments?.getString("type") ?: "view"
+            SetSystemUI(
+                Color(0xFF0A2D27),
+                Color(0xFFFFFFFF),
+                lightStatusBar = false,
+                fullScreen = false
+            )
+            ProfileScreen(type = type, navController = navController)
         }
 
+        // Kehadiran
         composable(
-            route = CScreen.Kehadiran.route,
-            arguments = listOf(
-                navArgument("token") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            val userToken = it.arguments?.getString("token") ?: ""
-        }
+            route = CScreen.Kehadiran.route
+        ) {}
 
+        // Pegawai
         composable(
-            route = CScreen.Pegawai.route,
-            arguments = listOf(
-                navArgument("token") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            val userToken = it.arguments?.getString("token") ?: ""
-        }
+            route = CScreen.Pegawai.route
+        ) {}
     }
 }
