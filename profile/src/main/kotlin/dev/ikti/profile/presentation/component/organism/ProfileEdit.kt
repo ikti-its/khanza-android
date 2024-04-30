@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -21,13 +24,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.profile.data.model.ProfileRequest
 
 @Composable
 fun ProfileEdit(
     modifier: Modifier = Modifier,
     email: String = "user@fathoor.dev",
     role: String = "Developer",
-    alamat: String = "Kampus ITS Surabaya"
+    alamat: String = "Kampus ITS Surabaya",
+    alamatLat: Float = 7.2575f,
+    alamatLon: Float = 112.7521f,
+    onSave: (ProfileRequest) -> Unit = {}
 ) {
     Column(modifier.fillMaxSize()) {
         Column(
@@ -86,7 +93,7 @@ fun ProfileEdit(
             ),
             label = {
                 Text(
-                    text = "Password",
+                    text = "Kata sandi",
                     style = TextStyle(
                         color = Color(0xFF272727),
                         fontWeight = FontWeight.Medium,
@@ -106,6 +113,7 @@ fun ProfileEdit(
             value = role,
             onValueChange = {},
             modifier = modifier.fillMaxWidth(),
+            enabled = false,
             textStyle = TextStyle(
                 color = Color(0xFF272727),
                 fontWeight = FontWeight.Bold,
@@ -125,8 +133,7 @@ fun ProfileEdit(
             },
             shape = RoundedCornerShape(10.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFFF7F7F7),
-                unfocusedContainerColor = Color(0xFFF7F7F7)
+                disabledContainerColor = Color(0xFFF7F7F7),
             ),
         )
         Spacer(modifier.size(10.dp))
@@ -157,6 +164,31 @@ fun ProfileEdit(
                 unfocusedContainerColor = Color(0xFFF7F7F7)
             ),
         )
+        Spacer(modifier.size(30.dp))
+        Button(
+            onClick = {
+
+            },
+            modifier = modifier
+                .height(48.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(30.dp),
+            colors = ButtonColors(
+                containerColor = Color(0xFF0A2D27),
+                contentColor = Color(0xFFACF2E7),
+                disabledContainerColor = Color(0xFF8A8A8E),
+                disabledContentColor = Color(0xFFFFFFFF)
+            )
+        ) {
+            Text(
+                text = "Simpan",
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    fontFamily = FontGilroy
+                )
+            )
+        }
     }
 }
 

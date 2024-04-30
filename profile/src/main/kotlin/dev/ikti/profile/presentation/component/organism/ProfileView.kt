@@ -120,7 +120,7 @@ fun ProfileView(
             )
         ) {
             Text(
-                text = "Logout",
+                text = "Keluar",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,

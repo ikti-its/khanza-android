@@ -20,6 +20,7 @@ import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.domain.model.user.UserInfo
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.util.UIState
+import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.presentation.component.atom.ProfileTopHero
 import dev.ikti.profile.presentation.component.molecule.ProfileTopAppBar
 import dev.ikti.profile.presentation.component.template.ProfileSection
@@ -33,7 +34,8 @@ fun ProfileContent(
     stateLogout: UIState<Unit> = UIState.Empty,
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
-    onLogout: (String) -> Unit = {}
+    onLogout: (String) -> Unit = {},
+    onSave: (ProfileRequest) -> Unit = {}
 ) {
     MainScaffold(
         modifier = modifier.navigationBarsPadding(),

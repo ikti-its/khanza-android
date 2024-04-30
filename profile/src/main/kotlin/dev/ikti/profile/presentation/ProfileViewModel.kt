@@ -13,6 +13,7 @@ import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.util.UIState
+import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.util.ProfileConstant.ERR_ACCOUNT_NOT_FOUND
 import dev.ikti.profile.util.ProfileConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.profile.util.ProfileException
@@ -38,6 +39,9 @@ class ProfileViewModel @Inject constructor(
 
     private val _stateLogout: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
     val stateLogout: StateFlow<UIState<Unit>> = _stateLogout
+
+    private val _stateEdit: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
+    val stateEdit: StateFlow<UIState<Unit>> = _stateEdit
 
     private val _localUser =
         mutableStateOf(
@@ -135,4 +139,6 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun userUpdate(token: String, profile: ProfileRequest) {}
 }

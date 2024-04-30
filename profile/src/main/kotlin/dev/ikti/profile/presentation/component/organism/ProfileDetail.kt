@@ -17,7 +17,9 @@ fun ProfileDetail(
     modifier: Modifier = Modifier,
     email: String = "user@fathoor.dev",
     role: String = "Developer",
-    alamat: String = "Kampus ITS Surabaya"
+    alamat: String = "Kampus ITS Surabaya",
+    alamatLat: Float = 7.2575f,
+    alamatLon: Float = 112.7521f
 ) {
     Column(modifier.fillMaxSize()) {
         Spacer(modifier.size(20.dp))

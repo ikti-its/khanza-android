@@ -14,6 +14,7 @@ import dev.ikti.core.domain.model.screen.AkunScreen
 import dev.ikti.core.domain.model.user.UserInfo
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
+import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.presentation.component.organism.ProfileDetail
 import dev.ikti.profile.presentation.component.organism.ProfileDetailHeader
 import dev.ikti.profile.presentation.component.organism.ProfileEdit
@@ -28,7 +29,8 @@ fun ProfileSection(
     stateProfile: UIState<Unit> = UIState.Empty,
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
-    onLogout: (String) -> Unit = {}
+    onLogout: (String) -> Unit = {},
+    onSave: (ProfileRequest) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -77,7 +79,9 @@ fun ProfileSection(
                     ProfileDetail(
                         email = userInfo.email,
                         role = userInfo.role,
-                        alamat = userInfo.alamat
+                        alamat = userInfo.alamat,
+                        alamatLat = userInfo.alamatLat,
+                        alamatLon = userInfo.alamatLon
                     )
                 }
 
@@ -86,6 +90,11 @@ fun ProfileSection(
                         email = userInfo.email,
                         role = userInfo.role,
                         alamat = userInfo.alamat,
+                        alamatLat = userInfo.alamatLat,
+                        alamatLon = userInfo.alamatLon,
+                        onSave = { user ->
+                            onSave(user)
+                        }
                     )
                 }
 
