@@ -104,6 +104,15 @@ dependencies {
     ksp(libs.room.compiler)
     api(libs.datastore.preferences)
 
+//  Maps
+    // Geocoding
+    api(libs.compass.geocoder)
+    api(libs.compass.geocoder.mobile)
+
+    // Geolocation
+    api(libs.compass.geolocation)
+    api(libs.compass.geolocation.mobile)
+
 //  Network
     api(libs.retrofit)
     api(libs.gson)
