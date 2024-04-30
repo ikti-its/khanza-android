@@ -25,6 +25,7 @@ android {
 
         buildConfigField("boolean", "DEBUG", properties.getProperty("DEBUG", "false"))
         buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
+        resValue("string", "MAPS_API_KEY", properties.getProperty("MAPS_API_KEY"))
     }
 
     buildTypes {
@@ -105,13 +106,8 @@ dependencies {
     api(libs.datastore.preferences)
 
 //  Maps
-    // Geocoding
-    api(libs.compass.geocoder)
-    api(libs.compass.geocoder.mobile)
-
-    // Geolocation
-    api(libs.compass.geolocation)
-    api(libs.compass.geolocation.mobile)
+    api(libs.play.services.maps)
+    api(libs.maps.compose)
 
 //  Network
     api(libs.retrofit)

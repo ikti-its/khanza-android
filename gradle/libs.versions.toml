@@ -27,7 +27,8 @@ junitExt = "1.1.5"
 espresso = "3.5.1"
 
 # Maps
-compass = "1.0.0"
+maps = "18.2.0"
+mapsCompose = "4.4.1"
 
 # Other
 hilt = "2.51"
@@ -79,10 +80,8 @@ lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = 
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 # Maps
-compass-geocoder = { module = "dev.jordond.compass:compass-geocoder", version.ref = "compass" }
-compass-geocoder-mobile = { module = "dev.jordond.compass:compass-geocoder-mobile", version.ref = "compass" }
-compass-geolocation = { module = "dev.jordond.compass:compass-geolocation", version.ref = "compass" }
-compass-geolocation-mobile = { module = "dev.jordond.compass:compass-geolocation-mobile", version.ref = "compass" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "maps" }
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 
 # Paging
 androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
