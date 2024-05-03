@@ -22,9 +22,9 @@ data class HomeResponse(
     @SerializedName("alamat")
     val alamat: String,
     @SerializedName("alamat_lat")
-    val alamatLat: Float,
+    val alamatLat: Double,
     @SerializedName("alamat_lon")
-    val alamatLon: Float,
+    val alamatLon: Double,
     @SerializedName("foto")
     val foto: String,
     @SerializedName("shift")
