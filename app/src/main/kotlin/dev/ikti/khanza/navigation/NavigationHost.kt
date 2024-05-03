@@ -26,7 +26,8 @@ import dev.ikti.profile.presentation.ProfileScreen
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    intentToMap: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -135,7 +136,7 @@ fun NavigationHost(
                     animationSpec = spring(Spring.DampingRatioNoBouncy, Spring.StiffnessMedium)
                 )
             },
-        ) {
+        ) { it ->
             val type = it.arguments?.getString("type") ?: "view"
             SetSystemUI(
                 Color(0xFF0A2D27),
@@ -143,7 +144,11 @@ fun NavigationHost(
                 lightStatusBar = false,
                 fullScreen = false
             )
-            ProfileScreen(type = type, navController = navController)
+            ProfileScreen(
+                type = type,
+                navController = navController,
+                intentToMap = intentToMap
+            )
         }
 
         // Kehadiran

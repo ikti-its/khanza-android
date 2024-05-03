@@ -11,7 +11,8 @@ import dev.ikti.khanza.presentation.MainScreen
 @Composable
 fun MainApp(
     navController: NavHostController = rememberNavController(),
-    startDestination: String
+    startDestination: String,
+    intentToMap: (String) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -19,7 +20,8 @@ fun MainApp(
     MainScreen(navController = navController, currentDestination = currentDestination) {
         NavigationHost(
             navController = navController,
-            startDestination = startDestination
+            startDestination = startDestination,
+            intentToMap = intentToMap
         )
     }
 }
