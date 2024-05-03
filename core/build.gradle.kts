@@ -94,6 +94,9 @@ dependencies {
     implementation(libs.androidx.material)
     api(libs.androidx.navigation.compose)
 
+//  Permissions
+    api(libs.accompanist.permissions)
+
 //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -107,6 +110,7 @@ dependencies {
 
 //  Maps
     api(libs.play.services.maps)
+    api(libs.play.services.location)
     api(libs.maps.compose)
 
 //  Network
