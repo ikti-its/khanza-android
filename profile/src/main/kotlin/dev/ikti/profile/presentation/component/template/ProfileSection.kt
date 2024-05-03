@@ -54,7 +54,11 @@ fun ProfileSection(
                     )
                 }
 
-                "detail", "edit" -> {
+                "detail" -> {
+                    ProfileDetailHeader(url = userInfo.foto)
+                }
+
+                "edit" -> {
                     ProfileDetailHeader(url = userInfo.foto)
                 }
 
@@ -117,8 +121,8 @@ fun ProfileSectionLoadingViewPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -138,8 +142,8 @@ fun ProfileSectionSuccessViewPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -159,8 +163,8 @@ fun ProfileSectionErrorViewPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -179,8 +183,8 @@ fun ProfileSectionLoadingDetailPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -200,8 +204,8 @@ fun ProfileSectionSuccessDetailPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -221,8 +225,8 @@ fun ProfileSectionErrorDetailPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -241,8 +245,8 @@ fun ProfileSectionLoadingEditPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -262,8 +266,8 @@ fun ProfileSectionSuccessEditPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }
@@ -283,8 +287,8 @@ fun ProfileSectionErrorEditPreview() {
                 "Developer",
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 "Kampus ITS Surabaya",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     }

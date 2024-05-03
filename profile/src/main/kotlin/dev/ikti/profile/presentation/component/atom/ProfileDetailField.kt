@@ -39,7 +39,9 @@ fun ProfileDetailField(
                 when (field) {
                     "email" -> "Email"
                     "role" -> "Role"
-                    "alamat" -> "Alamat"
+                    "alamat" -> "Alamat Lengkap"
+                    "kota" -> "Kota"
+                    "kode_pos" -> "Kode Pos"
                     else -> ""
                 },
                 style = TextStyle(

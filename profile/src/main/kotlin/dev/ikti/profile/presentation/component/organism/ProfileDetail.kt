@@ -9,8 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.model.LatLng
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.profile.presentation.component.atom.ProfileDetailField
+import dev.ikti.profile.presentation.component.atom.ProfileDetailMap
+import dev.ikti.profile.presentation.component.atom.ProfileDetailMapLabel
 
 @Composable
 fun ProfileDetail(
@@ -18,8 +21,8 @@ fun ProfileDetail(
     email: String = "user@fathoor.dev",
     role: String = "Developer",
     alamat: String = "Kampus ITS Surabaya",
-    alamatLat: Float = 7.2575f,
-    alamatLon: Float = 112.7521f
+    alamatLat: Double = -7.2821,
+    alamatLon: Double = 112.7949,
 ) {
     Column(modifier.fillMaxSize()) {
         Spacer(modifier.size(20.dp))
@@ -28,6 +31,10 @@ fun ProfileDetail(
         ProfileDetailField(field = "role", text = role)
         Spacer(modifier.size(10.dp))
         ProfileDetailField(field = "alamat", text = alamat)
+        Spacer(modifier.size(20.dp))
+        ProfileDetailMapLabel()
+        Spacer(modifier.size(10.dp))
+        ProfileDetailMap(location = LatLng(alamatLat, alamatLon))
     }
 }
 

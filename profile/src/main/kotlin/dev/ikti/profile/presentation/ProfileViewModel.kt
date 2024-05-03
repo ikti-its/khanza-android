@@ -56,8 +56,8 @@ class ProfileViewModel @Inject constructor(
                 "",
                 "",
                 "",
-                Float.NaN,
-                Float.NaN,
+                -7.2821,
+                112.7949,
                 ""
             )
         )
@@ -72,8 +72,8 @@ class ProfileViewModel @Inject constructor(
                 "",
                 "",
                 "",
-                Float.NaN,
-                Float.NaN
+                -7.2821,
+                112.7949
             )
         )
     val userInfo: State<UserInfo> get() = _userInfo
