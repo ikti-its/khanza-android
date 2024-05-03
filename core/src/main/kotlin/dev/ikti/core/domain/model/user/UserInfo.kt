@@ -9,6 +9,6 @@ data class UserInfo(
     @ColumnInfo(name = "role") val role: String,
     @ColumnInfo(name = "foto") val foto: String,
     @ColumnInfo(name = "alamat") val alamat: String,
-    @ColumnInfo(name = "alamat_lat") val alamatLat: Float,
-    @ColumnInfo(name = "alamat_lon") val alamatLon: Float,
+    @ColumnInfo(name = "alamat_lat") val alamatLat: Double,
+    @ColumnInfo(name = "alamat_lon") val alamatLon: Double,
 )

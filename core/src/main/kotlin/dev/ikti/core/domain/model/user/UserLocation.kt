@@ -4,6 +4,6 @@ import androidx.room.ColumnInfo
 
 data class UserLocation(
     @ColumnInfo(name = "alamat") val alamat: String,
-    @ColumnInfo(name = "alamat_lat") val latitude: Float,
-    @ColumnInfo(name = "alamat_lon") val longitude: Float
+    @ColumnInfo(name = "alamat_lat") val latitude: Double,
+    @ColumnInfo(name = "alamat_lon") val longitude: Double
 )
