@@ -11,9 +11,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
 import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.profile.presentation.component.atom.ProfileDetailField
-import dev.ikti.profile.presentation.component.atom.ProfileDetailMap
 import dev.ikti.profile.presentation.component.atom.ProfileDetailMapLabel
+import dev.ikti.profile.presentation.component.molecule.ProfileDetailField
+import dev.ikti.profile.presentation.component.molecule.ProfileDetailMap
 
 @Composable
 fun ProfileDetail(
@@ -40,6 +40,7 @@ fun ProfileDetail(
             location = LatLng(alamatLat, alamatLon),
             intentToMap = intentToMap
         )
+        Spacer(modifier.size(80.dp))
     }
 }
 

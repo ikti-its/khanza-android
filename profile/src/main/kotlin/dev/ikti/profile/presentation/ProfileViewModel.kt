@@ -1,9 +1,13 @@
 package dev.ikti.profile.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.data.local.entity.LocalUserEntity
 import dev.ikti.core.domain.model.user.UserInfo
@@ -12,6 +16,7 @@ import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
 import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
+import dev.ikti.core.util.LocationState
 import dev.ikti.core.util.UIState
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.util.ProfileConstant.ERR_ACCOUNT_NOT_FOUND
@@ -30,6 +35,7 @@ class ProfileViewModel @Inject constructor(
     private val getLocalUserUseCase: GetLocalUserUseCase,
     private val getLocalUserInfoUseCase: GetLocalUserInfoUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase,
+    private val fusedLocationProviderClient: FusedLocationProviderClient
 ) : ViewModel() {
     private val _token = MutableStateFlow("")
     val token: StateFlow<String> = _token
@@ -42,6 +48,10 @@ class ProfileViewModel @Inject constructor(
 
     private val _stateEdit: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
     val stateEdit: StateFlow<UIState<Unit>> = _stateEdit
+
+    private val _stateLocation: MutableStateFlow<LocationState> =
+        MutableStateFlow(LocationState.Loading)
+    val stateLocation: StateFlow<LocationState> = _stateLocation
 
     private val _localUser =
         mutableStateOf(
@@ -140,5 +150,20 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun userUpdate(token: String, profile: ProfileRequest) {}
+    fun userUpdate(token: String, profile: ProfileRequest) {
+//        TODO: Implement user update
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLocation() {
+        _stateLocation.value = LocationState.Loading
+        fusedLocationProviderClient
+            .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener { location ->
+                _stateLocation.value =
+                    if (location == null) LocationState.Error else LocationState.Success(
+                        LatLng(location.latitude, location.longitude)
+                    )
+            }
+    }
 }

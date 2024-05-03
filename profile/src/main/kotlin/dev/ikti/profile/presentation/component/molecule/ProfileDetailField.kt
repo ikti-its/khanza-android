@@ -1,8 +1,7 @@
-package dev.ikti.profile.presentation.component.atom
+package dev.ikti.profile.presentation.component.molecule
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -15,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.profile.presentation.component.atom.ProfileDetailFieldLabel
 
 @Composable
 fun ProfileDetailField(
@@ -33,25 +33,7 @@ fun ProfileDetailField(
             fontSize = 16.sp,
             fontFamily = FontGilroy
         ),
-        label = {
-            Text(
-                text =
-                when (field) {
-                    "email" -> "Email"
-                    "role" -> "Role"
-                    "alamat" -> "Alamat Lengkap"
-                    "kota" -> "Kota"
-                    "kode_pos" -> "Kode Pos"
-                    else -> ""
-                },
-                style = TextStyle(
-                    color = Color(0xFF272727),
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
-                    fontFamily = FontGilroy
-                )
-            )
-        },
+        label = { ProfileDetailFieldLabel(field) },
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
             disabledContainerColor = Color(0xFFF7F7F7)

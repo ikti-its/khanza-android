@@ -14,11 +14,7 @@ data class ProfileRequest(
     @SerializedName("alamat")
     val alamat: String,
     @SerializedName("alamat_lat")
-    val alamatLat: Float,
+    val alamatLat: Double,
     @SerializedName("alamat_lon")
-    val alamatLon: Float,
-    @SerializedName("kota")
-    val kota: String,
-    @SerializedName("kode_pos")
-    val kodePos: String
+    val alamatLon: Double
 )

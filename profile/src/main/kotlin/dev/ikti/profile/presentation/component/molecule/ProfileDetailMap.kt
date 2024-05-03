@@ -1,4 +1,4 @@
-package dev.ikti.profile.presentation.component.atom
+package dev.ikti.profile.presentation.component.molecule
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,7 +50,7 @@ fun ProfileDetailMap(
             tiltGesturesEnabled = false
         ),
         onMapClick = {
-            intentToMap("geo:${location.latitude},${location.longitude}?z=10&q=${alamat}")
+            intentToMap("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
         }
     ) {
         Marker(
@@ -58,7 +58,7 @@ fun ProfileDetailMap(
                 position = location
             ),
             onClick = {
-                intentToMap("geo:${location.latitude},${location.longitude}?z=10&q=${alamat}")
+                intentToMap("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
                 true
             },
         )
