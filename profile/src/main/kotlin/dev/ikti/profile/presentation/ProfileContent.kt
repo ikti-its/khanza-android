@@ -35,7 +35,8 @@ fun ProfileContent(
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
     onLogout: (String) -> Unit = {},
-    onSave: (ProfileRequest) -> Unit = {}
+    onSave: (ProfileRequest) -> Unit = {},
+    intentToMap: (String) -> Unit
 ) {
     MainScaffold(
         modifier = modifier.navigationBarsPadding(),
@@ -70,7 +71,11 @@ fun ProfileContent(
                 navController = navController,
                 onLogout = { userToken ->
                     onLogout(userToken)
-                }
+                },
+                onSave = { user ->
+                    onSave(user)
+                },
+                intentToMap = intentToMap
             )
         }
         when (stateLogout) {

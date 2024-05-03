@@ -23,6 +23,7 @@ fun ProfileDetail(
     alamat: String = "Kampus ITS Surabaya",
     alamatLat: Double = -7.2821,
     alamatLon: Double = 112.7949,
+    intentToMap: (String) -> Unit = {}
 ) {
     Column(modifier.fillMaxSize()) {
         Spacer(modifier.size(20.dp))
@@ -34,7 +35,11 @@ fun ProfileDetail(
         Spacer(modifier.size(20.dp))
         ProfileDetailMapLabel()
         Spacer(modifier.size(10.dp))
-        ProfileDetailMap(location = LatLng(alamatLat, alamatLon))
+        ProfileDetailMap(
+            alamat = alamat,
+            location = LatLng(alamatLat, alamatLon),
+            intentToMap = intentToMap
+        )
     }
 }
 

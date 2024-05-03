@@ -30,7 +30,8 @@ fun ProfileSection(
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
     onLogout: (String) -> Unit = {},
-    onSave: (ProfileRequest) -> Unit = {}
+    onSave: (ProfileRequest) -> Unit = {},
+    intentToMap: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -85,7 +86,8 @@ fun ProfileSection(
                         role = userInfo.role,
                         alamat = userInfo.alamat,
                         alamatLat = userInfo.alamatLat,
-                        alamatLon = userInfo.alamatLon
+                        alamatLon = userInfo.alamatLon,
+                        intentToMap = intentToMap
                     )
                 }
 

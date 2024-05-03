@@ -23,10 +23,12 @@ import dev.ikti.core.R
 
 @Composable
 fun ProfileDetailMap(
+    alamat: String,
     location: LatLng,
     cameraPositionState: CameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(location, 15f)
-    }
+    },
+    intentToMap: (String) -> Unit
 ) {
     GoogleMap(
         modifier = Modifier
@@ -46,12 +48,19 @@ fun ProfileDetailMap(
             zoomControlsEnabled = false,
             compassEnabled = false,
             tiltGesturesEnabled = false
-        )
+        ),
+        onMapClick = {
+            intentToMap("geo:${location.latitude},${location.longitude}?z=10&q=${alamat}")
+        }
     ) {
         Marker(
             state = MarkerState(
                 position = location
-            )
+            ),
+            onClick = {
+                intentToMap("geo:${location.latitude},${location.longitude}?z=10&q=${alamat}")
+                true
+            },
         )
     }
 }

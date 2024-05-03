@@ -13,7 +13,8 @@ import dev.ikti.core.util.UIState
 fun ProfileScreen(
     type: String = "view",
     viewModel: ProfileViewModel = hiltViewModel(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    intentToMap: (String) -> Unit
 ) {
     val token by viewModel.token.collectAsState("")
     val stateProfile by viewModel.stateProfile.collectAsState(UIState.Loading)
@@ -39,6 +40,7 @@ fun ProfileScreen(
         },
         onSave = { user ->
             viewModel.userUpdate(token, user)
-        }
+        },
+        intentToMap = intentToMap
     )
 }
