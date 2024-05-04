@@ -16,9 +16,12 @@ import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
 import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
+import dev.ikti.core.domain.usecase.user.UpdateLocalUserUseCase
 import dev.ikti.core.util.LocationState
 import dev.ikti.core.util.UIState
 import dev.ikti.profile.data.model.ProfileRequest
+import dev.ikti.profile.data.model.ProfileResponse
+import dev.ikti.profile.domain.usecase.UpdateProfileUseCase
 import dev.ikti.profile.util.ProfileConstant.ERR_ACCOUNT_NOT_FOUND
 import dev.ikti.profile.util.ProfileConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.profile.util.ProfileException
@@ -32,10 +35,12 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val clearUserTokenUseCase: ClearUserTokenUseCase,
     private val deleteLocalUserUseCase: DeleteLocalUserUseCase,
+    private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val getLocalUserUseCase: GetLocalUserUseCase,
     private val getLocalUserInfoUseCase: GetLocalUserInfoUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase,
-    private val fusedLocationProviderClient: FusedLocationProviderClient
+    private val updateLocalUserUseCase: UpdateLocalUserUseCase,
+    private val updateProfileUseCase: UpdateProfileUseCase
 ) : ViewModel() {
     private val _token = MutableStateFlow("")
     val token: StateFlow<String> = _token
@@ -46,32 +51,13 @@ class ProfileViewModel @Inject constructor(
     private val _stateLogout: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
     val stateLogout: StateFlow<UIState<Unit>> = _stateLogout
 
-    private val _stateEdit: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
-    val stateEdit: StateFlow<UIState<Unit>> = _stateEdit
+    private val _stateEdit: MutableStateFlow<UIState<ProfileResponse>> =
+        MutableStateFlow(UIState.Empty)
+    val stateEdit: StateFlow<UIState<ProfileResponse>> = _stateEdit
 
     private val _stateLocation: MutableStateFlow<LocationState> =
         MutableStateFlow(LocationState.Loading)
     val stateLocation: StateFlow<LocationState> = _stateLocation
-
-    private val _localUser =
-        mutableStateOf(
-            LocalUserEntity(
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                -7.2821,
-                112.7949,
-                ""
-            )
-        )
-    val localUser: State<LocalUserEntity> get() = _localUser
 
     private val _userInfo =
         mutableStateOf(
@@ -151,7 +137,43 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun userUpdate(token: String, profile: ProfileRequest) {
-//        TODO: Implement user update
+        _stateEdit.value = UIState.Loading
+
+        viewModelScope.launch {
+            try {
+                val response = updateProfileUseCase.execute(token, profile.akun, profile)
+                response.collect { data ->
+                    try {
+                        val localUser = getLocalUserUseCase.execute(token)
+                        localUser.collect { local ->
+                            val user = LocalUserEntity(
+                                token,
+                                data.data.akun,
+                                local.pegawai,
+                                local.nama,
+                                local.nip,
+                                local.role,
+                                data.data.email,
+                                local.telepon,
+                                data.data.foto,
+                                data.data.alamat,
+                                data.data.alamatLat,
+                                data.data.alamatLon,
+                                local.fotoPegawai
+                            )
+
+                            updateLocalUserUseCase.execute(user)
+                            _stateEdit.value = UIState.Success(data.data)
+                        }
+                    } catch (e: Exception) {
+                        _stateEdit.value =
+                            UIState.Error(ERR_UNKNOWN_ERROR) // ERROR NOT YET IMPLEMENTED
+                    }
+                }
+            } catch (e: Exception) {
+                _stateEdit.value = UIState.Error(ERR_UNKNOWN_ERROR)
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")

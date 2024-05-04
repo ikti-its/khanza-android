@@ -93,6 +93,7 @@ fun ProfileSection(
 
                 "edit" -> {
                     ProfileEdit(
+                        akun = userInfo.akun,
                         email = userInfo.email,
                         role = userInfo.role,
                         alamat = userInfo.alamat,

@@ -52,6 +52,7 @@ import dev.ikti.profile.util.ProfileConstant.FIELD_TYPE_ROLE
 @Composable
 fun ProfileEdit(
     modifier: Modifier = Modifier,
+    akun: String = "",
     email: String = "user@fathoor.dev",
     role: String = "Developer",
     alamat: String = "Kampus ITS Surabaya",
@@ -152,7 +153,7 @@ fun ProfileEdit(
         Spacer(modifier.size(30.dp))
         ProfileEditSubmitButton(
             user = ProfileRequest(
-                "",
+                akun,
                 "https://api.fathoor.dev/v1/file/img/default.png",
                 newEmail,
                 newPassword,
