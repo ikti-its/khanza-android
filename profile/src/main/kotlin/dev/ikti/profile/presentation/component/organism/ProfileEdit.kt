@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,12 +67,12 @@ fun ProfileEdit(
         )
     )
 
-    var newEmail by rememberSaveable { mutableStateOf("") }
-    var newPassword by rememberSaveable { mutableStateOf("") }
-    var newAlamat by rememberSaveable { mutableStateOf("") }
-    var isEmailError by rememberSaveable { mutableStateOf(false) }
-    var isPasswordError by rememberSaveable { mutableStateOf(false) }
-    var newAlamatLocation by rememberSaveable { mutableStateOf(LatLng(alamatLat, alamatLon)) }
+    var newEmail by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+    var newAlamat by remember { mutableStateOf("") }
+    var isEmailError by remember { mutableStateOf(false) }
+    var isPasswordError by remember { mutableStateOf(false) }
+    var newAlamatLocation by remember { mutableStateOf(LatLng(alamatLat, alamatLon)) }
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(newAlamatLocation, 15f)
