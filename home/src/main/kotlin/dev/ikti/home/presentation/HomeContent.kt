@@ -33,6 +33,7 @@ import dev.ikti.home.presentation.component.molecule.HomeHeroCard
 fun HomeContent(
     modifier: Modifier,
     stateHome: UIState<Unit> = UIState.Empty,
+    stateLogout: UIState<Unit> = UIState.Empty,
     token: String,
     userNama: String = "PENGGUNA",
     userStatus: Boolean = false,
@@ -57,10 +58,12 @@ fun HomeContent(
                 HomeHeroCard(
                     modifier = modifier,
                     stateHome = stateHome,
+                    stateLogout = stateLogout,
                     nama = userNama,
                     status = userStatus,
                     masuk = userMasuk,
-                    pulang = userPulang
+                    pulang = userPulang,
+                    navController = navController
                 )
             }
             Column(

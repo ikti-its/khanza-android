@@ -1,10 +1,8 @@
 package dev.ikti.home.presentation.component.molecule
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.EaseOutElastic
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
@@ -52,19 +53,40 @@ import dev.ikti.home.presentation.component.atom.HomeHeroWelcomeText
 fun HomeHeroCard(
     modifier: Modifier,
     stateHome: UIState<Unit> = UIState.Empty,
+    stateLogout: UIState<Unit> = UIState.Empty,
     expanded: Boolean = true,
     nama: String = "PENGGUNA",
     status: Boolean = false,
     masuk: String = "08:00",
     pulang: String = "16:00",
+    navController: NavHostController = rememberNavController()
 ) {
     var isExpanded by remember { mutableStateOf(expanded) }
 
-    LaunchedEffect(stateHome) {
+    LaunchedEffect(stateHome, stateLogout) {
         stateHome.let { state ->
             isExpanded = when (state) {
                 is UIState.Success -> true
                 else -> false
+            }
+        }
+
+        stateLogout.let { state ->
+            when (state) {
+                is UIState.Success -> {
+                    navController.navigate(ModuleScreen.Onboarding.route) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+
+                UIState.Loading -> {
+                    isExpanded = false
+                }
+
+                is UIState.Error, UIState.Empty -> {}
             }
         }
     }

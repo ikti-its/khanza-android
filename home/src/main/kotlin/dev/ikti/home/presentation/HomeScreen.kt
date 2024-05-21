@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.util.UIState
+import dev.ikti.home.util.HomeConstant
 
 @Composable
 fun HomeScreen(
@@ -19,6 +20,7 @@ fun HomeScreen(
 ) {
     val userToken by viewModel.userToken.collectAsState(token)
     val stateHome by viewModel.stateHome.collectAsState(UIState.Loading)
+    val stateLogout by viewModel.stateLogout.collectAsState(UIState.Empty)
     val userHome by viewModel.userHome
 
     LaunchedEffect(userToken) {
@@ -26,11 +28,26 @@ fun HomeScreen(
             viewModel.getUserToken(Unit)
         } else {
             viewModel.getUserHome(userToken)
+
+            stateHome.let { state ->
+                when (state) {
+                    is UIState.Error -> {
+                        when (state.error) {
+                            HomeConstant.ERR_ACCOUNT_UNAUTHORIZED -> {
+                                viewModel.userLogout(userToken)
+                            }
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
         }
     }
     HomeContent(
         modifier = modifier,
         stateHome = stateHome,
+        stateLogout = stateLogout,
         token = userToken,
         userNama = userHome.nama,
         userStatus = userHome.status,

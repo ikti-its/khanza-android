@@ -25,6 +25,7 @@ class HomeRepositoryImpl @Inject constructor(
                 emit(homeService.home(bearer, tanggal))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
+                    401 -> throw HomeException.AccountUnauthorizedException
                     404 -> throw HomeException.AccountNotFoundException
                 }
             }
