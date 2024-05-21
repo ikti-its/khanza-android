@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.maps.model.LatLng
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.profile.presentation.component.atom.ProfileDetailMapLabel
 import dev.ikti.profile.presentation.component.molecule.ProfileDetailField
@@ -37,7 +36,8 @@ fun ProfileDetail(
         Spacer(modifier.size(10.dp))
         ProfileDetailMap(
             alamat = alamat,
-            location = LatLng(alamatLat, alamatLon),
+            latitude = alamatLat,
+            longitude = alamatLon,
             intentToMap = intentToMap
         )
         Spacer(modifier.size(80.dp))
