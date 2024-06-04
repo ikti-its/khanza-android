@@ -74,10 +74,10 @@ fun ProfileView(
                         horizontalArrangement = Arrangement.Start
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_dev),
+                            painter = painterResource(id = R.drawable.ic_profile_detail),
                             contentDescription = null
                         )
-                        Spacer(modifier = modifier.size(5.dp))
+                        Spacer(modifier = modifier.size(8.dp))
                         Text(
                             text = "Detail Profil",
                             color = Color(0xFF3D3D3D),
