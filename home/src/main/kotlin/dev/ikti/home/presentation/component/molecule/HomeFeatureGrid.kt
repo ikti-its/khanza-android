@@ -77,23 +77,23 @@ fun HomeFeatureGrid(
                         )
                     }
                 )
+                HomeFeatureItem(label = "Inventaris")
+            }
+            Spacer(modifier = modifier.height(18.dp))
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HomeFeatureItem(label = "Pengadaan")
+                HomeFeatureItem(label = "Rawat Inap")
+                HomeFeatureItem(label = "Pengobatan")
                 HomeFeatureItem(
                     label = "Lainnya",
                     icon = R.drawable.ic_feature_other,
                     onClick = { navController.navigate(Nav.Home.route) }
                 )
             }
-//            Spacer(modifier = modifier.height(18.dp))
-//            Row(
-//                modifier = modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                HomeFeatureItem(label = "Modul A")
-//                HomeFeatureItem(label = "Modul B")
-//                HomeFeatureItem(label = "Modul D")
-//                HomeFeatureItem(label = "Modul E")
-//            }
         }
     }
 }

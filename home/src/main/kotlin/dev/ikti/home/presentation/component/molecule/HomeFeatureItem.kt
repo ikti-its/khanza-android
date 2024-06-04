@@ -27,7 +27,7 @@ fun HomeFeatureItem(
     active: Boolean = false,
     color: Color = Color(0xFFE8E8E8),
     icon: Int = R.drawable.ic_dev,
-    iconColor: Color = Color(0xFF0A2D27),
+    iconColor: Color = Color(0xFF272727),
     onClick: () -> Unit = {}
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

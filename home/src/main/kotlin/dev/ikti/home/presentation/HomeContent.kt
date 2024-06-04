@@ -25,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
-import dev.ikti.home.presentation.component.molecule.HomeDropdown
 import dev.ikti.home.presentation.component.molecule.HomeFeatureGrid
 import dev.ikti.home.presentation.component.molecule.HomeHeroCard
 
@@ -78,10 +77,7 @@ fun HomeContent(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    HomeDropdown(modifier = modifier) {
-//                    TODO: Open up bottom sheet on click
-                    }
-                    Spacer(modifier = modifier.height(20.dp))
+                    Spacer(modifier = modifier.height(8.dp))
                     HomeFeatureGrid(
                         modifier = modifier,
                         token = token,

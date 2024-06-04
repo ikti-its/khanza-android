@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.util.UIState
 import dev.ikti.home.util.HomeConstant
 
@@ -35,6 +36,12 @@ fun HomeScreen(
                         when (state.error) {
                             HomeConstant.ERR_ACCOUNT_UNAUTHORIZED -> {
                                 viewModel.userLogout(userToken)
+                                navController.navigate(ModuleScreen.Onboarding.route) {
+                                    popUpTo(0) {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
                             }
                         }
                     }
