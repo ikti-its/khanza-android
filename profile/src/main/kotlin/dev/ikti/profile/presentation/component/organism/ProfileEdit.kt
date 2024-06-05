@@ -1,14 +1,17 @@
 package dev.ikti.profile.presentation.component.organism
 
 import android.Manifest
+import android.util.Log
+import android.view.MotionEvent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,10 +20,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,37 +32,31 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import dev.ikti.core.R
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.presentation.component.atom.ProfileDetailMapLabel
 import dev.ikti.profile.presentation.component.molecule.ProfileEditField
+import dev.ikti.profile.presentation.component.molecule.ProfileEditMap
 import dev.ikti.profile.presentation.component.molecule.ProfileEditSubmitButton
 import dev.ikti.profile.util.ProfileConstant.FIELD_TYPE_ALAMAT
 import dev.ikti.profile.util.ProfileConstant.FIELD_TYPE_EMAIL
 import dev.ikti.profile.util.ProfileConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.profile.util.ProfileConstant.FIELD_TYPE_ROLE
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ProfileEdit(
     modifier: Modifier = Modifier,
-    akun: String = "",
-    email: String = "user@fathoor.dev",
-    role: String = "Developer",
-    alamat: String = "Kampus ITS Surabaya",
-    alamatLat: Double = 7.2575,
-    alamatLon: Double = 112.7521,
+    akun: String,
+    email: String,
+    role: String,
+    alamat: String,
+    alamatLat: Double,
+    alamatLon: Double,
     onSave: (ProfileRequest) -> Unit = {}
 ) {
+    Log.d("EDIT", "LAT $alamatLat , LON $alamatLon")
     val locationPermissionState = rememberMultiplePermissionsState(
         listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -74,8 +71,16 @@ fun ProfileEdit(
     var isPasswordError by remember { mutableStateOf(false) }
     var newAlamatLocation by remember { mutableStateOf(LatLng(alamatLat, alamatLon)) }
 
+    val scrollState = rememberScrollState()
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(newAlamatLocation, 15f)
+    }
+    var columnScrollingEnabled by remember { mutableStateOf(true) }
+
+    LaunchedEffect(cameraPositionState.isMoving) {
+        if (!cameraPositionState.isMoving) {
+            columnScrollingEnabled = true
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -84,7 +89,12 @@ fun ProfileEdit(
         }
     }
 
-    Column(modifier.fillMaxSize()) {
+    Column(
+        modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState, columnScrollingEnabled)
+            .padding(bottom = 120.dp)
+    ) {
         Column(
             modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -119,37 +129,24 @@ fun ProfileEdit(
         Spacer(modifier.size(20.dp))
         ProfileDetailMapLabel()
         Spacer(modifier.size(10.dp))
-        GoogleMap(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            cameraPositionState = cameraPositionState,
-            properties = MapProperties(
-                mapStyleOptions = MapStyleOptions.loadRawResourceStyle(
-                    LocalContext.current, R.raw.maps
-                ),
-                mapType = MapType.NORMAL
+        ProfileEditMap(
+            modifier = Modifier.pointerInteropFilter(
+                onTouchEvent = {
+                    when (it.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            columnScrollingEnabled = false
+                            false
+                        }
+
+                        else -> {
+                            true
+                        }
+                    }
+                }
             ),
-            uiSettings = MapUiSettings(
-                mapToolbarEnabled = false,
-                myLocationButtonEnabled = false,
-                zoomControlsEnabled = false,
-                compassEnabled = false,
-                tiltGesturesEnabled = false
-            ),
-            onMapClick = {
-            }
-        ) {
-            Marker(
-                state = MarkerState(
-                    position = newAlamatLocation
-                ),
-                onClick = {
-                    true
-                },
-            )
-        }
+            location = newAlamatLocation,
+            cameraPositionState = cameraPositionState
+        )
         Spacer(modifier.size(30.dp))
         ProfileEditSubmitButton(
             user = ProfileRequest(

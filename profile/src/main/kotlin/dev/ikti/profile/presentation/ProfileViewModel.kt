@@ -68,8 +68,8 @@ class ProfileViewModel @Inject constructor(
                 "",
                 "",
                 "",
-                -7.2821,
-                112.7949
+                Double.NaN,
+                Double.NaN
             )
         )
     val userInfo: State<UserInfo> get() = _userInfo
@@ -88,7 +88,6 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                delay(500L)
                 val response = getLocalUserInfoUseCase.execute(token)
                 response.collect { user ->
                     _userInfo.value = UserInfo(

@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.domain.model.screen.AkunScreen
 import dev.ikti.core.domain.model.user.UserInfo
-import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.presentation.component.organism.ProfileDetail
@@ -81,218 +79,56 @@ fun ProfileSection(
                 }
 
                 "detail" -> {
-                    ProfileDetail(
-                        email = userInfo.email,
-                        role = userInfo.role,
-                        alamat = userInfo.alamat,
-                        alamatLat = userInfo.alamatLat,
-                        alamatLon = userInfo.alamatLon,
-                        intentToMap = intentToMap
-                    )
+                    if (!userInfo.alamatLat.isNaN() && !userInfo.alamatLon.isNaN()) {
+                        ProfileDetail(
+                            email = userInfo.email,
+                            role = userInfo.role,
+                            alamat = userInfo.alamat,
+                            alamatLat = userInfo.alamatLat,
+                            alamatLon = userInfo.alamatLon,
+                            intentToMap = intentToMap
+                        )
+                    } else {
+                        ProfileView(
+                            token = token,
+                            navigateToDetail = {
+                                navController.navigate(AkunScreen.Detail.route)
+                            },
+                            onLogout = { userToken ->
+                                onLogout(userToken)
+                            }
+                        )
+                    }
                 }
 
                 "edit" -> {
-                    ProfileEdit(
-                        akun = userInfo.akun,
-                        email = userInfo.email,
-                        role = userInfo.role,
-                        alamat = userInfo.alamat,
-                        alamatLat = userInfo.alamatLat,
-                        alamatLon = userInfo.alamatLon,
-                        onSave = { user ->
-                            onSave(user)
-                        }
-                    )
+                    if (!userInfo.alamatLat.isNaN() && !userInfo.alamatLon.isNaN()) {
+                        ProfileEdit(
+                            akun = userInfo.akun,
+                            email = userInfo.email,
+                            role = userInfo.role,
+                            alamat = userInfo.alamat,
+                            alamatLat = userInfo.alamatLat,
+                            alamatLon = userInfo.alamatLon,
+                            onSave = { user ->
+                                onSave(user)
+                            }
+                        )
+                    } else {
+                        ProfileView(
+                            token = token,
+                            navigateToDetail = {
+                                navController.navigate(AkunScreen.Detail.route)
+                            },
+                            onLogout = { userToken ->
+                                onLogout(userToken)
+                            }
+                        )
+                    }
                 }
 
                 else -> {}
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionLoadingViewPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "view",
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionSuccessViewPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "view",
-            stateProfile = UIState.Success(Unit),
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionErrorViewPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "view",
-            stateProfile = UIState.Error(""),
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionLoadingDetailPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "detail",
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionSuccessDetailPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "detail",
-            stateProfile = UIState.Success(Unit),
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionErrorDetailPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "detail",
-            stateProfile = UIState.Error(""),
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionLoadingEditPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "edit",
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionSuccessEditPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "edit",
-            stateProfile = UIState.Success(Unit),
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileSectionErrorEditPreview() {
-    KhanzaTheme {
-        ProfileSection(
-            type = "edit",
-            stateProfile = UIState.Error(""),
-            userInfo = UserInfo(
-                "",
-                "IKTI",
-                "ikti@fathoor.dev",
-                "Developer",
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                "Kampus ITS Surabaya",
-                -7.2821,
-                112.7949
-            )
-        )
     }
 }
