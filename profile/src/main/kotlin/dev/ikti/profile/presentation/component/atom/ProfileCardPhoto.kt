@@ -1,8 +1,10 @@
 package dev.ikti.profile.presentation.component.atom
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,8 +19,8 @@ fun ProfileCardPhoto(
     SubcomposeAsyncImage(
         model = url,
         contentDescription = null,
-        contentScale = ContentScale.Fit,
-        modifier = modifier.size(42.dp)
+        contentScale = ContentScale.FillBounds,
+        modifier = modifier.size(42.dp).clip(CircleShape)
     )
 }
 
