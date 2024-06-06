@@ -1,8 +1,11 @@
 package dev.ikti.profile.presentation.component.organism
 
 import android.Manifest
-import android.util.Log
+import android.net.Uri
 import android.view.MotionEvent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +37,8 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
 import dev.ikti.core.presentation.theme.FontGilroy
+import dev.ikti.core.util.UIState
+import dev.ikti.core.util.file.FileConstant.ERR_UNSUPPORTED
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.presentation.component.atom.ProfileDetailMapLabel
 import dev.ikti.profile.presentation.component.molecule.ProfileEditField
@@ -48,15 +53,16 @@ import dev.ikti.profile.util.ProfileConstant.FIELD_TYPE_ROLE
 @Composable
 fun ProfileEdit(
     modifier: Modifier = Modifier,
+    stateUpload: UIState<String> = UIState.Empty,
     akun: String,
     email: String,
     role: String,
     alamat: String,
     alamatLat: Double,
     alamatLon: Double,
-    onSave: (ProfileRequest) -> Unit = {}
+    onSave: (ProfileRequest) -> Unit = {},
+    onUpload: (Uri) -> Unit = {}
 ) {
-    Log.d("EDIT", "LAT $alamatLat , LON $alamatLon")
     val locationPermissionState = rememberMultiplePermissionsState(
         listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -64,9 +70,10 @@ fun ProfileEdit(
         )
     )
 
-    var newEmail by remember { mutableStateOf("") }
+    var newFoto by remember { mutableStateOf("") }
+    var newEmail by remember { mutableStateOf(email) }
     var newPassword by remember { mutableStateOf("") }
-    var newAlamat by remember { mutableStateOf("") }
+    var newAlamat by remember { mutableStateOf(alamat) }
     var isEmailError by remember { mutableStateOf(false) }
     var isPasswordError by remember { mutableStateOf(false) }
     var newAlamatLocation by remember { mutableStateOf(LatLng(alamatLat, alamatLon)) }
@@ -76,6 +83,15 @@ fun ProfileEdit(
         position = CameraPosition.fromLatLngZoom(newAlamatLocation, 15f)
     }
     var columnScrollingEnabled by remember { mutableStateOf(true) }
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            if (uri != null) {
+                onUpload(uri)
+            }
+        }
+    )
 
     LaunchedEffect(cameraPositionState.isMoving) {
         if (!cameraPositionState.isMoving) {
@@ -101,7 +117,11 @@ fun ProfileEdit(
         ) {
             Text(
                 text = "Ubah foto profil",
-                modifier = modifier.clickable { },
+                modifier = modifier.clickable {
+                    singlePhotoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                },
                 style = TextStyle(
                     color = Color(0xFF272727),
                     fontWeight = FontWeight.SemiBold,
@@ -151,14 +171,29 @@ fun ProfileEdit(
         ProfileEditSubmitButton(
             user = ProfileRequest(
                 akun,
-                "https://api.fathoor.dev/v1/file/img/default.png",
-                newEmail,
+                newFoto,
+                if (newEmail == "") email else newEmail,
                 newPassword,
-                newAlamat,
-                newAlamatLocation.latitude,
-                newAlamatLocation.longitude
+                if (newAlamat == "") alamat else newAlamat,
+                if (newAlamatLocation.latitude == 0.0) alamatLat else newAlamatLocation.latitude,
+                if (newAlamatLocation.longitude == 0.0) alamatLon else newAlamatLocation.longitude
             ),
             onSave = onSave
         )
+
+        when (stateUpload) {
+            is UIState.Success -> newFoto = stateUpload.data
+            is UIState.Error -> {
+                when (stateUpload.error) {
+                    ERR_UNSUPPORTED -> {
+                        // TODO: Error popup
+                    }
+
+                    else -> {}
+                }
+            }
+
+            else -> {}
+        }
     }
 }

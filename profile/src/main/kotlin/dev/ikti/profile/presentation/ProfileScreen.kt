@@ -17,8 +17,9 @@ fun ProfileScreen(
     intentToMap: (String) -> Unit
 ) {
     val token by viewModel.token.collectAsState("")
-    val stateProfile by viewModel.stateProfile.collectAsState(UIState.Loading)
-    val stateLogout by viewModel.stateLogout.collectAsState(UIState.Loading)
+    val stateProfile by viewModel.stateProfile.collectAsState(UIState.Empty)
+    val stateLogout by viewModel.stateLogout.collectAsState(UIState.Empty)
+    val stateUpload by viewModel.stateUpload.collectAsState(UIState.Empty)
     val userInfo by viewModel.userInfo
 
     LaunchedEffect(token) {
@@ -33,6 +34,7 @@ fun ProfileScreen(
         token = token,
         stateProfile = stateProfile,
         stateLogout = stateLogout,
+        stateUpload = stateUpload,
         userInfo = userInfo,
         navController = navController,
         onLogout = { userToken ->
@@ -40,6 +42,9 @@ fun ProfileScreen(
         },
         onSave = { user ->
             viewModel.userUpdate(token, user)
+        },
+        onUpload = { uri ->
+            viewModel.uploadImage(token, uri)
         },
         intentToMap = intentToMap
     )

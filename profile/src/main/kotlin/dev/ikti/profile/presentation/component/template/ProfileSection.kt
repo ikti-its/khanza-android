@@ -1,5 +1,6 @@
 package dev.ikti.profile.presentation.component.template
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,10 +26,12 @@ fun ProfileSection(
     type: String = "view",
     token: String = "",
     stateProfile: UIState<Unit> = UIState.Empty,
+    stateUpload: UIState<String> = UIState.Empty,
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
     onLogout: (String) -> Unit = {},
     onSave: (ProfileRequest) -> Unit = {},
+    onUpload: (Uri) -> Unit = {},
     intentToMap: (String) -> Unit = {}
 ) {
     Column(
@@ -54,11 +57,11 @@ fun ProfileSection(
                 }
 
                 "detail" -> {
-                    ProfileDetailHeader(url = userInfo.foto)
+                    ProfileDetailHeader(stateUpload = stateUpload, url = userInfo.foto)
                 }
 
                 "edit" -> {
-                    ProfileDetailHeader(url = userInfo.foto)
+                    ProfileDetailHeader(stateUpload = stateUpload, url = userInfo.foto)
                 }
 
                 else -> {}
@@ -104,6 +107,7 @@ fun ProfileSection(
                 "edit" -> {
                     if (!userInfo.alamatLat.isNaN() && !userInfo.alamatLon.isNaN()) {
                         ProfileEdit(
+                            stateUpload = stateUpload,
                             akun = userInfo.akun,
                             email = userInfo.email,
                             role = userInfo.role,
@@ -112,6 +116,9 @@ fun ProfileSection(
                             alamatLon = userInfo.alamatLon,
                             onSave = { user ->
                                 onSave(user)
+                            },
+                            onUpload = { uri ->
+                                onUpload(uri)
                             }
                         )
                     } else {

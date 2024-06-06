@@ -1,6 +1,8 @@
 package dev.ikti.profile.presentation
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.data.local.entity.LocalUserEntity
 import dev.ikti.core.domain.model.user.UserInfo
+import dev.ikti.core.domain.usecase.file.UploadImageUseCase
 import dev.ikti.core.domain.usecase.preference.ClearUserTokenUseCase
 import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
 import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
@@ -19,6 +22,9 @@ import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.UpdateLocalUserUseCase
 import dev.ikti.core.util.LocationState
 import dev.ikti.core.util.UIState
+import dev.ikti.core.util.file.FileConstant.ERR_UNAUTHORIZED
+import dev.ikti.core.util.file.FileConstant.ERR_UNSUPPORTED
+import dev.ikti.core.util.file.FileException
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.data.model.ProfileResponse
 import dev.ikti.profile.domain.usecase.UpdateProfileUseCase
@@ -29,10 +35,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
+    private val application: Application,
     private val clearUserTokenUseCase: ClearUserTokenUseCase,
     private val deleteLocalUserUseCase: DeleteLocalUserUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
@@ -40,7 +51,8 @@ class ProfileViewModel @Inject constructor(
     private val getLocalUserInfoUseCase: GetLocalUserInfoUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase,
     private val updateLocalUserUseCase: UpdateLocalUserUseCase,
-    private val updateProfileUseCase: UpdateProfileUseCase
+    private val updateProfileUseCase: UpdateProfileUseCase,
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel() {
     private val _token = MutableStateFlow("")
     val token: StateFlow<String> = _token
@@ -54,6 +66,10 @@ class ProfileViewModel @Inject constructor(
     private val _stateEdit: MutableStateFlow<UIState<ProfileResponse>> =
         MutableStateFlow(UIState.Empty)
     val stateEdit: StateFlow<UIState<ProfileResponse>> = _stateEdit
+
+    private val _stateUpload: MutableStateFlow<UIState<String>> =
+        MutableStateFlow(UIState.Empty)
+    val stateUpload: StateFlow<UIState<String>> = _stateUpload
 
     private val _stateLocation: MutableStateFlow<LocationState> =
         MutableStateFlow(LocationState.Loading)
@@ -171,6 +187,49 @@ class ProfileViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _stateEdit.value = UIState.Error(ERR_UNKNOWN_ERROR)
+            }
+        }
+    }
+
+    fun uploadImage(token: String, uri: Uri) {
+        _stateUpload.value = UIState.Loading
+
+        viewModelScope.launch {
+            try {
+                val inputStream = application.contentResolver.openInputStream(uri)
+                val file = File.createTempFile("tmp", ".jpg")
+                val outputStream = file.outputStream()
+                val buffer = ByteArray(1024)
+                var read: Int
+                while (inputStream!!.read(buffer)
+                        .also { read = it } != -1
+                ) { // CAUTION, FORCED NON NULL VALUE
+                    outputStream.write(buffer, 0, read)
+                }
+                outputStream.flush()
+                inputStream.close()
+                outputStream.close()
+
+                val image = file.asRequestBody("image/jpeg".toMediaType())
+                val multipart: MultipartBody.Part =
+                    MultipartBody.Part.createFormData("file", file.name, image)
+
+                val response = uploadImageUseCase.execute(token, multipart)
+                response.collect { data ->
+                    _stateUpload.value = UIState.Success(data.data.url)
+                }
+            } catch (e: Exception) {
+                when (e) {
+                    FileException.UnsupportedException -> _stateUpload.value = UIState.Error(
+                        ERR_UNSUPPORTED
+                    )
+
+                    FileException.UnauthorizedException -> _stateUpload.value = UIState.Error(
+                        ERR_UNAUTHORIZED
+                    )
+
+                    else -> _stateUpload.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                }
             }
         }
     }

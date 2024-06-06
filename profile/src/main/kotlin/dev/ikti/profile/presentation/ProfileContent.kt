@@ -1,5 +1,6 @@
 package dev.ikti.profile.presentation
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.fadeOut
@@ -32,10 +33,12 @@ fun ProfileContent(
     token: String = "",
     stateProfile: UIState<Unit> = UIState.Empty,
     stateLogout: UIState<Unit> = UIState.Empty,
+    stateUpload: UIState<String> = UIState.Empty,
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
     onLogout: (String) -> Unit = {},
     onSave: (ProfileRequest) -> Unit = {},
+    onUpload: (Uri) -> Unit = {},
     intentToMap: (String) -> Unit
 ) {
     MainScaffold(
@@ -67,6 +70,7 @@ fun ProfileContent(
                 type = type,
                 token = token,
                 stateProfile = stateProfile,
+                stateUpload = stateUpload,
                 userInfo = userInfo,
                 navController = navController,
                 onLogout = { userToken ->
@@ -74,6 +78,9 @@ fun ProfileContent(
                 },
                 onSave = { user ->
                     onSave(user)
+                },
+                onUpload = { uri ->
+                    onUpload(uri)
                 },
                 intentToMap = intentToMap
             )
