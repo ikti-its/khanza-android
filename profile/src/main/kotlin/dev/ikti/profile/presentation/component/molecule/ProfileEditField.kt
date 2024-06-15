@@ -1,5 +1,6 @@
 package dev.ikti.profile.presentation.component.molecule
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -37,6 +38,7 @@ fun ProfileEditField(
     modifier: Modifier = Modifier,
     field: String = "",
     placeholder: String = "",
+    onAlamatClick: () -> Unit = {},
     onValueChange: (String, Boolean) -> Unit
 ) {
     var value by rememberSaveable { mutableStateOf("") }
@@ -52,15 +54,17 @@ fun ProfileEditField(
                 FIELD_TYPE_EMAIL -> {
                     isError = validateEmail(input)
                 }
+
                 FIELD_TYPE_PASSWORD -> {
                     isError = validateInput(input, MINIMUM_PASSWORD_LENGTH, MAXIMUM_PASSWORD_LENGTH)
                 }
+
                 else -> {}
             }
 
             onValueChange(input, isError)
         },
-        modifier = modifier.fillMaxWidth(),
+        modifier = if (field == FIELD_TYPE_ALAMAT) modifier.fillMaxWidth().clickable { onAlamatClick() } else modifier.fillMaxWidth(),
         enabled = when (field) {
             FIELD_TYPE_EMAIL, FIELD_TYPE_PASSWORD -> true
             else -> false
@@ -134,8 +138,15 @@ fun ProfileEditField(
             unfocusedTextColor = Color(0xFF272727),
             unfocusedLabelColor = Color(0xFF272727),
             disabledContainerColor = Color(0xFFF7F7F7),
-            disabledLabelColor = Color(0xFFC4C4C4),
-            disabledTextColor = Color(0xFFC4C4C4)
+            disabledIndicatorColor = if (field == FIELD_TYPE_ALAMAT) Color(0xFF272727) else Color(
+                0xFFC4C4C4
+            ),
+            disabledLabelColor = if (field == FIELD_TYPE_ALAMAT) Color(0xFF272727) else Color(
+                0xFFC4C4C4
+            ),
+            disabledTextColor = if (field == FIELD_TYPE_ALAMAT) Color(0xFF272727) else Color(
+                0xFFC4C4C4
+            )
         ),
     )
 }

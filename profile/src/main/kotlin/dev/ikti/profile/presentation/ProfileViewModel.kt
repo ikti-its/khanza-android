@@ -1,15 +1,16 @@
 package dev.ikti.profile.presentation
 
-import android.annotation.SuppressLint
 import android.app.Application
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.data.local.entity.LocalUserEntity
 import dev.ikti.core.domain.model.user.UserInfo
@@ -20,7 +21,6 @@ import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.UpdateLocalUserUseCase
-import dev.ikti.core.util.LocationState
 import dev.ikti.core.util.UIState
 import dev.ikti.core.util.file.FileConstant.ERR_UNAUTHORIZED
 import dev.ikti.core.util.file.FileConstant.ERR_UNSUPPORTED
@@ -47,6 +47,7 @@ class ProfileViewModel @Inject constructor(
     private val clearUserTokenUseCase: ClearUserTokenUseCase,
     private val deleteLocalUserUseCase: DeleteLocalUserUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
+    private val geocoder: Geocoder,
     private val getLocalUserUseCase: GetLocalUserUseCase,
     private val getLocalUserInfoUseCase: GetLocalUserInfoUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase,
@@ -71,9 +72,9 @@ class ProfileViewModel @Inject constructor(
         MutableStateFlow(UIState.Empty)
     val stateUpload: StateFlow<UIState<String>> = _stateUpload
 
-    private val _stateLocation: MutableStateFlow<LocationState> =
-        MutableStateFlow(LocationState.Loading)
-    val stateLocation: StateFlow<LocationState> = _stateLocation
+    private val _stateLocation: MutableStateFlow<UIState<Address>> =
+        MutableStateFlow(UIState.Empty)
+    val stateLocation: StateFlow<UIState<Address>> = _stateLocation
 
     private val _userInfo =
         mutableStateOf(
@@ -234,16 +235,32 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("MissingPermission")
-    fun getLocation() {
-        _stateLocation.value = LocationState.Loading
-        fusedLocationProviderClient
-            .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
-            .addOnSuccessListener { location ->
-                _stateLocation.value =
-                    if (location == null) LocationState.Error else LocationState.Success(
-                        LatLng(location.latitude, location.longitude)
-                    )
+    fun getMarkerAddress(lat: Double, lon: Double) {
+        _stateLocation.value = UIState.Loading
+        try {
+            if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(
+                    lat,
+                    lon,
+                    1
+                ) { addresses ->
+                    _stateLocation.value = UIState.Success(addresses[0])
+                }
+            } else {
+                val addresses = geocoder.getFromLocation(
+                    lat,
+                    lon,
+                    1
+                )
+
+                _stateLocation.value = if (!addresses.isNullOrEmpty()) {
+                    UIState.Success(addresses[0])
+                } else {
+                    UIState.Error("NullAddress")
+                }
             }
+        } catch (_: Exception) {
+            _stateLocation.value = UIState.Error(ERR_UNKNOWN_ERROR)
+        }
     }
 }

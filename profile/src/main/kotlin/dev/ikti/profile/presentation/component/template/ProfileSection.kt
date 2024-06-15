@@ -1,5 +1,6 @@
 package dev.ikti.profile.presentation.component.template
 
+import android.location.Address
 import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
@@ -27,11 +28,13 @@ fun ProfileSection(
     token: String = "",
     stateProfile: UIState<Unit> = UIState.Empty,
     stateUpload: UIState<String> = UIState.Empty,
+    stateLocation: UIState<Address> = UIState.Empty,
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
     onLogout: (String) -> Unit = {},
     onSave: (ProfileRequest) -> Unit = {},
     onUpload: (Uri) -> Unit = {},
+    onMarkerSearch: (Double, Double) -> Unit = { _, _ -> },
     intentToMap: (String) -> Unit = {}
 ) {
     Column(
@@ -108,6 +111,8 @@ fun ProfileSection(
                     if (!userInfo.alamatLat.isNaN() && !userInfo.alamatLon.isNaN()) {
                         ProfileEdit(
                             stateUpload = stateUpload,
+                            stateLocation = stateLocation,
+                            foto = userInfo.foto,
                             akun = userInfo.akun,
                             email = userInfo.email,
                             role = userInfo.role,
@@ -116,9 +121,13 @@ fun ProfileSection(
                             alamatLon = userInfo.alamatLon,
                             onSave = { user ->
                                 onSave(user)
+                                navController.navigateUp()
                             },
                             onUpload = { uri ->
                                 onUpload(uri)
+                            },
+                            onMarkerSearch = { lat, lon ->
+                                onMarkerSearch(lat, lon)
                             }
                         )
                     } else {

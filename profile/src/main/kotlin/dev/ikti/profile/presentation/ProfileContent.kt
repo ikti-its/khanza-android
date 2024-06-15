@@ -1,5 +1,6 @@
 package dev.ikti.profile.presentation
 
+import android.location.Address
 import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
@@ -34,11 +35,13 @@ fun ProfileContent(
     stateProfile: UIState<Unit> = UIState.Empty,
     stateLogout: UIState<Unit> = UIState.Empty,
     stateUpload: UIState<String> = UIState.Empty,
+    stateLocation: UIState<Address> = UIState.Empty,
     userInfo: UserInfo,
     navController: NavHostController = rememberNavController(),
     onLogout: (String) -> Unit = {},
     onSave: (ProfileRequest) -> Unit = {},
     onUpload: (Uri) -> Unit = {},
+    onMarkerSearch: (Double, Double) -> Unit = { _, _ -> },
     intentToMap: (String) -> Unit
 ) {
     MainScaffold(
@@ -71,6 +74,7 @@ fun ProfileContent(
                 token = token,
                 stateProfile = stateProfile,
                 stateUpload = stateUpload,
+                stateLocation = stateLocation,
                 userInfo = userInfo,
                 navController = navController,
                 onLogout = { userToken ->
@@ -81,6 +85,9 @@ fun ProfileContent(
                 },
                 onUpload = { uri ->
                     onUpload(uri)
+                },
+                onMarkerSearch = { lat, lon ->
+                    onMarkerSearch(lat, lon)
                 },
                 intentToMap = intentToMap
             )

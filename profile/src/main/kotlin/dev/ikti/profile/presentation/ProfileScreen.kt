@@ -20,6 +20,7 @@ fun ProfileScreen(
     val stateProfile by viewModel.stateProfile.collectAsState(UIState.Empty)
     val stateLogout by viewModel.stateLogout.collectAsState(UIState.Empty)
     val stateUpload by viewModel.stateUpload.collectAsState(UIState.Empty)
+    val stateLocation by viewModel.stateLocation.collectAsState(UIState.Empty)
     val userInfo by viewModel.userInfo
 
     LaunchedEffect(token) {
@@ -35,6 +36,7 @@ fun ProfileScreen(
         stateProfile = stateProfile,
         stateLogout = stateLogout,
         stateUpload = stateUpload,
+        stateLocation = stateLocation,
         userInfo = userInfo,
         navController = navController,
         onLogout = { userToken ->
@@ -45,6 +47,9 @@ fun ProfileScreen(
         },
         onUpload = { uri ->
             viewModel.uploadImage(token, uri)
+        },
+        onMarkerSearch = { lat, lon ->
+            viewModel.getMarkerAddress(lat, lon)
         },
         intentToMap = intentToMap
     )
