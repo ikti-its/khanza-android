@@ -38,14 +38,17 @@ import dev.ikti.pegawai.data.model.PegawaiResponse
 
 @Composable
 fun DataContent(
+    token: String,
     stateData: UIState<PegawaiResponse>,
     getData: () -> Unit,
     navController: NavHostController
 ) {
     val verticalScrollState = rememberScrollState()
 
-    LaunchedEffect("") {
-        getData()
+    LaunchedEffect(token) {
+        if (token != "") {
+            getData()
+        }
     }
 
     MainScaffold(

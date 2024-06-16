@@ -29,6 +29,7 @@ fun PegawaiScreen(
 
         "Data" -> {
             DataContent(
+                token = token,
                 stateData = stateData,
                 getData = { viewModel.getPegawai(token) },
                 navController = navController
