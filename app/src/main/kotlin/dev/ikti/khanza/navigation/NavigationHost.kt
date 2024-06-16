@@ -4,6 +4,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,7 @@ import dev.ikti.core.util.SetSystemUI
 import dev.ikti.home.presentation.HomeScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
 import dev.ikti.onboarding.presentation.splash.AppSplashScreen
+import dev.ikti.pegawai.presentation.PegawaiScreen
 import dev.ikti.profile.presentation.ProfileScreen
 
 @Composable
@@ -158,7 +160,31 @@ fun NavigationHost(
 
         // Pegawai
         composable(
-            route = CScreen.Pegawai.route
-        ) {}
+            route = CScreen.Pegawai.route,
+            arguments = listOf(
+                navArgument("role") {
+                    type = NavType.StringType
+                },
+                navArgument("feature") {
+                    type = NavType.StringType
+                }
+            ),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { fadeOut(spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)) }
+        ) {
+            val role = it.arguments?.getString("role") ?: "Pegawai"
+            val feature = it.arguments?.getString("feature") ?: "View"
+            SetSystemUI(
+                Color(0xFF0A2D27),
+                Color(0xFFFFFFFF),
+                lightStatusBar = false,
+                fullScreen = false
+            )
+            PegawaiScreen(
+                role = role,
+                feature = feature,
+                navController = navController
+            )
+        }
     }
 }
