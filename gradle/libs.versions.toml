@@ -8,17 +8,17 @@ versionName = "1.0"
 compose = "1.5.1"
 
 # App
-agp = "8.4.0"
+agp = "8.4.1"
 kotlin = "1.9.0"
 ksp = "1.9.0-1.0.13"
 material = "1.6.7"
 
 # Jetpack
 coreKtx = "1.13.1"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
-appCompat = "1.6.1"
+appCompat = "1.7.0"
 navigation = "2.7.7"
 
 # Permissions
@@ -80,9 +80,6 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 # DataStore
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
-# Lottie
-lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
-
 # Coil
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
@@ -91,15 +88,10 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
 
-# Paging
-androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
-androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
-
 # Network
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
-
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
