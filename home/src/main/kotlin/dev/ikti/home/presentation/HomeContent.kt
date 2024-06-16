@@ -34,6 +34,7 @@ fun HomeContent(
     stateHome: UIState<Unit> = UIState.Empty,
     stateLogout: UIState<Unit> = UIState.Empty,
     token: String,
+    role: String = "Pegawai",
     userNama: String = "PENGGUNA",
     userStatus: Boolean = false,
     userMasuk: String = "08:00",
@@ -81,6 +82,7 @@ fun HomeContent(
                     HomeFeatureGrid(
                         modifier = modifier,
                         token = token,
+                        role = role,
                         navController = navController
                     )
                 }

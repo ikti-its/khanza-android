@@ -56,6 +56,7 @@ fun HomeScreen(
         stateHome = stateHome,
         stateLogout = stateLogout,
         token = userToken,
+        role = userHome.role,
         userNama = userHome.nama,
         userStatus = userHome.status,
         userMasuk = userHome.jamMasuk,

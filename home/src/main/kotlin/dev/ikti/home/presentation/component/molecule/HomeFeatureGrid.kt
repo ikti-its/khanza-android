@@ -25,6 +25,7 @@ import dev.ikti.home.presentation.component.atom.HomeFeatureLabel
 fun HomeFeatureGrid(
     modifier: Modifier,
     token: String,
+    role: String,
     navController: NavHostController
 ) {
     Box(
@@ -73,7 +74,7 @@ fun HomeFeatureGrid(
                     iconColor = Color.Unspecified,
                     onClick = {
                         navController.navigate(
-                            CScreen.Pegawai.route
+                            CScreen.Pegawai.route.replace("{role}", role).replace("{feature}", "View")
                         )
                     }
                 )
@@ -105,6 +106,7 @@ fun HomeFeatureGridPreview() {
         HomeFeatureGrid(
             modifier = Modifier,
             token = "",
+            role = "",
             navController = rememberNavController()
         )
     }
