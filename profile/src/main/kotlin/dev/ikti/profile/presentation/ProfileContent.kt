@@ -62,7 +62,7 @@ fun ProfileContent(
                         "edit" -> AkunScreen.Edit.title
                         else -> "Profil"
                     }
-                ) { navController.popBackStack() }
+                ) { navController.navigateUp() }
             }
         },
         background = Color(0xFFF7F7F7)
