@@ -1,7 +1,5 @@
 package dev.ikti.home.presentation
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,34 +36,9 @@ class HomeViewModel @Inject constructor(
     private val _userToken = MutableStateFlow("")
     val userToken: StateFlow<String> = _userToken
 
-    private val _stateHome: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
-    val stateHome: StateFlow<UIState<Unit>> = _stateHome
-
-    private val _stateLogout: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
-    val stateLogout: StateFlow<UIState<Unit>> = _stateLogout
-
-    private val _userHome =
-        mutableStateOf(
-            HomeResponse(
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                -7.2821,
-                112.7949,
-                "",
-                "",
-                "",
-                "",
-                false
-            )
-        )
-    val userHome: State<HomeResponse> get() = _userHome
+    private val _stateHome: MutableStateFlow<UIState<HomeResponse>> =
+        MutableStateFlow(UIState.Empty)
+    val stateHome: StateFlow<UIState<HomeResponse>> = _stateHome
 
     fun getUserToken(state: Unit) {
         viewModelScope.launch {
@@ -79,55 +52,36 @@ class HomeViewModel @Inject constructor(
     fun getUserHome(token: String) {
         _stateHome.value = UIState.Loading
         val today = retrieveDate()
-
         viewModelScope.launch {
             try {
                 delay(500L)
                 val response = homeUseCase.execute(token, today)
-                response.collect { home ->
-                    _userHome.value = HomeResponse(
-                        home.data.akun,
-                        home.data.pegawai,
-                        home.data.nama,
-                        home.data.nip,
-                        home.data.role,
-                        home.data.email,
-                        home.data.telepon,
-                        home.data.profil,
-                        home.data.alamat,
-                        home.data.alamatLat,
-                        home.data.alamatLon,
-                        home.data.foto,
-                        home.data.shift,
-                        home.data.jamMasuk,
-                        home.data.jamPulang,
-                        home.data.status
-                    )
+                response.collect { res ->
+                    val home = res.data
+                    _stateHome.value = UIState.Success(home)
+
+                    try {
+                        val user = LocalUserEntity(
+                            token,
+                            home.akun,
+                            home.pegawai,
+                            home.nama,
+                            home.nip,
+                            home.role,
+                            home.email,
+                            home.telepon,
+                            home.profil,
+                            home.alamat,
+                            home.alamatLat,
+                            home.alamatLon,
+                            home.foto,
+                        )
+
+                        insertLocalUserUseCase.execute(user)
+                    } catch (_: Exception) {
+                        _stateHome.value = UIState.Error(ERR_FAILED_TO_INSERT_USER)
+                    }
                 }
-
-                try {
-                    val user = LocalUserEntity(
-                        token,
-                        _userHome.value.akun,
-                        _userHome.value.pegawai,
-                        _userHome.value.nama,
-                        _userHome.value.nip,
-                        _userHome.value.role,
-                        _userHome.value.email,
-                        _userHome.value.telepon,
-                        _userHome.value.profil,
-                        _userHome.value.alamat,
-                        _userHome.value.alamatLat,
-                        _userHome.value.alamatLon,
-                        _userHome.value.foto,
-                    )
-
-                    insertLocalUserUseCase.execute(user)
-                } catch (_: Exception) {
-                    _stateHome.value = UIState.Error(ERR_FAILED_TO_INSERT_USER)
-                }
-
-                _stateHome.value = UIState.Success(Unit)
             } catch (e: Exception) {
                 when (e) {
                     HomeException.AccountUnauthorizedException -> _stateHome.value = UIState.Error(
@@ -144,6 +98,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun userLogout(token: String) {
+        viewModelScope.launch {
+            val response = getLocalUserUseCase.execute(token)
+            response.collect { data ->
+                deleteLocalUserUseCase.execute(data)
+                clearUserTokenUseCase.execute(Unit)
+                delay(500L)
+            }
+        }
+    }
+
     private fun retrieveDate(): String {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -151,24 +116,5 @@ class HomeViewModel @Inject constructor(
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         return String.format("%04d-%02d-%02d", year, month, day)
-    }
-
-    fun userLogout(token: String) {
-        _stateLogout.value = UIState.Loading
-
-        viewModelScope.launch {
-            try {
-                val response = getLocalUserUseCase.execute(token)
-                response.collect { data ->
-                    deleteLocalUserUseCase.execute(data)
-                    clearUserTokenUseCase.execute(Unit)
-                    delay(500L)
-                }
-
-                _stateLogout.value = UIState.Success(Unit)
-            } catch (e: Exception) {
-                _stateLogout.value = UIState.Error(ERR_UNKNOWN_ERROR)
-            }
-        }
     }
 }

@@ -32,15 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.presentation.component.Shimmer
-import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
 import dev.ikti.home.R
+import dev.ikti.home.data.model.HomeResponse
 import dev.ikti.home.presentation.component.atom.HomeHeroDetailShift
 import dev.ikti.home.presentation.component.atom.HomeHeroDetailShiftLabel
 import dev.ikti.home.presentation.component.atom.HomeHeroDetailStatus
@@ -52,42 +48,14 @@ import dev.ikti.home.presentation.component.atom.HomeHeroWelcomeText
 @Composable
 fun HomeHeroCard(
     modifier: Modifier,
-    stateHome: UIState<Unit> = UIState.Empty,
-    stateLogout: UIState<Unit> = UIState.Empty,
-    expanded: Boolean = true,
-    nama: String = "PENGGUNA",
-    status: Boolean = false,
-    masuk: String = "08:00",
-    pulang: String = "16:00",
-    navController: NavHostController = rememberNavController()
+    stateHome: UIState<HomeResponse>
 ) {
-    var isExpanded by remember { mutableStateOf(expanded) }
+    var isExpanded by remember { mutableStateOf(true) }
 
-    LaunchedEffect(stateHome, stateLogout) {
-        stateHome.let { state ->
-            isExpanded = when (state) {
-                is UIState.Success -> true
-                else -> false
-            }
-        }
-
-        stateLogout.let { state ->
-            when (state) {
-                is UIState.Success -> {
-                    navController.navigate(ModuleScreen.Onboarding.route) {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                }
-
-                UIState.Loading -> {
-                    isExpanded = false
-                }
-
-                is UIState.Error, UIState.Empty -> {}
-            }
+    LaunchedEffect(stateHome) {
+        isExpanded = when (stateHome) {
+            is UIState.Success -> true
+            else -> false
         }
     }
 
@@ -99,43 +67,50 @@ fun HomeHeroCard(
                 .background(color = Color.Unspecified)
                 .clip(RoundedCornerShape(16.dp))
                 .clickable {
-                    stateHome.let { state ->
-                        when (state) {
-                            is UIState.Success -> isExpanded = !isExpanded
-                            else -> {}
-                        }
+                    when (stateHome) {
+                        is UIState.Success -> isExpanded = !isExpanded
+                        else -> {}
                     }
                 }
                 .height(if (isExpanded) 200.dp else 120.dp)
         ) {
             Box {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(if (isExpanded) 1f else 0f)
-                        .background(color = Color(0xFF26B29D))
-                        .padding(top = 20.dp, bottom = 22.dp, start = 20.dp, end = 20.dp),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Row(
-                        modifier = modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column {
-                            HomeHeroDetailStatusLabel()
-                            Spacer(modifier = modifier.size(5.dp))
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                HomeHeroDetailStatusIndicator(status)
-                                Spacer(modifier = modifier.size(5.dp))
-                                HomeHeroDetailStatus(status)
+                when (stateHome) {
+                    is UIState.Success -> {
+                        Column(
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(if (isExpanded) 1f else 0f)
+                                .background(color = Color(0xFF26B29D))
+                                .padding(top = 20.dp, bottom = 22.dp, start = 20.dp, end = 20.dp),
+                            verticalArrangement = Arrangement.Bottom
+                        ) {
+                            Row(
+                                modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    HomeHeroDetailStatusLabel()
+                                    Spacer(modifier = modifier.size(5.dp))
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        HomeHeroDetailStatusIndicator(stateHome.data.status)
+                                        Spacer(modifier = modifier.size(5.dp))
+                                        HomeHeroDetailStatus(stateHome.data.status)
+                                    }
+                                }
+                                Column(horizontalAlignment = Alignment.End) {
+                                    HomeHeroDetailShiftLabel()
+                                    Spacer(modifier = modifier.size(5.dp))
+                                    HomeHeroDetailShift(
+                                        masuk = stateHome.data.jamMasuk,
+                                        pulang = stateHome.data.jamPulang
+                                    )
+                                }
                             }
                         }
-                        Column(horizontalAlignment = Alignment.End) {
-                            HomeHeroDetailShiftLabel()
-                            Spacer(modifier = modifier.size(5.dp))
-                            HomeHeroDetailShift(masuk = masuk, pulang = pulang)
-                        }
                     }
+
+                    else -> {}
                 }
                 Column(
                     modifier = modifier
@@ -159,36 +134,32 @@ fun HomeHeroCard(
                 ) {
                     HomeHeroWelcomeText()
                     Spacer(modifier = modifier.height(5.dp))
-                    stateHome.let { state ->
-                        when (state) {
-                            is UIState.Success -> {
-                                HomeHeroNameText(nama)
-                                Spacer(modifier = modifier.height(25.dp))
-                                Column(
-                                    modifier = modifier.fillMaxWidth(),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Icon(
-                                        if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                                        contentDescription = null,
-                                        modifier = modifier.size(28.dp),
-                                        tint = Color(0xFF0A2D27)
-                                    )
-                                }
-                            }
-
-                            is UIState.Error -> {
-                                HomeHeroNameText("Pengguna")
-                            }
-
-                            UIState.Loading, UIState.Empty -> {
-                                Shimmer(
-                                    height = 35.dp,
-                                    width = 200.dp,
-                                    shape = RoundedCornerShape(10.dp),
-                                    color = Color(0xFF26B29D)
+                    when (stateHome) {
+                        is UIState.Success -> {
+                            HomeHeroNameText(stateHome.data.nama)
+                            Spacer(modifier = modifier.height(25.dp))
+                            Column(
+                                modifier = modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                                    contentDescription = null,
+                                    modifier = modifier.size(28.dp),
+                                    tint = Color(0xFF0A2D27)
                                 )
                             }
+                        }
+
+                        is UIState.Error -> {}
+
+                        else -> {
+                            Shimmer(
+                                height = 35.dp,
+                                width = 200.dp,
+                                shape = RoundedCornerShape(10.dp),
+                                color = Color(0xFF26B29D)
+                            )
                         }
                     }
                 }
@@ -205,26 +176,5 @@ fun HomeHeroCard(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun HomeHeroCardPreviewNormalLoading() {
-    KhanzaTheme {
-        HomeHeroCard(
-            modifier = Modifier,
-            stateHome = UIState.Loading,
-            expanded = false,
-            status = false
-        )
-    }
-}
-
-@Preview
-@Composable
-fun HomeHeroCardPreviewExpandedSuccess() {
-    KhanzaTheme {
-        HomeHeroCard(modifier = Modifier, stateHome = UIState.Success(Unit), status = true)
     }
 }

@@ -17,28 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.presentation.component.template.MainScaffold
-import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.util.UIState
+import dev.ikti.home.data.model.HomeResponse
 import dev.ikti.home.presentation.component.molecule.HomeFeatureGrid
 import dev.ikti.home.presentation.component.molecule.HomeHeroCard
 
 @Composable
 fun HomeContent(
     modifier: Modifier,
-    stateHome: UIState<Unit> = UIState.Empty,
-    stateLogout: UIState<Unit> = UIState.Empty,
-    token: String,
-    role: String = "Pegawai",
-    userNama: String = "PENGGUNA",
-    userStatus: Boolean = false,
-    userMasuk: String = "08:00",
-    userPulang: String = "16:00",
+    stateHome: UIState<HomeResponse>,
+    onLogout: () -> Unit,
     navController: NavHostController
 ) {
     MainScaffold(
@@ -57,13 +48,7 @@ fun HomeContent(
             ) {
                 HomeHeroCard(
                     modifier = modifier,
-                    stateHome = stateHome,
-                    stateLogout = stateLogout,
-                    nama = userNama,
-                    status = userStatus,
-                    masuk = userMasuk,
-                    pulang = userPulang,
-                    navController = navController
+                    stateHome = stateHome
                 )
             }
             Column(
@@ -81,24 +66,15 @@ fun HomeContent(
                     Spacer(modifier = modifier.height(8.dp))
                     HomeFeatureGrid(
                         modifier = modifier,
-                        token = token,
-                        role = role,
+                        stateHome = stateHome,
                         navController = navController
                     )
                 }
             }
         }
     }
-}
 
-@Preview(showBackground = true, device = Devices.PIXEL_7_PRO)
-@Composable
-fun HomeContentPreview() {
-    KhanzaTheme {
-        HomeContent(
-            modifier = Modifier,
-            token = "",
-            navController = rememberNavController()
-        )
+    if (stateHome is UIState.Error) {
+        onLogout()
     }
 }
