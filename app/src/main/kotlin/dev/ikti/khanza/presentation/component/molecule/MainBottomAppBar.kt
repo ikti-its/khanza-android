@@ -70,8 +70,8 @@ fun MainBottomAppBarNavigation(
                         }
                     ) {
                         when (screen.route) {
-                            Nav.Profile.route -> {}
-                            Nav.Home.route, Nav.Presensi.route -> {
+                            Nav.Profile.route, Nav.Presensi.route -> {}
+                            Nav.Home.route -> {
                                 popUpTo(0) {
                                     inclusive = true
                                 }
@@ -98,7 +98,7 @@ fun MainBottomAppBarNavigation(
                     }
                 },
                 enabled = when (screen.route) {
-                    Nav.Presensi.route, Nav.Dummy.route -> false
+                    Nav.Presensi.route -> false
                     else -> true
                 },
                 label = {

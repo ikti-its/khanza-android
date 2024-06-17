@@ -89,6 +89,7 @@ dependencies {
 //  Hilt
     implementation(libs.hilt.android)
     implementation(project(":pegawai"))
+    implementation(project(":kehadiran"))
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
 }

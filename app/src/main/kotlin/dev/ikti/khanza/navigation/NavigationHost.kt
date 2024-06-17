@@ -20,6 +20,7 @@ import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.domain.model.screen.Nav
 import dev.ikti.core.util.SetSystemUI
 import dev.ikti.home.presentation.HomeScreen
+import dev.ikti.kehadiran.presentation.KehadiranScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
 import dev.ikti.onboarding.presentation.splash.AppSplashScreen
 import dev.ikti.pegawai.presentation.PegawaiScreen
@@ -155,8 +156,32 @@ fun NavigationHost(
 
         // Kehadiran
         composable(
-            route = CScreen.Kehadiran.route
-        ) {}
+            route = CScreen.Kehadiran.route,
+            arguments = listOf(
+                navArgument("role") {
+                    type = NavType.StringType
+                },
+                navArgument("feature") {
+                    type = NavType.StringType
+                }
+            ),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { fadeOut(spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)) }
+        ) {
+            val role = it.arguments?.getString("role") ?: "Pegawai"
+            val feature = it.arguments?.getString("feature") ?: "View"
+            SetSystemUI(
+                Color(0xFF0A2D27),
+                Color(0xFFFFFFFF),
+                lightStatusBar = false,
+                fullScreen = false
+            )
+            KehadiranScreen(
+                role = role,
+                feature = feature,
+                navController = navController
+            )
+        }
 
         // Pegawai
         composable(
