@@ -172,7 +172,7 @@ fun NavigationHost(
             val feature = it.arguments?.getString("feature") ?: "View"
             SetSystemUI(
                 Color(0xFF0A2D27),
-                Color(0xFFFFFFFF),
+                Color(0xFFF7F7F7),
                 lightStatusBar = false,
                 fullScreen = false
             )
@@ -201,7 +201,7 @@ fun NavigationHost(
             val feature = it.arguments?.getString("feature") ?: "View"
             SetSystemUI(
                 Color(0xFF0A2D27),
-                Color(0xFFFFFFFF),
+                Color(0xFFF7F7F7),
                 lightStatusBar = false,
                 fullScreen = false
             )
