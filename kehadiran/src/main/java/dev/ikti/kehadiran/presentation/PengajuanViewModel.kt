@@ -29,6 +29,10 @@ class PengajuanViewModel @Inject constructor(
         MutableStateFlow(UIState.Empty)
     val statePengajuan: StateFlow<UIState<PengajuanResponse>> = _statePengajuan
 
+    private val _stateStatus: MutableStateFlow<UIState<List<PengajuanResponse>>> =
+        MutableStateFlow(UIState.Empty)
+    val stateStatus: StateFlow<UIState<List<PengajuanResponse>>> = _stateStatus
+
     fun createPengajuan(token: String, ajuan: PengajuanRequest) {
         _statePengajuan.value = UIState.Loading
         viewModelScope.launch {
@@ -39,6 +43,20 @@ class PengajuanViewModel @Inject constructor(
                 }
             } catch (_: Exception) {
                 _statePengajuan.value = UIState.Error(ERR_UNKNOWN_ERROR)
+            }
+        }
+    }
+
+    fun getByPegawaiId(token: String, id: String) {
+        _stateStatus.value = UIState.Loading
+        viewModelScope.launch {
+            try {
+                val response = pengajuanGetByPegawaiIdUseCase.execute(token, id)
+                response.collect { pengajuanList ->
+                    _stateStatus.value = UIState.Success(pengajuanList.data)
+                }
+            } catch (_: Exception) {
+                _stateStatus.value = UIState.Error(ERR_UNKNOWN_ERROR)
             }
         }
     }

@@ -1,5 +1,6 @@
 package dev.ikti.kehadiran.presentation
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePickerDefaults
@@ -47,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -59,14 +62,15 @@ import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
 import dev.ikti.core.util.convertMillisToDate
 import dev.ikti.core.util.formatDateString
+import dev.ikti.core.util.showToast
 import dev.ikti.kehadiran.data.model.PengajuanRequest
 import dev.ikti.kehadiran.data.model.PengajuanResponse
 
 @Composable
 fun PengajuanContent(
+    context: Context = LocalContext.current,
     pegawai: String,
     statePengajuan: UIState<PengajuanResponse>,
-    getPegawai: () -> Unit,
     createAjuan: (PengajuanRequest) -> Unit,
     navController: NavHostController
 ) {
@@ -85,7 +89,7 @@ fun PengajuanContent(
         "Cuti Tahunan",
         "Cuti Besar",
         "Cuti Melahirkan",
-        "Cuti karena Alasan Penting"
+        "Cuti Karena Alasan Penting"
     )
     var isAlasanExpanded by remember { mutableStateOf(false) }
     var alasan by remember { mutableStateOf(alasanList[0]) }
@@ -175,6 +179,9 @@ fun PengajuanContent(
                             .clickable {
                                 isDateModalHidden = false
                             },
+                        trailingIcon = {
+                            Icon(imageVector = Icons.Rounded.DateRange, contentDescription = null)
+                        },
                         enabled = false,
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -208,6 +215,9 @@ fun PengajuanContent(
                             .clickable {
                                 isDateModalHidden = false
                             },
+                        trailingIcon = {
+                            Icon(imageVector = Icons.Rounded.DateRange, contentDescription = null)
+                        },
                         enabled = false,
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -299,6 +309,9 @@ fun PengajuanContent(
                                 "Diproses"
                             )
                             createAjuan(ajuan)
+                            navController.navigateUp()
+                        } else {
+                            showToast(context, "Lengkapi terlebih dahulu!")
                         }
                     },
                     modifier = Modifier
@@ -406,19 +419,18 @@ fun PengajuanContent(
 
     when (statePengajuan) {
         is UIState.Success -> {
-            // Toast berhasil
-            navController.navigateUp()
+            showToast(context, "Berhasil mengajukan perizinan")
         }
 
         is UIState.Error -> {
-            // Toast error
+            showToast(context, "Gagal mengajukan perizinan")
         }
 
         UIState.Loading -> {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFF272727).copy(alpha = 0.25f))
+                    .background(Color(0xFF272727).copy(alpha = 0.5f))
             ) {
                 LinearProgressIndicator(
                     modifier = Modifier.fillMaxWidth(),
