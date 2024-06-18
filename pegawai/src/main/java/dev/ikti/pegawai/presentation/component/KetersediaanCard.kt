@@ -1,15 +1,19 @@
 package dev.ikti.pegawai.presentation.component
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -23,7 +27,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -53,6 +56,7 @@ import dev.ikti.pegawai.domain.model.Ketersediaan
 
 @Composable
 fun KetersediaanCard(
+    context: Context,
     ketersediaan: Ketersediaan
 ) {
     var isExpanded by remember { mutableStateOf(ketersediaan.isExpanded) }
@@ -64,7 +68,7 @@ fun KetersediaanCard(
             containerColor = Color(0xFFF6F6F6)
         ),
         modifier = Modifier
-            .animateContentSize(spring(Spring.DampingRatioMediumBouncy, Spring.StiffnessLow))
+            .animateContentSize(spring(Spring.DampingRatioNoBouncy, Spring.StiffnessLow))
             .fillMaxWidth()
             .clickable {
                 isExpanded = !isExpanded
@@ -136,9 +140,7 @@ fun KetersediaanCard(
                 Spacer(Modifier.height(8.dp))
                 AnimatedVisibility(
                     visible = isExpanded,
-                    enter = fadeIn(
-                        animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
-                    ),
+                    enter = EnterTransition.None,
                     exit = ExitTransition.None
                 ) {
                     Column {
@@ -163,26 +165,6 @@ fun KetersediaanCard(
                                 )
                                 Spacer(Modifier.height(16.dp))
                                 Text(
-                                    text = "Jabatan",
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    text = ketersediaan.jabatan,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                            }
-                            Spacer(Modifier.width(100.dp))
-                            Column {
-                                Text(
                                     text = "No. Telepon",
                                     style = TextStyle(
                                         fontWeight = FontWeight.SemiBold,
@@ -193,6 +175,26 @@ fun KetersediaanCard(
                                 Spacer(Modifier.height(4.dp))
                                 Text(
                                     text = ketersediaan.telepon,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                            }
+                            Spacer(Modifier.width(100.dp))
+                            Column {
+                                Text(
+                                    text = "Jabatan",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    text = ketersediaan.jabatan,
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
@@ -240,9 +242,50 @@ fun KetersediaanCard(
                         Spacer(Modifier.height(16.dp))
                     }
                 }
+                AnimatedVisibility(
+                    visible = !ketersediaan.available,
+                    enter = EnterTransition.None,
+                    exit = ExitTransition.None
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(8.dp)
+                                .height(8.dp)
+                                .clip(RoundedCornerShape(30.dp))
+                                .background(color = Color(0xFFDA4141))
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            text = "Pegawai sedang cuti",
+                            style = TextStyle(
+                                color = Color(0xFFDA4141),
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
+                    Spacer(Modifier.height(24.dp))
+                }
                 Button(
                     onClick = {
-                        /* WHATSAPP INTENT */
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(
+                                    String.format(
+                                        "https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        "+62 ${ketersediaan.telepon.drop(1)}",
+                                        "Kami butuh Anda di rumah sakit, apakah Anda bisa hadir?"
+                                    )
+                                )
+                            )
+                        )
                     },
                     modifier = Modifier
                         .height(48.dp)
@@ -265,11 +308,17 @@ fun KetersediaanCard(
                     )
                 }
                 Spacer(Modifier.height(8.dp))
-                Icon(
-                    imageVector = if (isExpanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
-                    contentDescription = null,
-                    tint = Color(0xFF292D32)
-                )
+                AnimatedVisibility(
+                    visible = !isExpanded,
+                    enter = EnterTransition.None,
+                    exit = ExitTransition.None
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = Color(0xFF292D32)
+                    )
+                }
             }
         }
     }

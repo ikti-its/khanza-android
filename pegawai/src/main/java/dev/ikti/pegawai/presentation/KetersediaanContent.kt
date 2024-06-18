@@ -1,5 +1,6 @@
 package dev.ikti.pegawai.presentation
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,12 +44,14 @@ import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
+import dev.ikti.core.util.showToast
 import dev.ikti.pegawai.domain.model.Ketersediaan
 import dev.ikti.pegawai.presentation.component.KetersediaanCard
 import kotlinx.coroutines.delay
 
 @Composable
 fun KetersediaanContent(
+    context: Context = LocalContext.current,
     stateKetersediaan: UIState<List<Ketersediaan>>,
     onQuery: (String) -> Unit,
     navController: NavHostController
@@ -111,7 +115,9 @@ fun KetersediaanContent(
                         onValueChange = { input ->
                             query = input
                         },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
                         textStyle = TextStyle(
                             fontWeight = FontWeight.Medium,
                             fontSize = 18.sp,
@@ -138,8 +144,8 @@ fun KetersediaanContent(
                         singleLine = true,
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color(0xFFF6F6F6),
-                            focusedContainerColor = Color(0xFFF6F6F6),
+                            unfocusedContainerColor = Color(0xFFF1F1F1),
+                            focusedContainerColor = Color(0xFFF1F1F1),
                             unfocusedBorderColor = Color(0xFFE5E7EB),
                             focusedBorderColor = Color(0xFFE5E7EB)
                         )
@@ -160,14 +166,14 @@ fun KetersediaanContent(
                         state = lazyListState
                     ) {
                         items(items = stateKetersediaan.data) { ketersediaan ->
-                            KetersediaanCard(ketersediaan = ketersediaan)
+                            KetersediaanCard(context = context, ketersediaan = ketersediaan)
                             Spacer(Modifier.height(16.dp))
                         }
                     }
                 }
 
                 is UIState.Error -> {
-
+                    showToast(context, "Gagal memuat ketersediaan pegawai")
                 }
 
                 else -> {
@@ -178,6 +184,20 @@ fun KetersediaanContent(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Spacer(Modifier.height(24.dp))
+                        Shimmer(
+                            height = 175.dp,
+                            width = 370.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Shimmer(
+                            height = 175.dp,
+                            width = 370.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Spacer(Modifier.height(16.dp))
                         Shimmer(
                             height = 175.dp,
                             width = 370.dp,

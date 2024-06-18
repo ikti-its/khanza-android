@@ -9,6 +9,6 @@ data class Ketersediaan(
     val departemen: String,
     val alamat: String,
     val distance: Double,
-    val available: String,
+    val available: Boolean,
     val isExpanded: Boolean
 )

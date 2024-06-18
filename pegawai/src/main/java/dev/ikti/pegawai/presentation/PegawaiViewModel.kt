@@ -34,11 +34,7 @@ class PegawaiViewModel @Inject constructor(
     private val _stateData: MutableStateFlow<UIState<PegawaiResponse>> =
         MutableStateFlow(UIState.Empty)
     val stateData: StateFlow<UIState<PegawaiResponse>> = _stateData
-
-    private val _stateDaftar: MutableStateFlow<UIState<List<PegawaiResponse>>> =
-        MutableStateFlow(UIState.Empty)
-    val stateDaftar: StateFlow<UIState<List<PegawaiResponse>>> = _stateDaftar
-
+    
     private val _stateKetersediaan: MutableStateFlow<UIState<List<Ketersediaan>>> =
         MutableStateFlow(UIState.Empty)
     val stateKetersediaan: StateFlow<UIState<List<Ketersediaan>>> = _stateKetersediaan

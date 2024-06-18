@@ -22,5 +22,5 @@ data class KetersediaanResponse(
     @SerializedName("longitude")
     val longitude: Double,
     @SerializedName("available")
-    val available: String
+    val available: Boolean
 )

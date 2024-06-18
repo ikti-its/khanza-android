@@ -190,48 +190,6 @@ fun ViewContent(
                                     onClick = {
                                         navController.navigate(
                                             CScreen.Pegawai.route.replace("{role}", role)
-                                                .replace("{feature}", "Daftar")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_pegawai_daftar),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Daftar\nPegawai",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                            Spacer(Modifier.width(16.dp))
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            CScreen.Pegawai.route.replace("{role}", role)
                                                 .replace("{feature}", "Ketersediaan")
                                         )
                                     }

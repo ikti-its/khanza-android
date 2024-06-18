@@ -16,7 +16,6 @@ fun PegawaiScreen(
 ) {
     val token by viewModel.token.collectAsState()
     val stateData by viewModel.stateData.collectAsState()
-    val stateDaftar by viewModel.stateDaftar.collectAsState()
     val stateKetersediaan by viewModel.stateKetersediaan.collectAsState()
 
     when (feature) {
@@ -32,13 +31,6 @@ fun PegawaiScreen(
                 token = token,
                 stateData = stateData,
                 getData = { viewModel.getPegawai(token) },
-                navController = navController
-            )
-        }
-
-        "Daftar" -> {
-            DaftarContent(
-                stateDaftar = stateDaftar,
                 navController = navController
             )
         }
