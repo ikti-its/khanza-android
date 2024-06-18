@@ -1,7 +1,6 @@
 package dev.ikti.auth.presentation.component.organism
 
 import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.auth.presentation.component.atom.LoginForgotText
 import dev.ikti.auth.presentation.component.molecule.LoginFormField
 import dev.ikti.auth.presentation.component.molecule.LoginSubmitButton
 import dev.ikti.auth.util.AuthConstant.ERR_EMPTY_EMAIL
@@ -51,13 +49,6 @@ fun LoginForm(
                 password = value
                 isPasswordError = error
             }
-        }
-        Spacer(modifier = modifier.size(30.dp))
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            LoginForgotText()
         }
         Spacer(modifier = modifier.size(30.dp))
         Row(modifier = modifier.fillMaxWidth()) {
