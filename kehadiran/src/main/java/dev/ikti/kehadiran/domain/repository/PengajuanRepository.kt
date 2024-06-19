@@ -1,6 +1,7 @@
 package dev.ikti.kehadiran.domain.repository
 
 import dev.ikti.core.data.model.BaseResponse
+import dev.ikti.kehadiran.data.model.PegawaiResponse
 import dev.ikti.kehadiran.data.model.PengajuanRequest
 import dev.ikti.kehadiran.data.model.PengajuanResponse
 import kotlinx.coroutines.flow.Flow
@@ -15,11 +16,6 @@ interface PengajuanRepository {
         token: String
     ): Flow<BaseResponse<List<PengajuanResponse>>>
 
-    suspend fun getById(
-        token: String,
-        id: String,
-    ): Flow<BaseResponse<PengajuanResponse>>
-
     suspend fun getByPegawaiId(
         token: String,
         id: String,
@@ -30,4 +26,9 @@ interface PengajuanRepository {
         id: String,
         ajuan: PengajuanRequest
     ): Flow<BaseResponse<PengajuanResponse>>
+
+    suspend fun getPegawai(
+        token: String,
+        id: String
+    ): Flow<BaseResponse<PegawaiResponse>>
 }

@@ -20,6 +20,8 @@ fun KehadiranScreen(
     val pegawai by viewModel.pegawai.collectAsState()
     val statePengajuan by pengajuanViewModel.statePengajuan.collectAsState()
     val stateStatus by pengajuanViewModel.stateStatus.collectAsState()
+    val statePeninjauanList by pengajuanViewModel.statePeninjauanList.collectAsState()
+    val stateUpdate by pengajuanViewModel.stateUpdate.collectAsState()
 
     LaunchedEffect(token) {
         if (token != "") {
@@ -63,6 +65,15 @@ fun KehadiranScreen(
             )
         }
 
-        "Peninjauan" -> {}
+        "Peninjauan" -> {
+            PeninjauanContent(
+                token = token,
+                statePeninjauanList = statePeninjauanList,
+                stateUpdate = stateUpdate,
+                getData = { pengajuanViewModel.getAll(it) },
+                updateStatus = { id, ajuan -> pengajuanViewModel.updateStatus(token, id, ajuan) },
+                navController = navController
+            )
+        }
     }
 }

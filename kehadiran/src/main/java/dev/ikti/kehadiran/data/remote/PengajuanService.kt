@@ -1,6 +1,7 @@
 package dev.ikti.kehadiran.data.remote
 
 import dev.ikti.core.data.model.BaseResponse
+import dev.ikti.kehadiran.data.model.PegawaiResponse
 import dev.ikti.kehadiran.data.model.PengajuanRequest
 import dev.ikti.kehadiran.data.model.PengajuanResponse
 import retrofit2.http.Body
@@ -21,13 +22,7 @@ interface PengajuanService {
     suspend fun getAll(
         @Header("Authorization") token: String
     ): BaseResponse<List<PengajuanResponse>>
-
-    @GET("kehadiran/cuti/{id}")
-    suspend fun getById(
-        @Header("Authorization") token: String,
-        @Path("id") id: String,
-    ): BaseResponse<PengajuanResponse>
-
+    
     @GET("kehadiran/cuti/pegawai/{id}")
     suspend fun getByPegawaiId(
         @Header("Authorization") token: String,
@@ -40,4 +35,10 @@ interface PengajuanService {
         @Path("id") id: String,
         @Body ajuan: PengajuanRequest
     ): BaseResponse<PengajuanResponse>
+
+    @GET("pegawai/{id}")
+    suspend fun getPegawai(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): BaseResponse<PegawaiResponse>
 }
