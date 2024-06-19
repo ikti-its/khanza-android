@@ -284,7 +284,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_status),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )
@@ -491,7 +491,7 @@ fun ViewContent(
                                     onClick = {
                                         navController.navigate(
                                             CScreen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Peninjauan")
+                                                .replace("{feature}", "Status")
                                         )
                                     }
                                 ) {
@@ -508,7 +508,7 @@ fun ViewContent(
                                 }
                                 Spacer(Modifier.height(6.dp))
                                 Text(
-                                    text = "Peninjauan\nPerizinan",
+                                    text = "Status\nPengajuan",
                                     color = Color(0xFF0C203C),
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
@@ -533,7 +533,7 @@ fun ViewContent(
                                     onClick = {
                                         navController.navigate(
                                             CScreen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Status")
+                                                .replace("{feature}", "Peninjauan")
                                         )
                                     }
                                 ) {
@@ -550,7 +550,7 @@ fun ViewContent(
                                 }
                                 Spacer(Modifier.height(6.dp))
                                 Text(
-                                    text = "Status\nPengajuan",
+                                    text = "Peninjauan\nPerizinan",
                                     color = Color(0xFF0C203C),
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
