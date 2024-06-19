@@ -9,9 +9,11 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +29,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -59,6 +62,7 @@ fun KetersediaanCard(
     context: Context,
     ketersediaan: Ketersediaan
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     var isExpanded by remember { mutableStateOf(ketersediaan.isExpanded) }
     val distance = Math.round(ketersediaan.distance * 100.0) / 100.0
 
@@ -70,7 +74,7 @@ fun KetersediaanCard(
         modifier = Modifier
             .animateContentSize(spring(Spring.DampingRatioNoBouncy, Spring.StiffnessLow))
             .fillMaxWidth()
-            .clickable {
+            .clickable(interactionSource = interactionSource, indication = null) {
                 isExpanded = !isExpanded
             }
             .height(if (isExpanded) IntrinsicSize.Max else IntrinsicSize.Min)
@@ -140,7 +144,7 @@ fun KetersediaanCard(
                 Spacer(Modifier.height(8.dp))
                 AnimatedVisibility(
                     visible = isExpanded,
-                    enter = EnterTransition.None,
+                    enter = fadeIn(),
                     exit = ExitTransition.None
                 ) {
                     Column {
@@ -308,17 +312,30 @@ fun KetersediaanCard(
                     )
                 }
                 Spacer(Modifier.height(8.dp))
-                AnimatedVisibility(
-                    visible = !isExpanded,
-                    enter = EnterTransition.None,
-                    exit = ExitTransition.None
-                ) {
+                if (!isExpanded) {
                     Icon(
                         imageVector = Icons.Outlined.KeyboardArrowDown,
                         contentDescription = null,
                         tint = Color(0xFF292D32)
                     )
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.KeyboardArrowUp,
+                        contentDescription = null,
+                        tint = Color(0xFF292D32)
+                    )
                 }
+//                AnimatedVisibility(
+//                    visible = !isExpanded,
+//                    enter = EnterTransition.None,
+//                    exit = ExitTransition.None
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Outlined.KeyboardArrowDown,
+//                        contentDescription = null,
+//                        tint = Color(0xFF292D32)
+//                    )
+//                }
             }
         }
     }

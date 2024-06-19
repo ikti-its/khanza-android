@@ -35,8 +35,8 @@ fun PegawaiScreen(
             )
         }
 
-        "Ketersediaan" -> {
-            KetersediaanContent(
+        "Daftar" -> {
+            DaftarContent(
                 stateKetersediaan = stateKetersediaan,
                 onQuery = { query -> viewModel.queryKetersediaan(token, query) },
                 navController = navController

@@ -190,7 +190,7 @@ fun ViewContent(
                                     onClick = {
                                         navController.navigate(
                                             CScreen.Pegawai.route.replace("{role}", role)
-                                                .replace("{feature}", "Ketersediaan")
+                                                .replace("{feature}", "Daftar")
                                         )
                                     }
                                 ) {
@@ -207,7 +207,7 @@ fun ViewContent(
                                 }
                                 Spacer(Modifier.height(6.dp))
                                 Text(
-                                    text = "Ketersediaan\nPegawai",
+                                    text = "Daftar\nPegawai",
                                     color = Color(0xFF0C203C),
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,

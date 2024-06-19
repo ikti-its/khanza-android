@@ -50,7 +50,7 @@ import dev.ikti.pegawai.presentation.component.KetersediaanCard
 import kotlinx.coroutines.delay
 
 @Composable
-fun KetersediaanContent(
+fun DaftarContent(
     context: Context = LocalContext.current,
     stateKetersediaan: UIState<List<Ketersediaan>>,
     onQuery: (String) -> Unit,
@@ -70,7 +70,7 @@ fun KetersediaanContent(
                 modifier = Modifier.navigationBarsPadding(),
                 title = {
                     Text(
-                        text = "Ketersediaan Pegawai",
+                        text = "Daftar Pegawai",
                         style = TextStyle(
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 20.sp,
@@ -173,7 +173,7 @@ fun KetersediaanContent(
                 }
 
                 is UIState.Error -> {
-                    showToast(context, "Gagal memuat ketersediaan pegawai")
+                    showToast(context, "Gagal memuat daftar pegawai")
                 }
 
                 else -> {
