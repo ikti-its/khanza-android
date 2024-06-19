@@ -1,7 +1,7 @@
 package dev.ikti.profile.presentation.component.atom
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -13,7 +13,7 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 fun ProfileTopButton(navigateBack: () -> Unit = {}) {
     IconButton(onClick = navigateBack) {
         Icon(
-            imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             contentDescription = null,
             tint = Color(0xFFFFFFFF)
         )
