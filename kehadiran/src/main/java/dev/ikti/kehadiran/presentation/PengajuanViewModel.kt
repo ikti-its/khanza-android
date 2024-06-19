@@ -22,7 +22,6 @@ import javax.inject.Inject
 class PengajuanViewModel @Inject constructor(
     private val pengajuanCreateUseCase: PengajuanCreateUseCase,
     private val pengajuanGetAllUseCase: PengajuanGetAllUseCase,
-    private val pengajuanGetByIdUseCase: PengajuanGetByIdUseCase,
     private val pengajuanGetByPegawaiIdUseCase: PengajuanGetByPegawaiIdUseCase,
     private val pengajuanGetPegawaiUseCase: PengajuanGetPegawaiUseCase,
     private val pengajuanUpdateUseCase: PengajuanUpdateUseCase

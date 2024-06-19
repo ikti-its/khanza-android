@@ -158,7 +158,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_jadwal),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )
@@ -199,7 +199,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_riwayat),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )
@@ -284,7 +284,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_status),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )
@@ -374,7 +374,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_jadwal),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )
@@ -415,7 +415,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_riwayat),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )
@@ -542,7 +542,7 @@ fun ViewContent(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_status),
                                             contentDescription = null,
                                             tint = Color.Unspecified
                                         )

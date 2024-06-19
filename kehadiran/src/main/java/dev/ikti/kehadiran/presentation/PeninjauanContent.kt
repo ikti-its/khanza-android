@@ -73,6 +73,7 @@ fun PeninjauanContent(
 ) {
     val lazyListState = rememberLazyListState()
     var isDialogHidden by remember { mutableStateOf(true) }
+    var isDataRefreshed by remember { mutableStateOf(false) }
     var reviewType by remember { mutableStateOf(true) }
     var id by remember { mutableStateOf("") }
     var pegawai by remember { mutableStateOf("") }
@@ -365,6 +366,7 @@ fun PeninjauanContent(
                                         )
                                     )
                                     onDismiss()
+                                    isDataRefreshed = false
                                 }
                             },
                             modifier = Modifier
@@ -400,6 +402,7 @@ fun PeninjauanContent(
                                         )
                                     )
                                     onDismiss()
+                                    isDataRefreshed = false
                                 }
                             },
                             modifier = Modifier
@@ -451,8 +454,11 @@ fun PeninjauanContent(
 
     when (stateUpdate) {
         is UIState.Success -> {
-            showToast(context, "Berhasil mengubah status")
-            getData(token)
+            if (!isDataRefreshed) {
+                showToast(context, "Berhasil mengubah status")
+                getData(token)
+                isDataRefreshed = true
+            }
         }
 
         is UIState.Error -> {
