@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import dev.ikti.core.domain.model.screen.CScreen
 import dev.ikti.core.domain.model.screen.Nav
+import dev.ikti.core.domain.model.screen.Screen
 import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.util.UIState
 import dev.ikti.home.R
@@ -52,7 +52,7 @@ fun HomeFeatureGrid(
                             iconColor = Color.Unspecified,
                             onClick = {
                                 navController.navigate(
-                                    CScreen.Akun.route.replace("{type}", "view")
+                                    Screen.Akun.route.replace("{type}", "View")
                                 )
                             }
                         )
@@ -64,7 +64,7 @@ fun HomeFeatureGrid(
                             iconColor = Color.Unspecified,
                             onClick = {
                                 navController.navigate(
-                                    CScreen.Kehadiran.route.replace("{role}", stateHome.data.role)
+                                    Screen.Kehadiran.route.replace("{role}", stateHome.data.role)
                                         .replace("{feature}", "View")
                                 )
                             }
@@ -77,7 +77,7 @@ fun HomeFeatureGrid(
                             iconColor = Color.Unspecified,
                             onClick = {
                                 navController.navigate(
-                                    CScreen.Pegawai.route.replace("{role}", stateHome.data.role)
+                                    Screen.Pegawai.route.replace("{role}", stateHome.data.role)
                                         .replace("{feature}", "View")
                                 )
                             }

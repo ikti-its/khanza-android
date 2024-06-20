@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.domain.model.screen.ModuleScreen
+import dev.ikti.core.domain.model.screen.Screen
 
 @Composable
 fun HomeScreen(
@@ -32,7 +32,7 @@ fun HomeScreen(
         stateHome = stateHome,
         onLogout = {
             viewModel.userLogout(userToken)
-            navController.navigate(ModuleScreen.Onboarding.route) {
+            navController.navigate(Screen.Onboarding.route) {
                 popUpTo(0) {
                     inclusive = true
                 }
