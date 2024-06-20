@@ -166,7 +166,7 @@ fun PengajuanContent(
                             fontFamily = FontGilroy
                         )
                     )
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = if (awal != "") formatDateString(awal) else awal,
                         onValueChange = {},
@@ -176,6 +176,7 @@ fun PengajuanContent(
                             fontFamily = FontGilroy
                         ),
                         modifier = Modifier
+                            .height(48.dp)
                             .fillMaxWidth()
                             .clickable {
                                 isDateModalHidden = false
@@ -202,7 +203,7 @@ fun PengajuanContent(
                             fontFamily = FontGilroy
                         )
                     )
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = if (akhir != "") formatDateString(akhir) else akhir,
                         onValueChange = {},
@@ -212,6 +213,7 @@ fun PengajuanContent(
                             fontFamily = FontGilroy
                         ),
                         modifier = Modifier
+                            .height(48.dp)
                             .fillMaxWidth()
                             .clickable {
                                 isDateModalHidden = false
@@ -240,7 +242,7 @@ fun PengajuanContent(
                             fontFamily = FontGilroy
                         )
                     )
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = alasan,
                         onValueChange = {},
@@ -250,6 +252,7 @@ fun PengajuanContent(
                             fontFamily = FontGilroy
                         ),
                         modifier = Modifier
+                            .height(48.dp)
                             .fillMaxWidth()
                             .clickable {
                                 onExpand()

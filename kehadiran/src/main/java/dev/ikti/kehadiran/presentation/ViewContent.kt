@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import dev.ikti.core.domain.model.screen.CScreen
+import dev.ikti.core.domain.model.screen.Screen
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.kehadiran.R
@@ -107,7 +107,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Presensi")
                                         )
                                     }
@@ -148,7 +148,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Jadwal")
                                         )
                                     }
@@ -189,7 +189,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Riwayat")
                                         )
                                     }
@@ -230,7 +230,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Pengajuan")
                                         )
                                     }
@@ -274,7 +274,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Status")
                                         )
                                     }
@@ -323,7 +323,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Presensi")
                                         )
                                     }
@@ -364,7 +364,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Jadwal")
                                         )
                                     }
@@ -405,7 +405,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Riwayat")
                                         )
                                     }
@@ -446,7 +446,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Pengajuan")
                                         )
                                     }
@@ -490,7 +490,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Status")
                                         )
                                     }
@@ -532,7 +532,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Kehadiran.route.replace("{role}", role)
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Peninjauan")
                                         )
                                     }
