@@ -18,6 +18,8 @@ fun KehadiranScreen(
 ) {
     val token by viewModel.token.collectAsState()
     val pegawai by viewModel.pegawai.collectAsState()
+    val stateJadwal by viewModel.stateJadwal.collectAsState()
+    val stateRiwayat by viewModel.stateRiwayat.collectAsState()
     val statePengajuan by pengajuanViewModel.statePengajuan.collectAsState()
     val stateStatus by pengajuanViewModel.stateStatus.collectAsState()
     val statePeninjauanList by pengajuanViewModel.statePeninjauanList.collectAsState()
@@ -39,9 +41,23 @@ fun KehadiranScreen(
 
         "Presensi" -> {}
 
-        "Jadwal" -> {}
+        "Jadwal" -> {
+            JadwalContent(
+                pegawai = pegawai,
+                stateJadwal = stateJadwal,
+                getData = { viewModel.getJadwal(token, it) },
+                navController = navController
+            )
+        }
 
-        "Riwayat" -> {}
+        "Riwayat" -> {
+            RiwayatContent(
+                pegawai = pegawai,
+                stateRiwayat = stateRiwayat,
+                getData = { viewModel.getRiwayat(token, it) },
+                navController = navController
+            )
+        }
 
         "Pengajuan" -> {
             PengajuanContent(
