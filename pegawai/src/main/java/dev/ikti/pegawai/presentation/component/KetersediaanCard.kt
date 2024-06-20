@@ -93,7 +93,7 @@ fun KetersediaanCard(
                     SubcomposeAsyncImage(
                         model = ketersediaan.foto,
                         contentDescription = null,
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(38.dp)
                             .clip(CircleShape)

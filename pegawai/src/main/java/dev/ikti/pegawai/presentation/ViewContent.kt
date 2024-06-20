@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import dev.ikti.core.domain.model.screen.CScreen
+import dev.ikti.core.domain.model.screen.Screen
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.pegawai.R
@@ -103,7 +103,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Pegawai.route.replace("{role}", role)
+                                            Screen.Pegawai.route.replace("{role}", role)
                                                 .replace("{feature}", "Data")
                                         )
                                     }
@@ -147,7 +147,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Pegawai.route.replace("{role}", role)
+                                            Screen.Pegawai.route.replace("{role}", role)
                                                 .replace("{feature}", "Data")
                                         )
                                     }
@@ -189,7 +189,7 @@ fun ViewContent(
                                     ),
                                     onClick = {
                                         navController.navigate(
-                                            CScreen.Pegawai.route.replace("{role}", role)
+                                            Screen.Pegawai.route.replace("{role}", role)
                                                 .replace("{feature}", "Daftar")
                                         )
                                     }

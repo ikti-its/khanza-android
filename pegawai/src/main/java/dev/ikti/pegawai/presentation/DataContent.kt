@@ -512,7 +512,7 @@ fun DataContent(
                     else -> {
                         Spacer(Modifier.height(24.dp))
                         Shimmer(
-                            height = 20.dp,
+                            height = 24.dp,
                             width = 370.dp,
                             shape = RoundedCornerShape(8.dp),
                             color = Color(0xFF272727)
