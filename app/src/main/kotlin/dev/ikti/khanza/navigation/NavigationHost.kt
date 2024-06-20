@@ -101,10 +101,6 @@ fun NavigationHost(
             HomeScreen(token = token, navController = navController)
         }
 
-        composable(Nav.Presensi.route) {
-            // TODO: PresensiScreen()
-        }
-
         // Modul C
         // Profile
         composable(

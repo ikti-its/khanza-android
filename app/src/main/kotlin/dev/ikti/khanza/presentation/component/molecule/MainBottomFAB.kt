@@ -9,10 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.domain.model.screen.Nav
+import dev.ikti.core.domain.model.screen.Screen
 import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.khanza.presentation.component.atom.MainBottomFABIcon
 
@@ -23,12 +22,7 @@ fun MainBottomFAB(
 ) {
     FloatingActionButton(
         onClick = {
-            navController.navigate(Nav.Presensi.route) {
-                popUpTo(0) {
-                    inclusive = true
-                }
-                launchSingleTop = true
-            }
+            navController.navigate(Screen.Kehadiran.route.replace("{type}", "Presensi"))
         },
         modifier = modifier.size(70.dp),
         shape = CircleShape,
