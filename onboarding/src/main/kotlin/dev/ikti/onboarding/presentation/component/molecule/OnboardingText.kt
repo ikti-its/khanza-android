@@ -17,20 +17,17 @@ import dev.ikti.onboarding.presentation.model.OnboardingPage
 
 @Composable
 fun OnboardingText(
-    modifier: Modifier = Modifier,
     onboardingPage: OnboardingPage
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .padding(horizontal = 24.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.Start
     ) {
         OnboardingTextTitle(onboardingPage = onboardingPage)
-
-        Spacer(modifier = modifier.padding(12.dp))
-
+        Spacer(modifier = Modifier.padding(12.dp))
         OnboardingTextDescription(onboardingPage = onboardingPage)
     }
 }

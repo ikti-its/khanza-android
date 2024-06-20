@@ -21,9 +21,6 @@ class SplashViewModel @Inject constructor(
     private val _isNewUser = MutableStateFlow(false)
     val isNewUser: StateFlow<Boolean> = _isNewUser
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
     init {
         getUserToken(Unit)
     }
@@ -37,13 +34,11 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun observeIsNewUser(state: Unit) {
-        _isLoading.value = true
+    fun observeIsNewUser() {
         viewModelScope.launch {
-            observeIsNewUserUseCase.execute(state)
+            observeIsNewUserUseCase.execute(Unit)
                 .collect { isNew ->
                     _isNewUser.value = isNew
-                    _isLoading.value = false
                 }
         }
     }

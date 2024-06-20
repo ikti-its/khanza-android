@@ -13,13 +13,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun OnboardingIndicatorItem(
-    modifier: Modifier,
     width: Int = 100,
     height: Int = 4,
     color: Color = Color(0xFF0A2D27)
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .width(width.dp)
             .height(height.dp)
             .background(color, RoundedCornerShape(4.dp))
@@ -29,5 +28,5 @@ fun OnboardingIndicatorItem(
 @Preview()
 @Composable
 fun OnboardingIndicatorItemPreview() {
-    OnboardingIndicatorItem(Modifier)
+    OnboardingIndicatorItem()
 }

@@ -5,28 +5,41 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import dev.ikti.core.domain.model.screen.Nav
+import dev.ikti.core.domain.model.screen.Screen
 import kotlinx.coroutines.delay
 
 @Composable
-fun AppSplashScreen(
+fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
-    navigateToHome: (String) -> Unit,
-    navigateToOnboarding: (Boolean) -> Unit
+    navController: NavHostController
 ) {
     val token by viewModel.userToken.collectAsState("")
     val isNew by viewModel.isNewUser.collectAsState(false)
-    val isLoading by viewModel.isLoading.collectAsState(true)
 
-    viewModel.observeIsNewUser(Unit)
+    LaunchedEffect(Unit) {
+        viewModel.observeIsNewUser()
+    }
 
-    LaunchedEffect(isLoading) {
-        delay(500L)
-
+    LaunchedEffect(token) {
+        delay(1000L)
         if (token != "") {
-            navigateToHome(token)
+            navController.popBackStack()
+            navController.navigate(
+                Nav.Home.route.replace(
+                    "{token}",
+                    token
+                )
+            )
         } else {
-            navigateToOnboarding(isNew)
+            navController.navigate(
+                Screen.Onboarding.route.replace(
+                    "{type}",
+                    if (isNew) "new" else "old"
+                )
+            )
         }
     }
-    AppSplashContent()
+    SplashContent()
 }

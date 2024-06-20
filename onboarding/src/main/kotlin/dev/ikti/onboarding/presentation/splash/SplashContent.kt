@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,29 +19,29 @@ import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.onboarding.R
 
 @Composable
-fun AppSplashContent(modifier: Modifier = Modifier) {
+fun SplashContent() {
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_splash_logo),
+                painter = painterResource(id = R.drawable.ic_logo),
                 contentDescription = null
             )
-            Spacer(modifier = modifier.size(20.dp))
+            Spacer(Modifier.width(20.dp))
             Image(
-                painter = painterResource(id = R.drawable.ic_splash_text),
+                painter = painterResource(id = R.drawable.ic_logo_text),
                 contentDescription = null
             )
         }
@@ -52,6 +52,6 @@ fun AppSplashContent(modifier: Modifier = Modifier) {
 @Composable
 fun AppSplashContentPreview() {
     KhanzaTheme {
-        AppSplashContent(Modifier)
+        SplashContent()
     }
 }

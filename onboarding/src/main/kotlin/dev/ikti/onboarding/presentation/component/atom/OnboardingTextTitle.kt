@@ -21,7 +21,6 @@ fun OnboardingTextTitle(onboardingPage: OnboardingPage) {
             fontWeight = FontWeight.Bold,
             fontSize = 32.sp,
             lineHeight = 42.sp,
-            letterSpacing = 0.sp,
             fontFamily = FontGilroy
         )
     )

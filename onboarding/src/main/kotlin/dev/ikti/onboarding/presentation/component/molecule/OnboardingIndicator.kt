@@ -11,19 +11,17 @@ import dev.ikti.onboarding.presentation.component.atom.OnboardingIndicatorItem
 
 @Composable
 fun OnboardingIndicator(
-    modifier: Modifier = Modifier,
     size: Int,
     selectedIndex: Int,
     selectedColor: Color = Color(0xFF0A2D27),
     unselectedColor: Color = Color(0xFFACF2E7)
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         repeat(size) { page ->
             OnboardingIndicatorItem(
-                modifier = modifier,
                 width = 100,
                 height = if (selectedIndex >= page) 4 else 3,
                 color = if (selectedIndex >= page) selectedColor else unselectedColor

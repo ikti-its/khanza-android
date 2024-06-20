@@ -21,7 +21,6 @@ fun OnboardingTextDescription(onboardingPage: OnboardingPage) {
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             lineHeight = 24.sp,
-            letterSpacing = 0.sp,
             fontFamily = FontGilroy
         )
     )
