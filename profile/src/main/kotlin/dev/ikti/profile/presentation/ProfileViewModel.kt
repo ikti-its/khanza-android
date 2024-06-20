@@ -6,11 +6,8 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.data.local.entity.LocalUserEntity
 import dev.ikti.core.domain.model.user.UserInfo
@@ -21,17 +18,13 @@ import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserInfoUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.UpdateLocalUserUseCase
+import dev.ikti.core.util.NetworkConstant.ERR_FILE_UNSUPPORTED
+import dev.ikti.core.util.NetworkConstant.ERR_UNAUTHORIZED
+import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_ERROR
+import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
-import dev.ikti.core.util.file.FileConstant.ERR_UNAUTHORIZED
-import dev.ikti.core.util.file.FileConstant.ERR_UNSUPPORTED
-import dev.ikti.core.util.file.FileException
 import dev.ikti.profile.data.model.ProfileRequest
-import dev.ikti.profile.data.model.ProfileResponse
 import dev.ikti.profile.domain.usecase.UpdateProfileUseCase
-import dev.ikti.profile.util.ProfileConstant.ERR_ACCOUNT_NOT_FOUND
-import dev.ikti.profile.util.ProfileConstant.ERR_UNKNOWN_ERROR
-import dev.ikti.profile.util.ProfileException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -46,7 +39,6 @@ class ProfileViewModel @Inject constructor(
     private val application: Application,
     private val clearUserTokenUseCase: ClearUserTokenUseCase,
     private val deleteLocalUserUseCase: DeleteLocalUserUseCase,
-    private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val geocoder: Geocoder,
     private val getLocalUserUseCase: GetLocalUserUseCase,
     private val getLocalUserInfoUseCase: GetLocalUserInfoUseCase,
@@ -58,15 +50,15 @@ class ProfileViewModel @Inject constructor(
     private val _token = MutableStateFlow("")
     val token: StateFlow<String> = _token
 
-    private val _stateProfile: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
-    val stateProfile: StateFlow<UIState<Unit>> = _stateProfile
+    private val _stateProfile: MutableStateFlow<UIState<UserInfo>> = MutableStateFlow(UIState.Empty)
+    val stateProfile: StateFlow<UIState<UserInfo>> = _stateProfile
 
     private val _stateLogout: MutableStateFlow<UIState<Unit>> = MutableStateFlow(UIState.Empty)
     val stateLogout: StateFlow<UIState<Unit>> = _stateLogout
 
-    private val _stateEdit: MutableStateFlow<UIState<ProfileResponse>> =
+    private val _stateEdit: MutableStateFlow<UIState<Unit>> =
         MutableStateFlow(UIState.Empty)
-    val stateEdit: StateFlow<UIState<ProfileResponse>> = _stateEdit
+    val stateEdit: StateFlow<UIState<Unit>> = _stateEdit
 
     private val _stateUpload: MutableStateFlow<UIState<String>> =
         MutableStateFlow(UIState.Empty)
@@ -75,21 +67,6 @@ class ProfileViewModel @Inject constructor(
     private val _stateLocation: MutableStateFlow<UIState<Address>> =
         MutableStateFlow(UIState.Empty)
     val stateLocation: StateFlow<UIState<Address>> = _stateLocation
-
-    private val _userInfo =
-        mutableStateOf(
-            UserInfo(
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                Double.NaN,
-                Double.NaN
-            )
-        )
-    val userInfo: State<UserInfo> get() = _userInfo
 
     fun getUserToken(state: Unit) {
         viewModelScope.launch {
@@ -102,51 +79,30 @@ class ProfileViewModel @Inject constructor(
 
     fun getUserInfo(token: String) {
         _stateProfile.value = UIState.Loading
-
         viewModelScope.launch {
             try {
                 val response = getLocalUserInfoUseCase.execute(token)
                 response.collect { user ->
-                    _userInfo.value = UserInfo(
-                        user.akun,
-                        user.nama,
-                        user.email,
-                        user.role,
-                        user.foto,
-                        user.alamat,
-                        user.alamatLat,
-                        user.alamatLon
-                    )
+                    _stateProfile.value = UIState.Success(user)
                 }
-
-                _stateProfile.value = UIState.Success(Unit)
-            } catch (e: Exception) {
-                when (e) {
-                    ProfileException.AccountNotFoundException -> _stateProfile.value =
-                        UIState.Error(
-                            ERR_ACCOUNT_NOT_FOUND
-                        )
-
-                    else -> _stateProfile.value = UIState.Error(ERR_UNKNOWN_ERROR)
-                }
+            } catch (_: Exception) {
+                _stateProfile.value = UIState.Error(ERR_UNKNOWN_ERROR)
             }
         }
     }
 
     fun userLogout(token: String) {
         _stateLogout.value = UIState.Loading
-
         viewModelScope.launch {
             try {
                 val response = getLocalUserUseCase.execute(token)
                 response.collect { data ->
                     deleteLocalUserUseCase.execute(data)
                     clearUserTokenUseCase.execute(Unit)
-                    delay(500L)
                 }
 
                 _stateLogout.value = UIState.Success(Unit)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 _stateLogout.value = UIState.Error(ERR_UNKNOWN_ERROR)
             }
         }
@@ -154,7 +110,6 @@ class ProfileViewModel @Inject constructor(
 
     fun userUpdate(token: String, profile: ProfileRequest) {
         _stateEdit.value = UIState.Loading
-
         viewModelScope.launch {
             try {
                 val response = updateProfileUseCase.execute(token, profile.akun, profile)
@@ -179,14 +134,13 @@ class ProfileViewModel @Inject constructor(
                             )
 
                             updateLocalUserUseCase.execute(user)
-                            _stateEdit.value = UIState.Success(data.data)
+                            _stateEdit.value = UIState.Success(Unit)
                         }
-                    } catch (e: Exception) {
-                        _stateEdit.value =
-                            UIState.Error(ERR_UNKNOWN_ERROR) // ERROR NOT YET IMPLEMENTED
+                    } catch (_: Exception) {
+                        _stateEdit.value = UIState.Error(ERR_UNKNOWN_ERROR)
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 _stateEdit.value = UIState.Error(ERR_UNKNOWN_ERROR)
             }
         }
@@ -194,7 +148,6 @@ class ProfileViewModel @Inject constructor(
 
     fun uploadImage(token: String, uri: Uri) {
         _stateUpload.value = UIState.Loading
-
         viewModelScope.launch {
             try {
                 val inputStream = application.contentResolver.openInputStream(uri)
@@ -202,9 +155,7 @@ class ProfileViewModel @Inject constructor(
                 val outputStream = file.outputStream()
                 val buffer = ByteArray(1024)
                 var read: Int
-                while (inputStream!!.read(buffer)
-                        .also { read = it } != -1
-                ) { // CAUTION, FORCED NON NULL VALUE
+                while (inputStream!!.read(buffer).also { read = it } != -1) {
                     outputStream.write(buffer, 0, read)
                 }
                 outputStream.flush()
@@ -221,11 +172,11 @@ class ProfileViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 when (e) {
-                    FileException.UnsupportedException -> _stateUpload.value = UIState.Error(
-                        ERR_UNSUPPORTED
+                    NetworkException.FileUnsupportedException -> _stateUpload.value = UIState.Error(
+                        ERR_FILE_UNSUPPORTED
                     )
 
-                    FileException.UnauthorizedException -> _stateUpload.value = UIState.Error(
+                    NetworkException.UnauthorizedException -> _stateUpload.value = UIState.Error(
                         ERR_UNAUTHORIZED
                     )
 

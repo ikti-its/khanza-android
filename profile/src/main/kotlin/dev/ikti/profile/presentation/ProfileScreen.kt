@@ -7,21 +7,19 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.core.util.UIState
 
 @Composable
 fun ProfileScreen(
-    type: String = "view",
+    type: String = "View",
     viewModel: ProfileViewModel = hiltViewModel(),
-    navController: NavHostController = rememberNavController(),
-    intentToMap: (String) -> Unit
+    navController: NavHostController = rememberNavController()
 ) {
-    val token by viewModel.token.collectAsState("")
-    val stateProfile by viewModel.stateProfile.collectAsState(UIState.Empty)
-    val stateLogout by viewModel.stateLogout.collectAsState(UIState.Empty)
-    val stateUpload by viewModel.stateUpload.collectAsState(UIState.Empty)
-    val stateLocation by viewModel.stateLocation.collectAsState(UIState.Empty)
-    val userInfo by viewModel.userInfo
+    val token by viewModel.token.collectAsState()
+    val stateProfile by viewModel.stateProfile.collectAsState()
+    val stateLogout by viewModel.stateLogout.collectAsState()
+    val stateEdit by viewModel.stateEdit.collectAsState()
+    val stateUpload by viewModel.stateUpload.collectAsState()
+    val stateLocation by viewModel.stateLocation.collectAsState()
 
     LaunchedEffect(token) {
         if (token == "") {
@@ -30,27 +28,40 @@ fun ProfileScreen(
             viewModel.getUserInfo(token)
         }
     }
-    ProfileContent(
-        type = type,
-        token = token,
-        stateProfile = stateProfile,
-        stateLogout = stateLogout,
-        stateUpload = stateUpload,
-        stateLocation = stateLocation,
-        userInfo = userInfo,
-        navController = navController,
-        onLogout = { userToken ->
-            viewModel.userLogout(userToken)
-        },
-        onSave = { user ->
-            viewModel.userUpdate(token, user)
-        },
-        onUpload = { uri ->
-            viewModel.uploadImage(token, uri)
-        },
-        onMarkerSearch = { lat, lon ->
-            viewModel.getMarkerAddress(lat, lon)
-        },
-        intentToMap = intentToMap
-    )
+
+    when (type) {
+        "View" -> {
+            ViewContent(
+                stateProfile = stateProfile,
+                stateLogout = stateLogout,
+                onLogout = {
+                    viewModel.userLogout(token)
+                },
+                navController = navController
+            )
+        }
+
+        "Detail" -> {
+            DetailContent(stateProfile = stateProfile, navController = navController)
+        }
+
+        "Edit" -> {
+            EditContent(
+                stateProfile = stateProfile,
+                stateEdit = stateEdit,
+                stateUpload = stateUpload,
+                stateLocation = stateLocation,
+                onSave = { user ->
+                    viewModel.userUpdate(token, user)
+                },
+                onUpload = { uri ->
+                    viewModel.uploadImage(token, uri)
+                },
+                onMarkerSearch = { lat, lon ->
+                    viewModel.getMarkerAddress(lat, lon)
+                },
+                navController = navController
+            )
+        }
+    }
 }

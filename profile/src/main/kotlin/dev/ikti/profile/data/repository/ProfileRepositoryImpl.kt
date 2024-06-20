@@ -1,11 +1,11 @@
 package dev.ikti.profile.data.repository
 
 import dev.ikti.core.data.model.BaseResponse
+import dev.ikti.core.util.NetworkException
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.data.model.ProfileResponse
 import dev.ikti.profile.data.remote.ProfileService
 import dev.ikti.profile.domain.repository.ProfileRepository
-import dev.ikti.profile.util.ProfileException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -27,7 +27,8 @@ class ProfileRepositoryImpl @Inject constructor(
                 emit(profileService.update(bearer, akun, user))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
-                    404 -> throw ProfileException.AccountNotFoundException
+                    401 -> throw NetworkException.UnauthorizedException
+                    else -> throw NetworkException.UnknownException
                 }
             }
         }

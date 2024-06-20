@@ -1,5 +1,8 @@
 package dev.ikti.profile.presentation.component.molecule
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,9 +24,12 @@ import dev.ikti.core.R
 
 @Composable
 fun ProfileEditMap(
+    context: Context = LocalContext.current,
     modifier: Modifier,
+    alamat: String,
     location: LatLng,
-    cameraPositionState: CameraPositionState
+    cameraPositionState: CameraPositionState,
+    showMap: () -> Unit
 ) {
     GoogleMap(
         modifier = modifier
@@ -45,6 +51,7 @@ fun ProfileEditMap(
             tiltGesturesEnabled = false
         ),
         onMapClick = {
+            showMap()
         }
     ) {
         Marker(
@@ -52,6 +59,12 @@ fun ProfileEditMap(
                 position = location
             ),
             onClick = {
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
+                    ).setPackage("com.google.android.apps.maps")
+                )
                 true
             },
         )

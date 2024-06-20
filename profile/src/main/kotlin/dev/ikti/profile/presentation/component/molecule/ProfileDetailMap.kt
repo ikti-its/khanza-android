@@ -1,5 +1,8 @@
 package dev.ikti.profile.presentation.component.molecule
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,10 +28,10 @@ import dev.ikti.core.R
 
 @Composable
 fun ProfileDetailMap(
+    context: Context = LocalContext.current,
     alamat: String,
     latitude: Double,
-    longitude: Double,
-    intentToMap: (String) -> Unit
+    longitude: Double
 ) {
     val location by remember { mutableStateOf(LatLng(latitude, longitude)) }
     val cameraPositionState = rememberCameraPositionState {
@@ -55,7 +58,12 @@ fun ProfileDetailMap(
             tiltGesturesEnabled = false
         ),
         onMapClick = {
-            intentToMap("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
+                ).setPackage("com.google.android.apps.maps")
+            )
         }
     ) {
         Marker(
@@ -63,7 +71,12 @@ fun ProfileDetailMap(
                 position = location
             ),
             onClick = {
-                intentToMap("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("geo:${location.latitude},${location.longitude}?z=15&q=${alamat}")
+                    ).setPackage("com.google.android.apps.maps")
+                )
                 true
             },
         )
