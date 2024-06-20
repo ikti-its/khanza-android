@@ -7,14 +7,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.auth.data.model.LoginRequest
 import dev.ikti.auth.domain.usecase.LoginUseCase
-import dev.ikti.auth.util.AuthConstant.ERR_ACCOUNT_UNAUTHORIZED
-import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_LOGIN
-import dev.ikti.auth.util.AuthConstant.ERR_FAILED_TO_SET_USER_TOKEN
-import dev.ikti.auth.util.AuthConstant.ERR_UNKNOWN_ERROR
-import dev.ikti.auth.util.AuthException
 import dev.ikti.core.domain.usecase.preference.ClearUserTokenUseCase
 import dev.ikti.core.domain.usecase.preference.SetNewUserUseCase
 import dev.ikti.core.domain.usecase.preference.SetUserTokenUseCase
+import dev.ikti.core.util.NetworkConstant
+import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,44 +33,36 @@ class LoginViewModel @Inject constructor(
     val userToken: State<String> get() = _userToken
 
     init {
-        clearUserToken(Unit)
+        clearUserToken()
     }
 
     fun login(email: String, password: String) {
         _stateLogin.value = UIState.Loading
-
-        val request = LoginRequest(email, password)
         viewModelScope.launch {
             try {
+                val request = LoginRequest(email, password)
                 val response = loginUseCase.execute(request)
                 response.collect { token ->
-                    try {
-                        setNewUser()
-                        setUserTokenUseCase.execute(token.data.token)
-                        _userToken.value = token.data.token
-                    } catch (_: Exception) {
-                        _stateLogin.value = UIState.Error(ERR_FAILED_TO_SET_USER_TOKEN)
-                    }
+                    setNewUser()
+                    setUserTokenUseCase.execute(token.data.token)
+                    _userToken.value = token.data.token
                 }
 
                 _stateLogin.value = UIState.Success(Unit)
             } catch (e: Exception) {
                 when (e) {
-                    AuthException.EmailInvalidException, AuthException.AccountNotFoundException, AuthException.PasswordIncorrectException -> _stateLogin.value =
-                        UIState.Error(ERR_ACCOUNT_UNAUTHORIZED)
+                    NetworkException.UnauthorizedException, NetworkException.NotFoundException -> _stateLogin.value =
+                        UIState.Error(NetworkConstant.ERR_UNAUTHORIZED)
 
-                    AuthException.FailedToLoginException -> _stateLogin.value =
-                        UIState.Error(ERR_FAILED_TO_LOGIN)
-
-                    else -> _stateLogin.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    else -> _stateLogin.value = UIState.Error(NetworkConstant.ERR_UNKNOWN_ERROR)
                 }
             }
         }
     }
 
-    private fun clearUserToken(state: Unit) {
+    private fun clearUserToken() {
         viewModelScope.launch {
-            clearUserTokenUseCase.execute(state)
+            clearUserTokenUseCase.execute(Unit)
         }
     }
 

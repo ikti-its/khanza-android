@@ -1,6 +1,7 @@
 package dev.ikti.auth.presentation.component.molecule
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -20,8 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.ikti.auth.presentation.component.atom.LoginFormLabel
-import dev.ikti.auth.presentation.component.atom.LoginFormLeadingIcon
+import dev.ikti.auth.presentation.component.atom.LoginFormPlaceholder
 import dev.ikti.auth.presentation.component.atom.LoginFormTrailingIcon
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
@@ -32,7 +32,6 @@ import dev.ikti.core.presentation.theme.FontGilroy
 
 @Composable
 fun LoginFormField(
-    modifier: Modifier = Modifier,
     field: String,
     onValueChange: (String, Boolean) -> Unit
 ) {
@@ -57,14 +56,15 @@ fun LoginFormField(
 
             onValueChange(input, isError)
         },
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier
+            .height(48.dp)
+            .fillMaxWidth(),
         textStyle = TextStyle(
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 15.sp,
             fontFamily = FontGilroy
         ),
-        label = { LoginFormLabel(field) },
-        leadingIcon = { LoginFormLeadingIcon(field) },
+        placeholder = { LoginFormPlaceholder(field) },
         trailingIcon = {
             if (field == FIELD_TYPE_PASSWORD) {
                 LoginFormTrailingIcon(field) {
@@ -72,11 +72,6 @@ fun LoginFormField(
                 }
             }
         },
-//        supportingText = {
-//            if (isError) {
-//                LoginFormSupportingText(field)
-//            }
-//        },
         isError = isError,
         visualTransformation = when (field) {
             FIELD_TYPE_PASSWORD -> {
@@ -102,7 +97,7 @@ fun LoginFormField(
             focusedBorderColor = Color(0xFFC4C4C4),
             unfocusedTextColor = Color(0xFF272727),
             unfocusedBorderColor = Color(0xFFC4C4C4),
-            errorTextColor = Color(0xFFFF1300),
+            errorTextColor = Color(0xFFDA4141),
         ),
     )
 }
@@ -122,4 +117,3 @@ fun LoginFormFieldPasswordPreview() {
         field = FIELD_TYPE_PASSWORD
     ) { _, _ -> }
 }
-

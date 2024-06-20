@@ -12,7 +12,7 @@ import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
 import dev.ikti.core.presentation.theme.FontGilroy
 
 @Composable
-fun LoginFormLabel(
+fun LoginFormPlaceholder(
     field: String
 ) {
     when (field) {
@@ -22,7 +22,7 @@ fun LoginFormLabel(
                 style = TextStyle(
                     color = Color(0xFF272727),
                     fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
+                    fontSize = 15.sp,
                     fontFamily = FontGilroy
                 )
             )
@@ -34,7 +34,7 @@ fun LoginFormLabel(
                 style = TextStyle(
                     color = Color(0xFF272727),
                     fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
+                    fontSize = 15.sp,
                     fontFamily = FontGilroy
                 )
             )
@@ -44,12 +44,12 @@ fun LoginFormLabel(
 
 @Preview
 @Composable
-fun LoginFormLabelEmailPreview() {
-    LoginFormLabel(FIELD_TYPE_EMAIL)
+fun LoginFormPlaceholderEmailPreview() {
+    LoginFormPlaceholder(FIELD_TYPE_EMAIL)
 }
 
 @Preview
 @Composable
-fun LoginFormLabelPasswordPreview() {
-    LoginFormLabel(FIELD_TYPE_PASSWORD)
+fun LoginFormPlaceholderPasswordPreview() {
+    LoginFormPlaceholder(FIELD_TYPE_PASSWORD)
 }

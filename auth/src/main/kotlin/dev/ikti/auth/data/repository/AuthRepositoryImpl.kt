@@ -4,8 +4,8 @@ import dev.ikti.auth.data.model.LoginRequest
 import dev.ikti.auth.data.model.LoginResponse
 import dev.ikti.auth.data.remote.AuthService
 import dev.ikti.auth.domain.repository.AuthRepository
-import dev.ikti.auth.util.AuthException
 import dev.ikti.core.data.model.BaseResponse
+import dev.ikti.core.util.NetworkException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -22,10 +22,9 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(authService.login(request))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
-                    400 -> throw AuthException.EmailInvalidException
-                    401 -> throw AuthException.PasswordIncorrectException
-                    404 -> throw AuthException.AccountNotFoundException
-                    else -> throw AuthException.FailedToLoginException
+                    401 -> throw NetworkException.UnauthorizedException
+                    404 -> throw NetworkException.NotFoundException
+                    else -> throw NetworkException.UnknownException
                 }
             }
         }
