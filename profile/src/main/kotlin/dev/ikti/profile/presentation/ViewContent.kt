@@ -232,7 +232,7 @@ fun ViewContent(
 
     when (stateLogout) {
         is UIState.Success -> {
-            navController.navigate(Screen.Onboarding.route) {
+            navController.navigate(Screen.Onboarding.route.replace("{type}", "old")) {
                 popUpTo(0) {
                     inclusive = true
                 }
