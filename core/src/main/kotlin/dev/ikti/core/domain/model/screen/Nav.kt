@@ -16,13 +16,6 @@ sealed class Nav(
         R.drawable.ic_filled_home
     )
 
-    data object Dummy : Nav(
-        "dummy",
-        "Fitur",
-        R.drawable.ic_dev,
-        R.drawable.ic_dev
-    )
-
     data object Presensi : Nav(
         "presensi",
         "Presensi",

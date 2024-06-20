@@ -4,7 +4,7 @@ import dev.ikti.core.data.model.BaseResponse
 import dev.ikti.core.data.model.file.FileResponse
 import dev.ikti.core.data.remote.file.FileService
 import dev.ikti.core.domain.repository.file.FileRepository
-import dev.ikti.core.util.file.FileException
+import dev.ikti.core.util.NetworkException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
@@ -26,8 +26,9 @@ class FileRepositoryImpl @Inject constructor(
                 emit(fileService.uploadImage(bearer, file))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
-                    400 -> throw FileException.UnsupportedException
-                    401 -> throw FileException.UnauthorizedException
+                    400 -> throw NetworkException.FileUnsupportedException
+                    401 -> throw NetworkException.UnauthorizedException
+                    else -> throw NetworkException.UnknownException
                 }
             }
         }

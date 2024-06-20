@@ -18,31 +18,12 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
-        consumerProguardFiles("consumer-rules.pro")
-
         val properties = Properties()
         properties.load(project.rootProject.file("secrets.properties").inputStream())
 
         buildConfigField("boolean", "DEBUG", properties.getProperty("DEBUG", "false"))
         buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
         resValue("string", "MAPS_API_KEY", properties.getProperty("MAPS_API_KEY"))
-    }
-
-    buildTypes {
-        debug {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
     }
 
     compileOptions {
