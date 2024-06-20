@@ -65,7 +65,7 @@ fun MainBottomAppBarNavigation(
                 onClick = {
                     navController.navigate(
                         when (screen.route) {
-                            Nav.Profile.route -> screen.route.replace("{type}", "view")
+                            Nav.Profile.route -> screen.route.replace("{type}", "View")
                             else -> screen.route
                         }
                     ) {

@@ -25,23 +25,6 @@ android {
         }
     }
 
-    buildTypes {
-        debug {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -82,14 +65,14 @@ dependencies {
     implementation(project(":onboarding"))
     implementation(project(":auth"))
     implementation(project(":profile"))
+    implementation(project(":pegawai"))
+    implementation(project(":kehadiran"))
 
 //  Compose
     implementation(libs.androidx.material)
 
 //  Hilt
     implementation(libs.hilt.android)
-    implementation(project(":pegawai"))
-    implementation(project(":kehadiran"))
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
 }

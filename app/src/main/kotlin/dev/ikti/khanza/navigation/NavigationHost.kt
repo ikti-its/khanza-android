@@ -4,33 +4,32 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.ikti.auth.presentation.LoginScreen
-import dev.ikti.core.domain.model.screen.CScreen
-import dev.ikti.core.domain.model.screen.ModuleScreen
 import dev.ikti.core.domain.model.screen.Nav
+import dev.ikti.core.domain.model.screen.Screen
 import dev.ikti.core.util.SetSystemUI
 import dev.ikti.home.presentation.HomeScreen
 import dev.ikti.kehadiran.presentation.KehadiranScreen
 import dev.ikti.onboarding.presentation.OnboardingScreen
-import dev.ikti.onboarding.presentation.splash.AppSplashScreen
+import dev.ikti.onboarding.presentation.splash.SplashScreen
 import dev.ikti.pegawai.presentation.PegawaiScreen
 import dev.ikti.profile.presentation.ProfileScreen
 
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    startDestination: String,
-    intentToMap: (String) -> Unit
+    startDestination: String
 ) {
     NavHost(
         navController = navController,
@@ -39,63 +38,48 @@ fun NavigationHost(
         exitTransition = { ExitTransition.None },
     ) {
         // Splash
-        composable(ModuleScreen.Splash.route) {
+        composable(Screen.Splash.route) {
             SetSystemUI(fullScreen = true)
-            AppSplashScreen(
-                navigateToHome = { token ->
-                    navController.popBackStack()
-                    navController.navigate(
-                        Nav.Home.route.replace(
-                            "{token}",
-                            token
-                        )
-                    )
-                },
-                navigateToOnboarding = { type ->
-                    navController.navigate(
-                        ModuleScreen.Onboarding.route.replace(
-                            "{type}",
-                            if (type) "new" else "old"
-                        )
-                    )
-                }
-            )
+            SplashScreen(navController = navController)
         }
 
         // Onboarding
         composable(
-            route = ModuleScreen.Onboarding.route,
+            route = Screen.Onboarding.route,
             arguments = listOf(
                 navArgument("type") {
                     type = NavType.StringType
                 }
             ),
+            enterTransition = { fadeIn(spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)) },
+            exitTransition = { fadeOut(spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)) }
         ) {
             val type = it.arguments?.getString("type") ?: "new"
             SetSystemUI(fullScreen = true)
             OnboardingScreen(
                 type = type,
-                navigateToLogin = {
-                    navController.navigate(ModuleScreen.Login.route)
-                }
+                navController = navController
             )
         }
 
         // Auth
-        composable(ModuleScreen.Login.route) {
+        composable(
+            route = Screen.Login.route,
+            enterTransition = {
+                slideInHorizontally(
+                    animationSpec = spring(Spring.DampingRatioNoBouncy, Spring.StiffnessLow),
+                    initialOffsetX = { it }
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = spring(Spring.DampingRatioNoBouncy, Spring.StiffnessMedium)
+                )
+            }
+        ) {
             SetSystemUI(fullScreen = true)
-            LoginScreen(
-                navigateToMain = { token ->
-                    navController.navigate(
-                        Nav.Home.route.replace("{token}", token)
-                    ) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                }
-            )
+            LoginScreen(navController = navController)
         }
 
         // Home
@@ -109,14 +93,12 @@ fun NavigationHost(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
         ) {
-            val userToken = it.arguments?.getString("token") ?: ""
+            val token = it.arguments?.getString("token") ?: ""
             SetSystemUI(
                 Color(0xFF0A2D27),
-                Color(0xFFFFFFFF),
-                lightStatusBar = false,
-                fullScreen = false
+                Color(0xFFFFFFFF)
             )
-            HomeScreen(token = userToken, navController = navController)
+            HomeScreen(token = token, navController = navController)
         }
 
         composable(Nav.Presensi.route) {
@@ -136,27 +118,21 @@ fun NavigationHost(
             exitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = spring(Spring.DampingRatioNoBouncy, Spring.StiffnessMedium)
+                    animationSpec = spring(Spring.DampingRatioNoBouncy, Spring.StiffnessLow)
                 )
             },
         ) { it ->
-            val type = it.arguments?.getString("type") ?: "view"
+            val type = it.arguments?.getString("type") ?: "View"
             SetSystemUI(
                 Color(0xFF0A2D27),
-                Color(0xFFFFFFFF),
-                lightStatusBar = false,
-                fullScreen = false
+                Color(0xFFFFFFFF)
             )
-            ProfileScreen(
-                type = type,
-                navController = navController,
-                intentToMap = intentToMap
-            )
+            ProfileScreen(type = type, navController = navController)
         }
 
         // Kehadiran
         composable(
-            route = CScreen.Kehadiran.route,
+            route = Screen.Kehadiran.route,
             arguments = listOf(
                 navArgument("role") {
                     type = NavType.StringType
@@ -172,9 +148,7 @@ fun NavigationHost(
             val feature = it.arguments?.getString("feature") ?: "View"
             SetSystemUI(
                 Color(0xFF0A2D27),
-                Color(0xFFF7F7F7),
-                lightStatusBar = false,
-                fullScreen = false
+                Color(0xFFF7F7F7)
             )
             KehadiranScreen(
                 role = role,
@@ -185,7 +159,7 @@ fun NavigationHost(
 
         // Pegawai
         composable(
-            route = CScreen.Pegawai.route,
+            route = Screen.Pegawai.route,
             arguments = listOf(
                 navArgument("role") {
                     type = NavType.StringType
@@ -201,9 +175,7 @@ fun NavigationHost(
             val feature = it.arguments?.getString("feature") ?: "View"
             SetSystemUI(
                 Color(0xFF0A2D27),
-                Color(0xFFF7F7F7),
-                lightStatusBar = false,
-                fullScreen = false
+                Color(0xFFF7F7F7)
             )
             PegawaiScreen(
                 role = role,
