@@ -99,12 +99,17 @@ class KehadiranViewModel @Inject constructor(
             try {
                 val response = getPresensiByPegawaiIdUseCase.execute(token, id)
                 response.collect { res ->
-                    _stateRiwayat.value =
-                        UIState.Success(res.data.sortedByDescending {
-                            SimpleDateFormat("yyyy-MM-dd").parse(
-                                it.tanggal
-                            )
-                        })
+                    val sortedTanggal = res.data.sortedByDescending {
+                        SimpleDateFormat("yyyy-MM-dd").parse(
+                            it.tanggal
+                        )
+                    }
+
+                    val sortedMasuk = sortedTanggal.sortedByDescending {
+                        it.masuk
+                    }
+
+                    _stateRiwayat.value = UIState.Success(sortedMasuk)
                 }
             } catch (e: Exception) {
                 when (e) {

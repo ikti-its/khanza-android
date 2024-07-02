@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import dev.ikti.core.util.SetSystemUI
 
 @Composable
 fun KehadiranScreen(
@@ -14,6 +15,7 @@ fun KehadiranScreen(
     feature: String,
     viewModel: KehadiranViewModel = hiltViewModel(),
     pengajuanViewModel: PengajuanViewModel = hiltViewModel(),
+    presensiViewModel: PresensiViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
     val token by viewModel.token.collectAsState()
@@ -24,6 +26,9 @@ fun KehadiranScreen(
     val stateStatus by pengajuanViewModel.stateStatus.collectAsState()
     val statePeninjauanList by pengajuanViewModel.statePeninjauanList.collectAsState()
     val stateUpdate by pengajuanViewModel.stateUpdate.collectAsState()
+    val statePresensiJadwal by presensiViewModel.stateJadwal.collectAsState()
+    val statePresensiStatus by presensiViewModel.stateStatus.collectAsState()
+    val stateUpload by presensiViewModel.stateUpload.collectAsState()
 
     LaunchedEffect(token) {
         if (token != "") {
@@ -39,7 +44,27 @@ fun KehadiranScreen(
             )
         }
 
-        "Presensi" -> {}
+        "Presensi" -> {
+            SetSystemUI(fullScreen = true)
+            PresensiContent(
+                pegawai = pegawai,
+                stateJadwal = statePresensiJadwal,
+                stateStatus = statePresensiStatus,
+                stateUpload = stateUpload,
+                getStatus = { presensiViewModel.getStatus(token, it) },
+                getJadwal = { presensiViewModel.getJadwal(token, it) },
+                attend = { idPegawai, jadwal, foto ->
+                    presensiViewModel.attend(token, idPegawai, jadwal, foto)
+                },
+                leave = { id, idPegawai, emergency ->
+                    presensiViewModel.leave(token, id, idPegawai, emergency)
+                },
+                upload = { controller ->
+                    presensiViewModel.uploadSwafoto(token, controller)
+                },
+                navController = navController
+            )
+        }
 
         "Jadwal" -> {
             JadwalContent(

@@ -57,6 +57,20 @@ dependencies {
 //  Coil
     implementation(libs.coil)
 
+//  CameraX
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.view)
+
+//  MLKit
+    implementation(libs.mlkit.face.detection)
+    implementation(libs.mlkit.vision)
+
+//  TFLite
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.gpu)
+    implementation(libs.tensorflow.lite.support)
+
 //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
