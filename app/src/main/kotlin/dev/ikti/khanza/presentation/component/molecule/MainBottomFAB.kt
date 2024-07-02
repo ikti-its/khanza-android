@@ -22,7 +22,7 @@ fun MainBottomFAB(
 ) {
     FloatingActionButton(
         onClick = {
-            navController.navigate(Screen.Kehadiran.route.replace("{type}", "Presensi"))
+            navController.navigate(Screen.Kehadiran.route.replace("{feature}", "Presensi"))
         },
         modifier = modifier.size(70.dp),
         shape = CircleShape,
