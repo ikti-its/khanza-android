@@ -107,10 +107,61 @@ fun HomeFeatureGrid(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Shimmer(height = 68.dp, width = 68.dp, shape = RoundedCornerShape(12.dp))
-                        Shimmer(height = 68.dp, width = 68.dp, shape = RoundedCornerShape(12.dp))
-                        Shimmer(height = 68.dp, width = 68.dp, shape = RoundedCornerShape(12.dp))
-                        Shimmer(height = 68.dp, width = 68.dp, shape = RoundedCornerShape(12.dp))
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                    }
+                    Spacer(modifier = modifier.height(36.dp))
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                        Shimmer(
+                            height = 68.dp,
+                            width = 68.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
                     }
                 }
 
