@@ -2,6 +2,7 @@ package dev.ikti.kehadiran.presentation
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,9 +25,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,6 +40,7 @@ import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
 import dev.ikti.core.util.showToast
+import dev.ikti.kehadiran.R
 import dev.ikti.kehadiran.data.model.PengajuanResponse
 import dev.ikti.kehadiran.presentation.component.StatusPengajuanCard
 
@@ -98,28 +103,28 @@ fun StatusContent(
                     .fillMaxSize()
                     .padding(horizontal = 20.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
-                Text(
-                    text = "Status Pengajuan Izin",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 20.sp,
-                        fontFamily = FontGilroy
-                    )
-                )
-                Spacer(Modifier.height(20.dp))
-                Spacer(
-                    Modifier
-                        .height(2.dp)
-                        .fillMaxWidth()
-                        .background(Color(0xFFF1F1F1))
-                )
-                Spacer(Modifier.height(20.dp))
                 when (stateStatus) {
                     is UIState.Success -> {
                         val pengajuan = stateStatus.data
 
                         if (pengajuan.isNotEmpty()) {
+                            Spacer(Modifier.height(24.dp))
+                            Text(
+                                text = "Status Pengajuan Izin",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Spacer(Modifier.height(20.dp))
+                            Spacer(
+                                Modifier
+                                    .height(2.dp)
+                                    .fillMaxWidth()
+                                    .background(Color(0xFFF1F1F1))
+                            )
+                            Spacer(Modifier.height(20.dp))
                             LazyColumn(state = lazyListState) {
                                 items(items = pengajuan) { ajuan ->
                                     StatusPengajuanCard(ajuan = ajuan)
@@ -127,22 +132,78 @@ fun StatusContent(
                                 }
                             }
                         } else {
-                            Text(
-                                text = "Belum ada izin yang diajukan",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 14.sp,
-                                    fontFamily = FontGilroy
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_kehadiran_status),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified,
+                                    modifier = Modifier.size(54.dp)
                                 )
-                            )
+                                Spacer(Modifier.height(16.dp))
+                                Text(
+                                    text = "Status Pengajuan",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(12.dp))
+                                Text(
+                                    text = "Belum memiliki pengajuan yang diajukan",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                            }
                         }
                     }
 
                     is UIState.Error -> {
+                        Spacer(Modifier.height(24.dp))
+                        Text(
+                            text = "Status Pengajuan Izin",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(20.dp))
+                        Spacer(
+                            Modifier
+                                .height(2.dp)
+                                .fillMaxWidth()
+                                .background(Color(0xFFF1F1F1))
+                        )
+                        Spacer(Modifier.height(20.dp))
                         showToast(context, "Gagal memuat daftar pengajuan")
                     }
 
                     UIState.Loading -> {
+                        Spacer(Modifier.height(24.dp))
+                        Text(
+                            text = "Status Pengajuan Izin",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(20.dp))
+                        Spacer(
+                            Modifier
+                                .height(2.dp)
+                                .fillMaxWidth()
+                                .background(Color(0xFFF1F1F1))
+                        )
+                        Spacer(Modifier.height(20.dp))
                         Shimmer(
                             height = 130.dp,
                             width = 370.dp,

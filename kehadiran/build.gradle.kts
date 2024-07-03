@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.camera.core)
     implementation(libs.camera.camera2)
     implementation(libs.camera.view)
+    implementation(libs.camera.lifecycle)
 
 //  MLKit
     implementation(libs.mlkit.face.detection)

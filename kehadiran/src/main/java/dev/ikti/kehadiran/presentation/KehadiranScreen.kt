@@ -16,6 +16,7 @@ fun KehadiranScreen(
     viewModel: KehadiranViewModel = hiltViewModel(),
     pengajuanViewModel: PengajuanViewModel = hiltViewModel(),
     presensiViewModel: PresensiViewModel = hiltViewModel(),
+    faceViewModel: FaceViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
     val token by viewModel.token.collectAsState()
@@ -29,6 +30,8 @@ fun KehadiranScreen(
     val statePresensiJadwal by presensiViewModel.stateJadwal.collectAsState()
     val statePresensiStatus by presensiViewModel.stateStatus.collectAsState()
     val stateUpload by presensiViewModel.stateUpload.collectAsState()
+    val stateLokasi by presensiViewModel.stateLokasi.collectAsState()
+    val dataBitmap by faceViewModel.dataBitmap.collectAsState()
 
     LaunchedEffect(token) {
         if (token != "") {
@@ -48,9 +51,11 @@ fun KehadiranScreen(
             SetSystemUI(fullScreen = true)
             PresensiContent(
                 pegawai = pegawai,
+                dataBitmap = dataBitmap,
                 stateJadwal = statePresensiJadwal,
                 stateStatus = statePresensiStatus,
                 stateUpload = stateUpload,
+                stateLokasi = stateLokasi,
                 getStatus = { presensiViewModel.getStatus(token, it) },
                 getJadwal = { presensiViewModel.getJadwal(token, it) },
                 attend = { idPegawai, jadwal, foto ->
@@ -62,6 +67,8 @@ fun KehadiranScreen(
                 upload = { controller ->
                     presensiViewModel.uploadSwafoto(token, controller)
                 },
+                getLokasi = { presensiViewModel.getLokasi(token) },
+                getFoto = { faceViewModel.getFoto(token, it) },
                 navController = navController
             )
         }

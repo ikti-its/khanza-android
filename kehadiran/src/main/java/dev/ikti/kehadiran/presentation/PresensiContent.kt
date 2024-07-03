@@ -2,7 +2,11 @@ package dev.ikti.kehadiran.presentation
 
 import android.Manifest
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
@@ -12,6 +16,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -68,14 +73,20 @@ import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
+import dev.ikti.core.util.showToast
 import dev.ikti.kehadiran.R
 import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
+import dev.ikti.kehadiran.util.FaceAnalyzer
 import kotlinx.coroutines.delay
+import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.support.common.FileUtil
+import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -83,21 +94,36 @@ fun PresensiContent(
     context: Context = LocalContext.current,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     pegawai: String,
+    dataBitmap: Bitmap?,
     stateJadwal: UIState<JadwalResponse>,
     stateStatus: UIState<StatusPresensiResponse>,
     stateUpload: UIState<String>,
+    stateLokasi: UIState<Boolean>,
     getJadwal: (String) -> Unit,
     getStatus: (String) -> Unit,
     attend: (String, String, String) -> Unit,
     leave: (String, String, Boolean) -> Unit,
     upload: (CameraController) -> Unit,
+    getLokasi: () -> Unit,
+    getFoto: (String) -> Unit,
     navController: NavHostController
 ) {
+    var type by remember { mutableStateOf("Swafoto") }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
+    val locationPermissionState = rememberMultiplePermissionsState(
+        listOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    )
 
     LaunchedEffect(Unit) {
         if (!cameraPermissionState.status.isGranted) {
             cameraPermissionState.launchPermissionRequest()
+        }
+
+        if (!locationPermissionState.allPermissionsGranted) {
+            locationPermissionState.launchMultiplePermissionRequest()
         }
     }
 
@@ -106,6 +132,7 @@ fun PresensiContent(
             bindToLifecycle(lifecycleOwner)
         }
     }
+
     var showPlaceholder by remember { mutableStateOf(true) }
     var isAttendDialogHidden by remember { mutableStateOf(true) }
     var isLeaveDialogHidden by remember { mutableStateOf(true) }
@@ -113,11 +140,11 @@ fun PresensiContent(
     var jadwal by remember { mutableStateOf("") }
     var foto by remember { mutableStateOf("") }
 
-
     LaunchedEffect(pegawai) {
         if (pegawai != "") {
             getStatus(pegawai)
             getJadwal(pegawai)
+            getFoto(pegawai)
         }
     }
 
@@ -154,133 +181,454 @@ fun PresensiContent(
     }
 
     if (cameraPermissionState.status.isGranted) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AndroidView(
-                modifier = Modifier.fillMaxSize(),
-                factory = { ctx ->
-                    PreviewView(ctx).apply {
-                        scaleType = PreviewView.ScaleType.FILL_CENTER
-                        implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                        controller = cameraController
-
-                        cameraController.cameraSelector = CameraSelector.Builder()
-                            .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                            .build()
-                    }
-                },
-                onRelease = {
+        when (type) {
+            "Swafoto" -> {
+                LaunchedEffect(type) {
                     cameraController.unbind()
+                    cameraController.bindToLifecycle(lifecycleOwner)
                 }
-            )
-            AnimatedVisibility(
-                visible = showPlaceholder,
-                enter = fadeIn(
-                    animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
-                ),
-                exit = fadeOut(
-                    animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
-                )
-            ) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp, vertical = 24.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                TopAppBar(
-                    modifier = Modifier.navigationBarsPadding(),
-                    title = {
-                        Text(
-                            text = "Swafoto",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
+
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AndroidView(
+                        modifier = Modifier.fillMaxSize(),
+                        factory = { ctx ->
+                            PreviewView(ctx).apply {
+                                scaleType = PreviewView.ScaleType.FILL_CENTER
+                                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                                controller = cameraController
+
+                                cameraController.cameraSelector = CameraSelector.Builder()
+                                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                                    .build()
+                            }
+                        }
+                    )
+                    AnimatedVisibility(
+                        visible = showPlaceholder,
+                        enter = fadeIn(
+                            animationSpec = spring(
+                                Spring.DampingRatioLowBouncy,
+                                Spring.StiffnessLow
+                            )
+                        ),
+                        exit = fadeOut(
+                            animationSpec = spring(
+                                Spring.DampingRatioLowBouncy,
+                                Spring.StiffnessLow
                             )
                         )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = { navController.navigateUp() }
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = null,
-                                tint = Color(0xFFFFFFFF)
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        navigationIconContentColor = Color(0xFFFFFFFF),
-                        titleContentColor = Color(0xFFFFFFFF)
-                    )
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .height(64.dp)
-                            .width(64.dp)
-                            .background(Color(0xFFFFFFFF), CircleShape)
-                            .clip(CircleShape)
-                            .clickable {
-                                upload(cameraController)
-                            }
-                    )
-                    Spacer(Modifier.height(48.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0xFFC4C4C4), RoundedCornerShape(24.dp)),
-                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Button(
-                            onClick = {},
-                            modifier = Modifier
-                                .height(44.dp)
-                                .width(183.dp),
-                            shape = RoundedCornerShape(24.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFC4C4C4),
-                                contentColor = Color(0xFF535353)
-                            )
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = "Face Recognition",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 15.sp,
-                                    fontFamily = FontGilroy
-                                ),
-                                maxLines = 1
-                            )
                         }
-                        Button(
-                            onClick = {},
-                            modifier = Modifier
-                                .height(44.dp)
-                                .width(183.dp),
-                            shape = RoundedCornerShape(24.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFFDFDFD),
-                                contentColor = Color(0xFF272727)
-                            )
-                        ) {
-                            Text(
-                                text = "Swafoto",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 15.sp,
-                                    fontFamily = FontGilroy
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 8.dp, vertical = 24.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TopAppBar(
+                            modifier = Modifier.navigationBarsPadding(),
+                            title = {
+                                Text(
+                                    text = "Swafoto",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontGilroy
+                                    )
                                 )
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = { navController.navigateUp() }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = null,
+                                        tint = Color(0xFFFFFFFF)
+                                    )
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = Color.Transparent,
+                                navigationIconContentColor = Color(0xFFFFFFFF),
+                                titleContentColor = Color(0xFFFFFFFF)
                             )
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .height(64.dp)
+                                    .width(64.dp)
+                                    .background(Color(0xFFFFFFFF), CircleShape)
+                                    .clip(CircleShape)
+                                    .clickable {
+                                        upload(cameraController)
+                                    }
+                            )
+                            Spacer(Modifier.height(48.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color(0xFFC4C4C4), RoundedCornerShape(24.dp)),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Button(
+                                    onClick = {
+                                        if (locationPermissionState.allPermissionsGranted) {
+                                            type = "Face Recognition"
+                                        } else {
+                                            showToast(context, "Lokasi belum diizinkan")
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .height(44.dp)
+                                        .width(183.dp),
+                                    shape = RoundedCornerShape(24.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFC4C4C4),
+                                        contentColor = Color(0xFF535353)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Face Recognition",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 15.sp,
+                                            fontFamily = FontGilroy
+                                        ),
+                                        maxLines = 1
+                                    )
+                                }
+                                Button(
+                                    onClick = {},
+                                    modifier = Modifier
+                                        .height(44.dp)
+                                        .width(183.dp),
+                                    shape = RoundedCornerShape(24.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFFDFDFD),
+                                        contentColor = Color(0xFF272727)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Swafoto",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 15.sp,
+                                            fontFamily = FontGilroy
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            "Face Recognition" -> {
+                var status by remember { mutableStateOf("Memindai wajah...") }
+                val onDetect = { detected: Boolean ->
+                    if (detected) {
+                        isAttendDialogHidden = false
+                        status = "Wajah dikenali"
+                    } else {
+                        status = "Wajah tidak dikenali"
+                    }
+                }
+
+                val preview = Preview.Builder().build()
+                val previewView = remember { PreviewView(context) }
+                val cameraProvider = ProcessCameraProvider.getInstance(context).get()
+                val cameraExecutor = Executors.newSingleThreadExecutor()
+                val cameraSelector = CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                    .build()
+
+                val faceNetInterpreter = Interpreter(
+                    FileUtil.loadMappedFile(context, "mobile_face_net.tflite"),
+                    Interpreter.Options()
+                )
+                val faceAnalyzer = FaceAnalyzer(
+                    faceNetInterpreter,
+                    onDetect
+                )
+                val imageAnalysis = ImageAnalysis.Builder()
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+                    .also {
+                        it.setAnalyzer(cameraExecutor, faceAnalyzer)
+                    }
+
+                var showLocationDialog by remember { mutableStateOf(false) }
+
+                LaunchedEffect(Unit) {
+                    getLokasi()
+                }
+
+                LaunchedEffect(Unit) {
+                    cameraProvider.unbindAll()
+                    cameraProvider.bindToLifecycle(
+                        lifecycleOwner,
+                        cameraSelector,
+                        preview,
+                        imageAnalysis
+                    )
+                    preview.setSurfaceProvider(previewView.surfaceProvider)
+                }
+
+                LaunchedEffect(dataBitmap) {
+                    if (dataBitmap != null) {
+                        faceAnalyzer.getPegawaiFace(dataBitmap)
+                    }
+                }
+
+                when (stateLokasi) {
+                    is UIState.Success -> {
+                        if (stateLokasi.data) {
+                            showLocationDialog = true
+                        }
+                    }
+
+                    else -> {}
+                }
+
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AndroidView(
+                        modifier = Modifier.fillMaxSize(),
+                        factory = {
+                            previewView
+                        }
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 8.dp, vertical = 24.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TopAppBar(
+                            modifier = Modifier.navigationBarsPadding(),
+                            title = {
+                                Text(
+                                    text = "Face Recognition",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = { navController.navigateUp() }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = null,
+                                        tint = Color(0xFFFFFFFF)
+                                    )
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = Color.Transparent,
+                                navigationIconContentColor = Color(0xFFFFFFFF),
+                                titleContentColor = Color(0xFFFFFFFF)
+                            )
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .background(Color(0xFFF7F7F7), RoundedCornerShape(24.dp))
+                                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                when (status) {
+                                    "Wajah tidak dikenali" -> {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_presensi_face_sad),
+                                            contentDescription = null
+                                        )
+                                    }
+
+                                    else -> {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_presensi_face),
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(16.dp))
+                                Text(
+                                    text = status,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                            }
+                            Spacer(Modifier.height(24.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color(0xFFC4C4C4), RoundedCornerShape(24.dp)),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Button(
+                                    onClick = {
+                                        if (locationPermissionState.allPermissionsGranted) {
+                                            type = "Face Recognition"
+                                        } else {
+                                            showToast(context, "Lokasi belum diizinkan")
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .height(44.dp)
+                                        .width(183.dp),
+                                    shape = RoundedCornerShape(24.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFFDFDFD),
+                                        contentColor = Color(0xFF272727)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Face Recognition",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 15.sp,
+                                            fontFamily = FontGilroy
+                                        ),
+                                        maxLines = 1
+                                    )
+                                }
+                                Button(
+                                    onClick = {
+                                        type = "Swafoto"
+                                    },
+                                    modifier = Modifier
+                                        .height(44.dp)
+                                        .width(183.dp),
+                                    shape = RoundedCornerShape(24.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFC4C4C4),
+                                        contentColor = Color(0xFF535353)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Swafoto",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 15.sp,
+                                            fontFamily = FontGilroy
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = showLocationDialog,
+                    enter = fadeIn(
+                        animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+                    ),
+                    exit = fadeOut(
+                        animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+                    )
+                ) {
+                    val onDismiss = { navController.navigateUp() }
+
+                    Dialog(onDismissRequest = { onDismiss() }) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFF7F7F7), RoundedCornerShape(12.dp))
+                                .padding(16.dp)
+                        ) {
+                            Spacer(Modifier.height(24.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.ic_review_setuju
+                                    ),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified
+                                )
+                            }
+                            Spacer(Modifier.height(16.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "Lokasi Tidak Sesuai",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Spacer(Modifier.height(24.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "Anda berada di luar jangkauan rumah sakit!",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Spacer(Modifier.height(36.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                OutlinedButton(
+                                    onClick = { onDismiss() },
+                                    modifier = Modifier
+                                        .height(48.dp)
+                                        .fillMaxWidth(),
+                                    shape = RoundedCornerShape(30.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        containerColor = Color.Unspecified,
+                                        contentColor = Color(0xFF272727)
+                                    ),
+                                    border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                                ) {
+                                    Text(
+                                        text = "Keluar",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 16.sp,
+                                            fontFamily = FontGilroy
+                                        )
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -333,7 +681,12 @@ fun PresensiContent(
             animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
         )
     ) {
-        Dialog(onDismissRequest = { navController.navigateUp() }) {
+        val onDismiss = {
+            navController.navigateUp()
+            foto = ""
+        }
+
+        Dialog(onDismissRequest = { onDismiss() }) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -344,7 +697,7 @@ fun PresensiContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    IconButton(onClick = { navController.navigateUp() }
+                    IconButton(onClick = { onDismiss() }
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Close,
@@ -413,9 +766,7 @@ fun PresensiContent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OutlinedButton(
-                        onClick = {
-                            navController.navigateUp()
-                        },
+                        onClick = { onDismiss() },
                         modifier = Modifier
                             .height(48.dp)
                             .width(135.dp),
@@ -437,7 +788,7 @@ fun PresensiContent(
                     }
                     Button(
                         onClick = {
-                            if (pegawai != "" && jadwal != "" && foto != "") {
+                            if (pegawai != "" && jadwal != "") {
                                 attend(pegawai, jadwal, foto)
                                 navController.navigateUp()
                             }
@@ -474,9 +825,10 @@ fun PresensiContent(
             animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
         )
     ) {
+        val onDismiss = { navController.navigateUp() }
         var emergency by remember { mutableStateOf(false) }
 
-        Dialog(onDismissRequest = { navController.navigateUp() }) {
+        Dialog(onDismissRequest = { onDismiss() }) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -572,9 +924,7 @@ fun PresensiContent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OutlinedButton(
-                        onClick = {
-                            navController.navigateUp()
-                        },
+                        onClick = { onDismiss() },
                         modifier = Modifier
                             .height(48.dp)
                             .width(135.dp),

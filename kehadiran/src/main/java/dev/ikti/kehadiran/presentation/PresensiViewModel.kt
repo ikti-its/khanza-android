@@ -1,5 +1,6 @@
 package dev.ikti.kehadiran.presentation
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,10 +10,9 @@ import androidx.camera.view.CameraController
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.domain.usecase.file.UploadImageUseCase
-import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
-import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.util.NetworkConstant
 import dev.ikti.core.util.NetworkConstant.ERR_NOT_FOUND
 import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_ERROR
@@ -25,6 +25,7 @@ import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import dev.ikti.kehadiran.domain.usecase.PresensiAttendUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetJadwalUseCase
+import dev.ikti.kehadiran.domain.usecase.PresensiGetLokasiUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetPresensiUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiLeaveUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,24 +39,22 @@ import java.io.File
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.asin
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 @HiltViewModel
 class PresensiViewModel @Inject constructor(
     private val application: Application,
-    private val getLocalUserUseCase: GetLocalUserUseCase,
-    private val getUserTokenUseCase: GetUserTokenUseCase,
     private val attendUseCase: PresensiAttendUseCase,
+    private val fusedLocationClient: FusedLocationProviderClient,
     private val getJadwalUseCase: PresensiGetJadwalUseCase,
+    private val getLokasiUseCase: PresensiGetLokasiUseCase,
     private val getPresensiUseCase: PresensiGetPresensiUseCase,
     private val leaveUseCase: PresensiLeaveUseCase,
     private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel() {
-    private val _token = MutableStateFlow("")
-    val token: StateFlow<String> = _token
-
-    private val _pegawai = MutableStateFlow("")
-    val pegawai: StateFlow<String> = _pegawai
-
     private val _stateJadwal: MutableStateFlow<UIState<JadwalResponse>> =
         MutableStateFlow(UIState.Empty)
     val stateJadwal: StateFlow<UIState<JadwalResponse>> = _stateJadwal
@@ -76,27 +75,9 @@ class PresensiViewModel @Inject constructor(
         MutableStateFlow(UIState.Empty)
     val stateUpload: StateFlow<UIState<String>> = _stateUpload
 
-    init {
-        getUserToken()
-    }
-
-    private fun getUserToken() {
-        viewModelScope.launch {
-            getUserTokenUseCase.execute(Unit)
-                .collect { token ->
-                    _token.value = token
-                }
-        }
-    }
-
-    fun getLocalUser(token: String) {
-        viewModelScope.launch {
-            getLocalUserUseCase.execute(token)
-                .collect { user ->
-                    _pegawai.value = user.pegawai
-                }
-        }
-    }
+    private val _stateLokasi: MutableStateFlow<UIState<Boolean>> =
+        MutableStateFlow(UIState.Empty)
+    val stateLokasi: StateFlow<UIState<Boolean>> = _stateLokasi
 
     private fun retrieveDate(): String {
         val calendar = Calendar.getInstance()
@@ -284,5 +265,67 @@ class PresensiViewModel @Inject constructor(
             outputStream
         )
         return outputStream.toByteArray()
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLokasi(token: String) {
+        _stateLokasi.value = UIState.Loading
+        viewModelScope.launch {
+            try {
+                val response = getLokasiUseCase.execute(token)
+                response.collect { res ->
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        if (location != null) {
+                            val latitude = res.data.latitude
+                            val longitude = res.data.longitude
+                            val userLatitude = location.latitude
+                            val userLongitude = location.longitude
+
+                            val distance =
+                                calculateDistance(userLatitude, userLongitude, latitude, longitude)
+
+                            if (distance <= 2000.0) {
+                                _stateLokasi.value = UIState.Success(true)
+                            } else {
+                                _stateLokasi.value = UIState.Success(false)
+                            }
+                        } else {
+                            _stateLokasi.value = UIState.Success(false)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                when (e) {
+                    NetworkException.NotFoundException -> _stateLokasi.value = UIState.Error(
+                        ERR_NOT_FOUND
+                    )
+
+                    else -> _stateLokasi.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                }
+            }
+        }
+    }
+
+    private fun calculateDistance(
+        latitude: Double,
+        longitude: Double,
+        originLatitude: Double,
+        originLongitude: Double
+    ): Double {
+        val earthRadius = 6371.0
+
+        val latitudeRadius = Math.toRadians(latitude)
+        val longitudeRadius = Math.toRadians(longitude)
+        val locationLatitudeRadius = Math.toRadians(originLatitude)
+        val locationLongitudeRadius = Math.toRadians(originLongitude)
+
+        val dLat = locationLatitudeRadius - latitudeRadius
+        val dLon = locationLongitudeRadius - longitudeRadius
+
+        val a = sin(dLat / 2) * sin(dLat / 2) + cos(latitudeRadius) * cos(locationLatitudeRadius) *
+                sin(dLon / 2) * sin(dLon / 2)
+        val c = 2 * asin(sqrt(a))
+
+        return earthRadius * c
     }
 }

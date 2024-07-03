@@ -3,8 +3,10 @@ package dev.ikti.kehadiran.data.repository
 import dev.ikti.core.data.model.BaseResponse
 import dev.ikti.core.util.NetworkException
 import dev.ikti.kehadiran.data.model.AttendRequest
+import dev.ikti.kehadiran.data.model.FotoPegawaiResponse
 import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.LeaveRequest
+import dev.ikti.kehadiran.data.model.OrganisasiResponse
 import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import dev.ikti.kehadiran.data.remote.PresensiService
@@ -80,6 +82,39 @@ class PresensiRepositoryImpl @Inject constructor(
         return flow {
             try {
                 emit(presensiService.leave(bearer, emergency, leave))
+            } catch (e: HttpException) {
+                when (e.response()?.code()) {
+                    404 -> throw NetworkException.NotFoundException
+                    else -> throw NetworkException.UnknownException
+                }
+            }
+        }
+    }
+
+    override suspend fun getFoto(
+        token: String,
+        id: String
+    ): Flow<BaseResponse<FotoPegawaiResponse>> {
+        val bearer = "Bearer $token"
+        return flow {
+            try {
+                emit(presensiService.getFoto(bearer, id))
+            } catch (e: HttpException) {
+                when (e.response()?.code()) {
+                    404 -> throw NetworkException.NotFoundException
+                    else -> throw NetworkException.UnknownException
+                }
+            }
+        }
+    }
+
+    override suspend fun getLokasi(
+        token: String
+    ): Flow<BaseResponse<OrganisasiResponse>> {
+        val bearer = "Bearer $token"
+        return flow {
+            try {
+                emit(presensiService.getLokasi(bearer))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
                     404 -> throw NetworkException.NotFoundException

@@ -2,8 +2,10 @@ package dev.ikti.kehadiran.data.remote
 
 import dev.ikti.core.data.model.BaseResponse
 import dev.ikti.kehadiran.data.model.AttendRequest
+import dev.ikti.kehadiran.data.model.FotoPegawaiResponse
 import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.LeaveRequest
+import dev.ikti.kehadiran.data.model.OrganisasiResponse
 import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import retrofit2.http.Body
@@ -40,5 +42,14 @@ interface PresensiService {
         @Body leave: LeaveRequest
     ): BaseResponse<PresensiResponse>
 
+    @GET("pegawai/foto/{id}")
+    suspend fun getFoto(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): BaseResponse<FotoPegawaiResponse>
 
+    @GET("organisasi/current")
+    suspend fun getLokasi(
+        @Header("Authorization") token: String
+    ): BaseResponse<OrganisasiResponse>
 }
