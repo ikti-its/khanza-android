@@ -39,7 +39,7 @@ fun SplashContent() {
                 painter = painterResource(id = R.drawable.ic_logo),
                 contentDescription = null
             )
-            Spacer(Modifier.width(20.dp))
+            Spacer(Modifier.width(12.dp))
             Image(
                 painter = painterResource(id = R.drawable.ic_logo_text),
                 contentDescription = null
