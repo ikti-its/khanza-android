@@ -41,7 +41,7 @@ room = "2.6.1"
 datastore = "1.1.1"
 coil = "2.6.0"
 cameraX = "1.4.0-alpha04"
-mlkitFace = "17.1.0"
+mlkitFace = "16.1.6"
 mlkitVision = "20.1.3"
 tflite = "2.14.0"
 tfliteSupport = "0.4.4"
@@ -89,9 +89,10 @@ coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
 camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
 
 # MLKit
-mlkit-face-detection = { group = "com.google.android.gms", name = "play-services-mlkit-face-detection", version.ref = "mlkitFace" }
+mlkit-face-detection = { group = "com.google.mlkit", name = "face-detection", version.ref = "mlkitFace" }
 mlkit-vision = { group = "com.google.android.gms", name = "play-services-vision", version.ref = "mlkitVision" }
 
 # TFLite
