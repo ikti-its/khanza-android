@@ -17,6 +17,7 @@ fun PegawaiScreen(
     val token by viewModel.token.collectAsState()
     val stateData by viewModel.stateData.collectAsState()
     val stateKetersediaan by viewModel.stateKetersediaan.collectAsState()
+    val stateLokasi by viewModel.stateLokasi.collectAsState()
 
     when (feature) {
         "View" -> {
@@ -37,8 +38,18 @@ fun PegawaiScreen(
 
         "Daftar" -> {
             DaftarContent(
+                token = token,
                 stateKetersediaan = stateKetersediaan,
-                onQuery = { query -> viewModel.queryKetersediaan(token, query) },
+                stateLokasi = stateLokasi,
+                getLokasi = { viewModel.getLokasi(it) },
+                onQuery = { query, latitude, longitude ->
+                    viewModel.queryKetersediaan(
+                        token,
+                        query,
+                        latitude,
+                        longitude
+                    )
+                },
                 navController = navController
             )
         }

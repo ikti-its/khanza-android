@@ -2,12 +2,16 @@ package dev.ikti.pegawai.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
+import dev.ikti.core.util.NetworkConstant
+import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
 import dev.ikti.pegawai.data.model.PegawaiResponse
 import dev.ikti.pegawai.domain.model.Ketersediaan
 import dev.ikti.pegawai.domain.usecase.GetKetersediaanUseCase
+import dev.ikti.pegawai.domain.usecase.GetLokasiUseCase
 import dev.ikti.pegawai.domain.usecase.GetPegawaiUseCase
 import dev.ikti.pegawai.util.PegawaiConstant.ERR_ACCOUNT_NOT_FOUND
 import dev.ikti.pegawai.util.PegawaiConstant.ERR_UNKNOWN_ERROR
@@ -25,6 +29,7 @@ import kotlin.math.sqrt
 @HiltViewModel
 class PegawaiViewModel @Inject constructor(
     private val getKetersediaanUseCase: GetKetersediaanUseCase,
+    private val getLokasiUseCase: GetLokasiUseCase,
     private val getPegawaiUseCase: GetPegawaiUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase
 ) : ViewModel() {
@@ -34,16 +39,20 @@ class PegawaiViewModel @Inject constructor(
     private val _stateData: MutableStateFlow<UIState<PegawaiResponse>> =
         MutableStateFlow(UIState.Empty)
     val stateData: StateFlow<UIState<PegawaiResponse>> = _stateData
-    
+
     private val _stateKetersediaan: MutableStateFlow<UIState<List<Ketersediaan>>> =
         MutableStateFlow(UIState.Empty)
     val stateKetersediaan: StateFlow<UIState<List<Ketersediaan>>> = _stateKetersediaan
+
+    private val _stateLokasi: MutableStateFlow<UIState<LatLng>> =
+        MutableStateFlow(UIState.Empty)
+    val stateLokasi: StateFlow<UIState<LatLng>> = _stateLokasi
 
     init {
         getUserToken()
     }
 
-    private fun getUserToken() {
+    fun getUserToken() {
         viewModelScope.launch {
             getUserTokenUseCase.execute(Unit)
                 .collect { token ->
@@ -71,9 +80,31 @@ class PegawaiViewModel @Inject constructor(
         }
     }
 
-    fun queryKetersediaan(token: String, query: String) {
+    fun getLokasi(token: String) {
+        _stateLokasi.value = UIState.Loading
+        viewModelScope.launch {
+            try {
+                val response = getLokasiUseCase.execute(token)
+                response.collect { res ->
+                    _stateLokasi.value =
+                        UIState.Success(LatLng(res.data.latitude, res.data.longitude))
+                }
+            } catch (e: Exception) {
+                when (e) {
+                    NetworkException.NotFoundException -> _stateLokasi.value = UIState.Error(
+                        NetworkConstant.ERR_NOT_FOUND
+                    )
+
+                    else -> _stateLokasi.value = UIState.Error(NetworkConstant.ERR_UNKNOWN_ERROR)
+                }
+            }
+        }
+    }
+
+    fun queryKetersediaan(token: String, query: String, latitude: Double, longitude: Double) {
         _stateKetersediaan.value = UIState.Loading
         val today = retrieveDate()
+
         viewModelScope.launch {
             try {
                 val response = getKetersediaanUseCase.execute(token, today)
@@ -84,7 +115,12 @@ class PegawaiViewModel @Inject constructor(
                         }
                         val ketersediaanList = filtered.map { ketersediaan ->
                             val distance =
-                                calculateDistance(ketersediaan.latitude, ketersediaan.longitude)
+                                calculateDistance(
+                                    ketersediaan.latitude,
+                                    ketersediaan.longitude,
+                                    latitude,
+                                    longitude
+                                )
 
                             Ketersediaan(
                                 ketersediaan.nama,
@@ -105,7 +141,12 @@ class PegawaiViewModel @Inject constructor(
                     } else {
                         val ketersediaanList = list.data.map { ketersediaan ->
                             val distance =
-                                calculateDistance(ketersediaan.latitude, ketersediaan.longitude)
+                                calculateDistance(
+                                    ketersediaan.latitude,
+                                    ketersediaan.longitude,
+                                    latitude,
+                                    longitude
+                                )
 
                             Ketersediaan(
                                 ketersediaan.nama,
@@ -138,18 +179,16 @@ class PegawaiViewModel @Inject constructor(
 
     private fun calculateDistance(
         latitude: Double,
-        longitude: Double
+        longitude: Double,
+        originLatitude: Double,
+        originLongitude: Double
     ): Double {
-        // Kampus ITS
-        val locationLat = -7.281696177416258
-        val locationLon = 112.79505404588785
-
         val earthRadius = 6371.0
 
         val latitudeRadius = Math.toRadians(latitude)
         val longitudeRadius = Math.toRadians(longitude)
-        val locationLatitudeRadius = Math.toRadians(locationLat)
-        val locationLongitudeRadius = Math.toRadians(locationLon)
+        val locationLatitudeRadius = Math.toRadians(originLatitude)
+        val locationLongitudeRadius = Math.toRadians(originLongitude)
 
         val dLat = locationLatitudeRadius - latitudeRadius
         val dLon = locationLongitudeRadius - longitudeRadius

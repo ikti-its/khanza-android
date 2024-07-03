@@ -8,6 +8,7 @@ import dev.ikti.pegawai.data.remote.PegawaiService
 import dev.ikti.pegawai.data.repository.PegawaiRepositoryImpl
 import dev.ikti.pegawai.domain.repository.PegawaiRepository
 import dev.ikti.pegawai.domain.usecase.GetKetersediaanUseCase
+import dev.ikti.pegawai.domain.usecase.GetLokasiUseCase
 import dev.ikti.pegawai.domain.usecase.GetPegawaiUseCase
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -37,5 +38,11 @@ object PegawaiModule {
     @Singleton
     fun provideKetersediaanUseCase(pegawaiRepository: PegawaiRepository): GetKetersediaanUseCase {
         return GetKetersediaanUseCase(pegawaiRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetLokasiUseCase(pegawaiRepository: PegawaiRepository): GetLokasiUseCase {
+        return GetLokasiUseCase(pegawaiRepository)
     }
 }

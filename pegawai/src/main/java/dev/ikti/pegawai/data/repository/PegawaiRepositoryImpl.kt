@@ -1,7 +1,9 @@
 package dev.ikti.pegawai.data.repository
 
 import dev.ikti.core.data.model.BaseResponse
+import dev.ikti.core.util.NetworkException
 import dev.ikti.pegawai.data.model.KetersediaanResponse
+import dev.ikti.pegawai.data.model.OrganisasiResponse
 import dev.ikti.pegawai.data.model.PegawaiResponse
 import dev.ikti.pegawai.data.remote.PegawaiService
 import dev.ikti.pegawai.domain.repository.PegawaiRepository
@@ -40,6 +42,22 @@ class PegawaiRepositoryImpl @Inject constructor(
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
                     404 -> throw PegawaiException.AccountNotFoundException
+                }
+            }
+        }
+    }
+
+    override suspend fun getLokasi(
+        token: String
+    ): Flow<BaseResponse<OrganisasiResponse>> {
+        val bearer = "Bearer $token"
+        return flow {
+            try {
+                emit(pegawaiService.getLokasi(bearer))
+            } catch (e: HttpException) {
+                when (e.response()?.code()) {
+                    404 -> throw NetworkException.NotFoundException
+                    else -> throw NetworkException.UnknownException
                 }
             }
         }

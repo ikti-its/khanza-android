@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.android.gms.maps.model.LatLng
 import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
@@ -52,16 +54,38 @@ import kotlinx.coroutines.delay
 @Composable
 fun DaftarContent(
     context: Context = LocalContext.current,
+    token: String,
     stateKetersediaan: UIState<List<Ketersediaan>>,
-    onQuery: (String) -> Unit,
+    stateLokasi: UIState<LatLng>,
+    getLokasi: (String) -> Unit,
+    onQuery: (String, Double, Double) -> Unit,
     navController: NavHostController
 ) {
     val lazyListState = rememberLazyListState()
     var query by remember { mutableStateOf("") }
+    var latitude by remember { mutableDoubleStateOf(0.0) }
+    var longitude by remember { mutableDoubleStateOf(0.0) }
 
-    LaunchedEffect(query) {
-        delay(1000L)
-        onQuery(query)
+    LaunchedEffect(token) {
+        if (token != "") {
+            getLokasi(token)
+        }
+    }
+    
+    when (stateLokasi) {
+        is UIState.Success -> {
+            latitude = stateLokasi.data.latitude
+            longitude = stateLokasi.data.longitude
+        }
+
+        else -> {}
+    }
+
+    LaunchedEffect(query, latitude, longitude) {
+        if (latitude != 0.0 && longitude != 0.0) {
+            delay(1000L)
+            onQuery(query, latitude, longitude)
+        }
     }
 
     MainScaffold(
