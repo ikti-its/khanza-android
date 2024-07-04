@@ -7,7 +7,6 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.YuvImage
 import android.media.Image
-import android.util.Log
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -79,14 +78,11 @@ class FaceAnalyzer(
                     cropToBox(converted, face.boundingBox, imageProxy.imageInfo.rotationDegrees)
                         ?: return
                 val tensorImage = TensorImage.fromBitmap(faceBitmap)
-                val faceOutputArray = Array(1) {
-                    FloatArray(192)
-                }
+                val faceOutputArray = Array(1) { FloatArray(192) }
                 val faceNetByteBuffer = faceNetImageProcessor.process(tensorImage).buffer
                 faceNetInterpreter.run(faceNetByteBuffer, faceOutputArray)
 
                 if (recognizedFace.isNotEmpty()) {
-                    Log.d("FACE_ANALYZER", "isSimilar: ${isSimilar(faceOutputArray[0])}")
                     onDetectCallback.invoke(isSimilar(faceOutputArray[0]))
                 }
             }
@@ -121,7 +117,6 @@ class FaceAnalyzer(
         }
         distance = sqrt(distance.toDouble()).toFloat()
 
-        Log.d("FACE_ANALYZER", "Distance: $distance")
         return (distance < 0.75f)
     }
 

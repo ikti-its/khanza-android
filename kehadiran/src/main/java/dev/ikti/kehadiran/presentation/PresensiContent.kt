@@ -78,7 +78,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
-import dev.ikti.core.util.showToast
 import dev.ikti.kehadiran.R
 import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
@@ -168,15 +167,20 @@ fun PresensiContent(
     when (stateUpload) {
         is UIState.Success -> {
             foto = stateUpload.data
-            isAttendDialogHidden = false
         }
 
         else -> {}
     }
 
+    LaunchedEffect(foto) {
+        if (foto != "") {
+            isAttendDialogHidden = false
+        }
+    }
+
     LaunchedEffect(Unit) {
         showPlaceholder = true
-        delay(5000L)
+        delay(3000L)
         showPlaceholder = false
     }
 
@@ -222,6 +226,10 @@ fun PresensiContent(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_presensi_rotate),
+                                contentDescription = null
+                            )
                         }
                     }
                     Column(
@@ -286,7 +294,7 @@ fun PresensiContent(
                                         if (locationPermissionState.allPermissionsGranted) {
                                             type = "Face Recognition"
                                         } else {
-                                            showToast(context, "Lokasi belum diizinkan")
+                                            locationPermissionState.launchMultiplePermissionRequest()
                                         }
                                     },
                                     modifier = Modifier
@@ -335,10 +343,14 @@ fun PresensiContent(
             }
 
             "Face Recognition" -> {
+                var isValidLocation by remember { mutableStateOf(true) }
+                var isLocationDisabled by remember { mutableStateOf(false) }
                 var status by remember { mutableStateOf("Memindai wajah...") }
                 val onDetect = { detected: Boolean ->
                     if (detected) {
-                        isAttendDialogHidden = false
+                        if (isValidLocation) {
+                            isAttendDialogHidden = false
+                        }
                         status = "Wajah dikenali"
                     } else {
                         status = "Wajah tidak dikenali"
@@ -393,9 +405,16 @@ fun PresensiContent(
 
                 when (stateLokasi) {
                     is UIState.Success -> {
-                        if (stateLokasi.data) {
+                        if (!stateLokasi.data) {
+                            isValidLocation = false
                             showLocationDialog = true
                         }
+                    }
+
+                    is UIState.Error -> {
+                        isValidLocation = false
+                        isLocationDisabled = true
+                        showLocationDialog = true
                     }
 
                     else -> {}
@@ -488,13 +507,7 @@ fun PresensiContent(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Button(
-                                    onClick = {
-                                        if (locationPermissionState.allPermissionsGranted) {
-                                            type = "Face Recognition"
-                                        } else {
-                                            showToast(context, "Lokasi belum diizinkan")
-                                        }
-                                    },
+                                    onClick = {},
                                     modifier = Modifier
                                         .height(44.dp)
                                         .width(183.dp),
@@ -566,7 +579,7 @@ fun PresensiContent(
                             ) {
                                 Icon(
                                     painter = painterResource(
-                                        id = R.drawable.ic_review_setuju
+                                        id = R.drawable.ic_presensi_face_sad
                                     ),
                                     contentDescription = null,
                                     tint = Color.Unspecified
@@ -593,7 +606,7 @@ fun PresensiContent(
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = "Anda berada di luar jangkauan rumah sakit!",
+                                    text = if (isLocationDisabled) "Anda belum menyalakan lokasi gawai!" else "Anda berada di luar jangkauan rumah sakit!",
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
@@ -668,7 +681,36 @@ fun PresensiContent(
             },
             background = Color(0xFFF7F7F7)
         ) {
-            Text("Kamera tidak diizinkan")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(54.dp)
+                )
+                Spacer(Modifier.height(16.dp))
+                Text(
+                    text = "Izin Akses Kamera",
+                    style = TextStyle(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 20.sp,
+                        fontFamily = FontGilroy
+                    )
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = "Tidak mendapatkan izin mengakses kamera",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = FontGilroy
+                    )
+                )
+            }
         }
     }
 
@@ -682,7 +724,7 @@ fun PresensiContent(
         )
     ) {
         val onDismiss = {
-            navController.navigateUp()
+            isAttendDialogHidden = true
             foto = ""
         }
 
@@ -766,7 +808,7 @@ fun PresensiContent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OutlinedButton(
-                        onClick = { onDismiss() },
+                        onClick = { navController.navigateUp() },
                         modifier = Modifier
                             .height(48.dp)
                             .width(135.dp),

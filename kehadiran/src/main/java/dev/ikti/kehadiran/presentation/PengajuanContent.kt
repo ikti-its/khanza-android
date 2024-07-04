@@ -34,7 +34,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -43,13 +42,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -94,6 +93,37 @@ fun PengajuanContent(
     )
     var isAlasanExpanded by remember { mutableStateOf(false) }
     var alasan by remember { mutableStateOf(alasanList[0]) }
+
+    var isPengajuanToastShown = false
+
+    LaunchedEffect(statePengajuan) {
+        when (statePengajuan) {
+            is UIState.Success -> {
+                if (!isPengajuanToastShown) {
+                    navController.navigateUp()
+                    showToast(context, "Berhasil mengajukan perizinan")
+                    isPengajuanToastShown = true
+                }
+            }
+
+            is UIState.Error -> {
+                if (!isPengajuanToastShown) {
+                    showToast(context, "Gagal mengajukan perizinan")
+                    isPengajuanToastShown = true
+                }
+            }
+
+            UIState.Loading -> {
+                if (!isPengajuanToastShown) {
+                    showToast(context, "Mengajukan perizinan...")
+                    isPengajuanToastShown = true
+                }
+            }
+
+            else -> {}
+        }
+        isPengajuanToastShown = false
+    }
 
     MainScaffold(
         topBar = {
@@ -313,7 +343,6 @@ fun PengajuanContent(
                                 "Diproses"
                             )
                             createAjuan(ajuan)
-                            navController.navigateUp()
                         } else {
                             showToast(context, "Lengkapi terlebih dahulu!")
                         }
@@ -419,32 +448,5 @@ fun PengajuanContent(
                 )
             }
         }
-    }
-
-    when (statePengajuan) {
-        is UIState.Success -> {
-            showToast(context, "Berhasil mengajukan perizinan")
-        }
-
-        is UIState.Error -> {
-            showToast(context, "Gagal mengajukan perizinan")
-        }
-
-        UIState.Loading -> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color(0xFF272727).copy(alpha = 0.5f))
-            ) {
-                LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFFACF2E7),
-                    trackColor = Color(0xFFF7F7F7),
-                    strokeCap = StrokeCap.Round
-                )
-            }
-        }
-
-        UIState.Empty -> {}
     }
 }

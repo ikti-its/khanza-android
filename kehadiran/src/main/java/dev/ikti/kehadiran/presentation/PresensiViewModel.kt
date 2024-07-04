@@ -284,13 +284,13 @@ class PresensiViewModel @Inject constructor(
                             val distance =
                                 calculateDistance(userLatitude, userLongitude, latitude, longitude)
 
-                            if (distance <= 2000.0) {
+                            if (distance <= 500.0) {
                                 _stateLokasi.value = UIState.Success(true)
                             } else {
                                 _stateLokasi.value = UIState.Success(false)
                             }
                         } else {
-                            _stateLokasi.value = UIState.Success(false)
+                            _stateLokasi.value = UIState.Error("LocationDisabled")
                         }
                     }
                 }
