@@ -1,11 +1,11 @@
-package dev.ikti.khanza
+package dev.ikti.omnia
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.ikti.khanza.navigation.NavigationHost
-import dev.ikti.khanza.presentation.MainScreen
+import dev.ikti.omnia.navigation.NavigationHost
+import dev.ikti.omnia.presentation.MainScreen
 
 @Composable
 fun MainApp(startDestination: String) {

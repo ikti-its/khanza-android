@@ -20,7 +20,7 @@ import dev.ikti.auth.presentation.component.molecule.LoginFormField
 import dev.ikti.auth.presentation.component.molecule.LoginSubmitButton
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_EMAIL
 import dev.ikti.auth.util.AuthConstant.FIELD_TYPE_PASSWORD
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.core.util.showToast
 
 @Composable
@@ -65,7 +65,7 @@ fun LoginForm(
 @Preview
 @Composable
 fun LoginFormPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         LoginForm { _, _ -> }
     }
 }

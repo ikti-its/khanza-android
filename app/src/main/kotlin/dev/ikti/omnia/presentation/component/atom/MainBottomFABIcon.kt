@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.component.atom
+package dev.ikti.omnia.presentation.component.atom
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.KhanzaTheme
 import dev.ikti.core.R
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun MainBottomFABIcon(modifier: Modifier) {
@@ -22,7 +22,7 @@ fun MainBottomFABIcon(modifier: Modifier) {
 @Preview
 @Composable
 fun MainBottomFABIconPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         MainBottomFABIcon(Modifier)
     }
 }

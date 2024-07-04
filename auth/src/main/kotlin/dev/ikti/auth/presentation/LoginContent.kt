@@ -19,7 +19,7 @@ import dev.ikti.auth.presentation.component.atom.LoginProgress
 import dev.ikti.auth.presentation.component.molecule.LoginWelcomeText
 import dev.ikti.auth.presentation.component.organism.LoginForm
 import dev.ikti.core.presentation.component.template.MainScaffold
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.core.util.NetworkConstant
 import dev.ikti.core.util.UIState
 import dev.ikti.core.util.showToast
@@ -88,7 +88,7 @@ fun LoginContent(
 @Preview(showBackground = true)
 @Composable
 fun LoginContentPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         LoginContent(
             stateLogin = UIState.Empty,
             onSubmit = { _, _ -> },

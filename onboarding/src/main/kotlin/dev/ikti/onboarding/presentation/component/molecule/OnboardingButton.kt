@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.onboarding.presentation.component.atom.OnboardingButtonLabel
 
 @Composable
@@ -38,7 +38,7 @@ fun OnboardingButton(
 @Preview()
 @Composable
 fun OnboardingButtonPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingButton(
             selectedIndex = 1,
         ) {}

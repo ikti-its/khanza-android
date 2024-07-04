@@ -6,7 +6,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun HomeDropdownIcon() {
@@ -20,7 +20,7 @@ fun HomeDropdownIcon() {
 @Preview
 @Composable
 fun HomeDropdownIconPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeDropdownIcon()
     }
 }

@@ -9,7 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.onboarding.presentation.model.OnboardingPage
 
 @Composable
@@ -29,7 +29,7 @@ fun OnboardingTextDescription(onboardingPage: OnboardingPage) {
 @Preview
 @Composable
 fun OnboardingTextDescriptionFirstPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingTextDescription(onboardingPage = OnboardingPage.First)
     }
 }
@@ -37,7 +37,7 @@ fun OnboardingTextDescriptionFirstPreview() {
 @Preview
 @Composable
 fun OnboardingTextDescriptionSecondPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingTextDescription(onboardingPage = OnboardingPage.Second)
     }
 }
@@ -45,7 +45,7 @@ fun OnboardingTextDescriptionSecondPreview() {
 @Preview
 @Composable
 fun OnboardingTextDescriptionThirdPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingTextDescription(onboardingPage = OnboardingPage.Third)
     }
 }

@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation
+package dev.ikti.omnia.presentation
 
 //noinspection UsingMaterialAndMaterial3Libraries
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -13,8 +13,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.domain.model.screen.Nav
-import dev.ikti.khanza.presentation.component.molecule.MainBottomAppBar
-import dev.ikti.khanza.presentation.component.molecule.MainBottomFAB
+import dev.ikti.omnia.presentation.component.molecule.MainBottomAppBar
+import dev.ikti.omnia.presentation.component.molecule.MainBottomFAB
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

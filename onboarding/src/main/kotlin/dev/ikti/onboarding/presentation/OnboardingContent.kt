@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.core.presentation.component.template.MainScaffold
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.onboarding.R
 import dev.ikti.onboarding.presentation.component.molecule.OnboardingButton
 import dev.ikti.onboarding.presentation.component.molecule.OnboardingIndicator
@@ -147,7 +147,7 @@ fun OnboardingContent(
 @Preview
 @Composable
 fun OnboardingContentNewPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingContent(
             type = "new",
             navigateToLogin = {}
@@ -158,7 +158,7 @@ fun OnboardingContentNewPreview() {
 @Preview
 @Composable
 fun OnboardingContentOldreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingContent(
             type = "old",
             navigateToLogin = {}

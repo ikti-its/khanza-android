@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.home.presentation.component.atom.HomeDropdownIcon
 import dev.ikti.home.presentation.component.atom.HomeDropdownLabel
 
@@ -57,7 +57,7 @@ fun HomeDropdown(
 @Preview
 @Composable
 fun HomeDropdownPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeDropdown(Modifier) {}
     }
 }

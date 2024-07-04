@@ -30,6 +30,8 @@ fun KehadiranScreen(
     val statePresensiJadwal by presensiViewModel.stateJadwal.collectAsState()
     val statePresensiStatus by presensiViewModel.stateStatus.collectAsState()
     val stateUpload by presensiViewModel.stateUpload.collectAsState()
+    val stateAttend by presensiViewModel.stateAttend.collectAsState()
+    val stateLeave by presensiViewModel.stateLeave.collectAsState()
     val stateLokasi by presensiViewModel.stateLokasi.collectAsState()
     val dataBitmap by faceViewModel.dataBitmap.collectAsState()
 
@@ -52,6 +54,8 @@ fun KehadiranScreen(
             PresensiContent(
                 pegawai = pegawai,
                 dataBitmap = dataBitmap,
+                stateAttend = stateAttend,
+                stateLeave = stateLeave,
                 stateJadwal = statePresensiJadwal,
                 stateStatus = statePresensiStatus,
                 stateUpload = stateUpload,

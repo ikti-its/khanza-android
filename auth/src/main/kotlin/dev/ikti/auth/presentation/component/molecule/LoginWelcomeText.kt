@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.auth.presentation.component.atom.LoginWelcomeHeading
 import dev.ikti.auth.presentation.component.atom.LoginWelcomeSubheading
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun LoginWelcomeText() {
@@ -27,7 +27,7 @@ fun LoginWelcomeText() {
 @Preview
 @Composable
 fun LoginWelcomeTextPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         LoginWelcomeText()
     }
 }

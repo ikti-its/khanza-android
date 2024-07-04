@@ -11,7 +11,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun KhanzaTheme(content: @Composable () -> Unit) {
+fun OMNIATheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = LightColorScheme,
         content = content

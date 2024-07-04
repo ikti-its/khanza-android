@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun HomeHeroDetailStatusIndicator(status: Boolean = false) {
@@ -22,14 +22,18 @@ fun HomeHeroDetailStatusIndicator(status: Boolean = false) {
             .width(8.dp)
             .height(8.dp)
             .background(color = if (status) Color(0xFF83ECDC) else Color(0xFFEF4444))
-            .border(width = 1.dp, color = Color(0xFF26B29D).copy(0.5f), shape = RoundedCornerShape(30.dp))
+            .border(
+                width = 1.dp,
+                color = Color(0xFF26B29D).copy(0.5f),
+                shape = RoundedCornerShape(30.dp)
+            )
     ) {}
 }
 
 @Preview
 @Composable
 fun HomeHeroDetailStatusIndicatorFalsePreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeHeroDetailStatusIndicator(false)
     }
 }
@@ -37,7 +41,7 @@ fun HomeHeroDetailStatusIndicatorFalsePreview() {
 @Preview
 @Composable
 fun HomeHeroDetailStatusIndicatorTruePreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeHeroDetailStatusIndicator(true)
     }
 }

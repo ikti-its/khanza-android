@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ikti.auth.presentation.component.atom.LoginSubmitLabel
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun LoginSubmitButton(
@@ -38,7 +38,7 @@ fun LoginSubmitButton(
 @Preview
 @Composable
 fun LoginSubmitButtonPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         LoginSubmitButton {}
     }
 }

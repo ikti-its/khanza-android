@@ -1,4 +1,4 @@
-package dev.ikti.khanza.navigation
+package dev.ikti.omnia.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition

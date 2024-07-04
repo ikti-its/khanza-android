@@ -78,8 +78,10 @@ import com.google.accompanist.permissions.rememberPermissionState
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
+import dev.ikti.core.util.showToast
 import dev.ikti.kehadiran.R
 import dev.ikti.kehadiran.data.model.JadwalResponse
+import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import dev.ikti.kehadiran.util.FaceAnalyzer
 import kotlinx.coroutines.delay
@@ -94,6 +96,8 @@ fun PresensiContent(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     pegawai: String,
     dataBitmap: Bitmap?,
+    stateAttend: UIState<PresensiResponse>,
+    stateLeave: UIState<PresensiResponse>,
     stateJadwal: UIState<JadwalResponse>,
     stateStatus: UIState<StatusPresensiResponse>,
     stateUpload: UIState<String>,
@@ -170,6 +174,58 @@ fun PresensiContent(
         }
 
         else -> {}
+    }
+
+    var isAttendToastShown = false
+
+    LaunchedEffect(stateAttend) {
+        when (stateAttend) {
+            is UIState.Success -> {
+                if (!isAttendToastShown) {
+                    navController.navigateUp()
+                    showToast(context, "Berhasil mencatat kehadiran")
+                    isAttendToastShown = true
+                }
+            }
+
+            is UIState.Error -> {
+                if (!isAttendToastShown) {
+                    showToast(context, "Gagal mencatat kehadiran")
+                    isAttendToastShown = true
+                }
+            }
+
+            UIState.Loading -> showToast(context, "Mencatat kehadiran...")
+
+            else -> {}
+        }
+        isAttendToastShown = false
+    }
+
+    var isLeaveToastShown = false
+
+    LaunchedEffect(stateLeave) {
+        when (stateLeave) {
+            is UIState.Success -> {
+                if (!isLeaveToastShown) {
+                    navController.navigateUp()
+                    showToast(context, "Berhasil mencatat kepulangan")
+                    isLeaveToastShown = true
+                }
+            }
+
+            is UIState.Error -> {
+                if (!isLeaveToastShown) {
+                    showToast(context, "Gagal mencatat kepulangan")
+                    isLeaveToastShown = true
+                }
+            }
+
+            UIState.Loading -> showToast(context, "Mencatat kepulangan...")
+
+            else -> {}
+        }
+        isLeaveToastShown = false
     }
 
     LaunchedEffect(foto) {
@@ -832,7 +888,6 @@ fun PresensiContent(
                         onClick = {
                             if (pegawai != "" && jadwal != "") {
                                 attend(pegawai, jadwal, foto)
-                                navController.navigateUp()
                             }
                         },
                         modifier = Modifier
@@ -990,7 +1045,6 @@ fun PresensiContent(
                         onClick = {
                             if (id != "" && pegawai != "") {
                                 leave(id, pegawai, emergency)
-                                navController.navigateUp()
                             }
                         },
                         modifier = Modifier

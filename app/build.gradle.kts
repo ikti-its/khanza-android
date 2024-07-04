@@ -10,11 +10,11 @@ android.sourceSets.all {
 }
 
 android {
-    namespace = "dev.ikti.khanza"
+    namespace = "dev.ikti.omnia"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "dev.ikti.khanza"
+        applicationId = "dev.ikti.omnia"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()

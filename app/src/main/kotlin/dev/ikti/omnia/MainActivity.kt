@@ -1,4 +1,4 @@
-package dev.ikti.khanza
+package dev.ikti.omnia
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import dagger.hilt.android.AndroidEntryPoint
 import dev.ikti.core.domain.model.screen.Screen
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            KhanzaTheme {
+            OMNIATheme {
                 Surface {
                     MainApp(Screen.Splash.route)
                 }

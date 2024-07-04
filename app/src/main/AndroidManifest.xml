@@ -18,12 +18,12 @@
         android:maxSdkVersion="32" />
 
     <application
-        android:name=".application.Khanza"
+        android:name=".application.OMNIA"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Khanza"
+        android:theme="@style/Theme.OMNIA"
         tools:targetApi="31">
 
         <meta-data
@@ -34,7 +34,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Khanza"
+            android:theme="@style/Theme.OMNIA"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

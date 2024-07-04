@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.component.molecule
+package dev.ikti.omnia.presentation.component.molecule
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.ikti.core.domain.model.screen.Screen
-import dev.ikti.core.presentation.theme.KhanzaTheme
-import dev.ikti.khanza.presentation.component.atom.MainBottomFABIcon
+import dev.ikti.core.presentation.theme.OMNIATheme
+import dev.ikti.omnia.presentation.component.atom.MainBottomFABIcon
 
 @Composable
 fun MainBottomFAB(
@@ -40,7 +40,7 @@ fun MainBottomFAB(
 @Preview
 @Composable
 fun MainBottomFABPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         MainBottomFAB()
     }
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.onboarding.presentation.component.atom.OnboardingTextDescription
 import dev.ikti.onboarding.presentation.component.atom.OnboardingTextTitle
 import dev.ikti.onboarding.presentation.model.OnboardingPage
@@ -35,7 +35,7 @@ fun OnboardingText(
 @Preview(showBackground = false)
 @Composable
 fun OnboardingTextFirstPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingText(
             onboardingPage = OnboardingPage.First
         )
@@ -45,7 +45,7 @@ fun OnboardingTextFirstPreview() {
 @Preview(showBackground = false)
 @Composable
 fun OnboardingTextSecondPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingText(
             onboardingPage = OnboardingPage.Second
         )
@@ -55,7 +55,7 @@ fun OnboardingTextSecondPreview() {
 @Preview(showBackground = false)
 @Composable
 fun OnboardingTextThirdPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingText(
             onboardingPage = OnboardingPage.Third
         )

@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun HomeFeatureLabel() {
@@ -26,7 +26,7 @@ fun HomeFeatureLabel() {
 @Preview
 @Composable
 fun HomeFeatureLabelPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeFeatureLabel()
     }
 }

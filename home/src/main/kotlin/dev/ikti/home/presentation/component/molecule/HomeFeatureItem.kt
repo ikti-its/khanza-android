@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.home.R
 import dev.ikti.home.presentation.component.atom.HomeFeatureItemIcon
 import dev.ikti.home.presentation.component.atom.HomeFeatureItemLabel
@@ -58,7 +58,7 @@ fun HomeFeatureItem(
 @Preview
 @Composable
 fun HomeFeatureItemPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeFeatureItem(label = "DEV")
     }
 }

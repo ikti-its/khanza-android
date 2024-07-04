@@ -1,7 +1,7 @@
-package dev.ikti.khanza.application
+package dev.ikti.omnia.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class Khanza : Application()
+class OMNIA : Application()

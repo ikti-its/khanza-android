@@ -1,4 +1,4 @@
-package dev.ikti.khanza.presentation.component.molecule
+package dev.ikti.omnia.presentation.component.molecule
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape

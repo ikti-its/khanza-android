@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 import dev.ikti.onboarding.R
 
 @Composable
@@ -37,7 +37,7 @@ fun OnboardingButtonLabel(selectedIndex: Int) {
 @Preview
 @Composable
 fun OnboardingButtonLabelNextPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingButtonLabel(0)
     }
 }
@@ -45,7 +45,7 @@ fun OnboardingButtonLabelNextPreview() {
 @Preview
 @Composable
 fun OnboardingButtonLoginNextPreview() {
-    KhanzaTheme {
+    OMNIATheme {
         OnboardingButtonLabel(2)
     }
 }

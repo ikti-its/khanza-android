@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import dev.ikti.core.presentation.theme.FontGilroy
-import dev.ikti.core.presentation.theme.KhanzaTheme
+import dev.ikti.core.presentation.theme.OMNIATheme
 
 @Composable
 fun HomeHeroDetailStatus(status: Boolean = false) {
@@ -26,7 +26,7 @@ fun HomeHeroDetailStatus(status: Boolean = false) {
 @Preview
 @Composable
 fun HomeHeroDetailStatusTruePreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeHeroDetailStatus(true)
     }
 }
@@ -34,7 +34,7 @@ fun HomeHeroDetailStatusTruePreview() {
 @Preview
 @Composable
 fun HomeHeroDetailStatusFalsePreview() {
-    KhanzaTheme {
+    OMNIATheme {
         HomeHeroDetailStatus(false)
     }
 }
