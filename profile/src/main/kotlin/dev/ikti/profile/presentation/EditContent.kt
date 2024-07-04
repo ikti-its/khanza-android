@@ -206,31 +206,66 @@ fun EditContent(
                         CameraPosition.fromLatLngZoom(newAlamatLocation, 15f)
                 }
 
-                when (stateUpload) {
-                    is UIState.Success -> {
-                        newFoto = stateUpload.data
-                        showToast(context, "Berhasil mengunggah gambar")
-                    }
+                var isUploadToastShown = false
 
-                    is UIState.Error -> {
-                        when (stateUpload.error) {
-                            NetworkConstant.ERR_FILE_UNSUPPORTED -> {
-                                showToast(context, "Gambar tidak kompatibel")
-                            }
-
-                            else -> {
-                                showToast(context, "Gagal mengunggah gambar")
+                LaunchedEffect(stateUpload) {
+                    when (stateUpload) {
+                        is UIState.Success -> {
+                            newFoto = stateUpload.data
+                            if (!isUploadToastShown) {
+                                showToast(context, "Berhasil mengunggah gambar")
+                                isUploadToastShown = true
                             }
                         }
-                    }
 
-                    else -> {}
+                        is UIState.Error -> {
+                            when (stateUpload.error) {
+                                NetworkConstant.ERR_FILE_UNSUPPORTED -> {
+                                    if (!isUploadToastShown) {
+                                        showToast(context, "Gambar tidak kompatibel")
+                                        isUploadToastShown = true
+                                    }
+                                }
+
+                                else -> {
+                                    if (!isUploadToastShown) {
+                                        showToast(context, "Ukuran terlalu besar")
+                                        isUploadToastShown = true
+                                    }
+                                }
+                            }
+                        }
+
+                        UIState.Loading -> showToast(context, "Mengunggah gambar...")
+
+                        else -> {}
+                    }
+                    isUploadToastShown = false
                 }
 
-                when (stateEdit) {
-                    is UIState.Success -> showToast(context, "Berhasil mengubah data")
-                    is UIState.Error -> showToast(context, "Gagal mengubah data")
-                    else -> {}
+                var isEditToastShown = false
+
+                LaunchedEffect(stateEdit) {
+                    when (stateEdit) {
+                        is UIState.Success -> {
+                            if (!isEditToastShown) {
+                                showToast(context, "Berhasil mengubah data")
+                                isEditToastShown = true
+                            }
+                        }
+
+                        is UIState.Error -> {
+                            if (!isEditToastShown) {
+                                showToast(context, "Gagal mengubah data")
+                                isEditToastShown = true
+                            }
+                        }
+
+                        UIState.Loading -> showToast(context, "Mengubah data...")
+
+                        else -> {}
+                    }
+                    isEditToastShown = false
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {

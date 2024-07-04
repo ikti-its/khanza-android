@@ -149,12 +149,13 @@ class ProfileViewModel @Inject constructor(
     fun uploadImage(token: String, uri: Uri) {
         _stateUpload.value = UIState.Loading
         viewModelScope.launch {
+            val inputStream = application.contentResolver.openInputStream(uri)
+            val file = File.createTempFile("tmp", ".jpg")
+            val outputStream = file.outputStream()
+            val buffer = ByteArray(1024)
+            var read: Int
+
             try {
-                val inputStream = application.contentResolver.openInputStream(uri)
-                val file = File.createTempFile("tmp", ".jpg")
-                val outputStream = file.outputStream()
-                val buffer = ByteArray(1024)
-                var read: Int
                 while (inputStream!!.read(buffer).also { read = it } != -1) {
                     outputStream.write(buffer, 0, read)
                 }
@@ -182,6 +183,8 @@ class ProfileViewModel @Inject constructor(
 
                     else -> _stateUpload.value = UIState.Error(ERR_UNKNOWN_ERROR)
                 }
+            } finally {
+                file.delete()
             }
         }
     }
