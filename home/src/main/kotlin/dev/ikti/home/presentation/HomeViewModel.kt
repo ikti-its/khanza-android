@@ -54,7 +54,6 @@ class HomeViewModel @Inject constructor(
         val today = retrieveDate()
         viewModelScope.launch {
             try {
-                delay(500L)
                 val response = homeUseCase.execute(token, today)
                 response.collect { res ->
                     val home = res.data
