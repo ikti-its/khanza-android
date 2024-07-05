@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.util.NetworkConstant.ERR_NOT_FOUND
-import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_ERROR
+import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_HOST
 import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
 import dev.ikti.kehadiran.data.model.JadwalResponse
@@ -86,7 +86,7 @@ class KehadiranViewModel @Inject constructor(
                     NetworkException.NotFoundException -> _stateJadwal.value =
                         UIState.Error(ERR_NOT_FOUND)
 
-                    else -> _stateJadwal.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    else -> _stateJadwal.value = UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
@@ -99,17 +99,14 @@ class KehadiranViewModel @Inject constructor(
             try {
                 val response = getPresensiByPegawaiIdUseCase.execute(token, id)
                 response.collect { res ->
-                    val sortedTanggal = res.data.sortedByDescending {
+                    val sortedMasuk = res.data.sortedByDescending { it.masuk }
+                    val sortedTanggal = sortedMasuk.sortedByDescending {
                         SimpleDateFormat("yyyy-MM-dd").parse(
                             it.tanggal
                         )
                     }
-
-                    val sortedMasuk = sortedTanggal.sortedByDescending {
-                        it.masuk
-                    }
-
-                    _stateRiwayat.value = UIState.Success(sortedMasuk)
+                    
+                    _stateRiwayat.value = UIState.Success(sortedTanggal)
                 }
             } catch (e: Exception) {
                 when (e) {
@@ -117,7 +114,7 @@ class KehadiranViewModel @Inject constructor(
                         ERR_NOT_FOUND
                     )
 
-                    else -> _stateRiwayat.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    else -> _stateRiwayat.value = UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }

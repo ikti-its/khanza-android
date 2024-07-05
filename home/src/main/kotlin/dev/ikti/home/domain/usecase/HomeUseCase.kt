@@ -13,7 +13,7 @@ class HomeUseCase @Inject constructor(
     suspend fun execute(
         token: String,
         tanggal: String
-    ): Flow<BaseResponse<dev.ikti.home.data.model.HomeResponse>> {
+    ): Flow<BaseResponse<HomeResponse>> {
         return try {
             homeRepository.home(token, tanggal)
         } catch (e: Exception) {

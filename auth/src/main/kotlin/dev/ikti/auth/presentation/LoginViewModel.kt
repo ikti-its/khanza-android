@@ -54,7 +54,7 @@ class LoginViewModel @Inject constructor(
                     NetworkException.UnauthorizedException, NetworkException.NotFoundException -> _stateLogin.value =
                         UIState.Error(NetworkConstant.ERR_UNAUTHORIZED)
 
-                    else -> _stateLogin.value = UIState.Error(NetworkConstant.ERR_UNKNOWN_ERROR)
+                    else -> _stateLogin.value = UIState.Error(NetworkConstant.ERR_UNKNOWN_HOST)
                 }
             }
         }

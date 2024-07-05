@@ -20,7 +20,7 @@ import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.UpdateLocalUserUseCase
 import dev.ikti.core.util.NetworkConstant.ERR_FILE_UNSUPPORTED
 import dev.ikti.core.util.NetworkConstant.ERR_UNAUTHORIZED
-import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_ERROR
+import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_HOST
 import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
 import dev.ikti.profile.data.model.ProfileRequest
@@ -86,7 +86,7 @@ class ProfileViewModel @Inject constructor(
                     _stateProfile.value = UIState.Success(user)
                 }
             } catch (_: Exception) {
-                _stateProfile.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                _stateProfile.value = UIState.Error(ERR_UNKNOWN_HOST)
             }
         }
     }
@@ -103,7 +103,7 @@ class ProfileViewModel @Inject constructor(
 
                 _stateLogout.value = UIState.Success(Unit)
             } catch (_: Exception) {
-                _stateLogout.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                _stateLogout.value = UIState.Error(ERR_UNKNOWN_HOST)
             }
         }
     }
@@ -137,11 +137,11 @@ class ProfileViewModel @Inject constructor(
                             _stateEdit.value = UIState.Success(Unit)
                         }
                     } catch (_: Exception) {
-                        _stateEdit.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                        _stateEdit.value = UIState.Error(ERR_UNKNOWN_HOST)
                     }
                 }
             } catch (_: Exception) {
-                _stateEdit.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                _stateEdit.value = UIState.Error(ERR_UNKNOWN_HOST)
             }
         }
     }
@@ -181,7 +181,7 @@ class ProfileViewModel @Inject constructor(
                         ERR_UNAUTHORIZED
                     )
 
-                    else -> _stateUpload.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    else -> _stateUpload.value = UIState.Error(ERR_UNKNOWN_HOST)
                 }
             } finally {
                 file.delete()
@@ -214,7 +214,7 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         } catch (_: Exception) {
-            _stateLocation.value = UIState.Error(ERR_UNKNOWN_ERROR)
+            _stateLocation.value = UIState.Error(ERR_UNKNOWN_HOST)
         }
     }
 }

@@ -1,6 +1,7 @@
 package dev.ikti.home.data.repository
 
 import dev.ikti.core.data.model.BaseResponse
+import dev.ikti.core.util.NetworkException
 import dev.ikti.home.data.model.HomeResponse
 import dev.ikti.home.data.remote.HomeService
 import dev.ikti.home.domain.repository.HomeRepository
@@ -27,6 +28,7 @@ class HomeRepositoryImpl @Inject constructor(
                 when (e.response()?.code()) {
                     401 -> throw HomeException.AccountUnauthorizedException
                     404 -> throw HomeException.AccountNotFoundException
+                    else -> throw NetworkException.UnknownHostException
                 }
             }
         }

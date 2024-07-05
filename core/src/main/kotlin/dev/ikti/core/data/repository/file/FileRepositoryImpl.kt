@@ -28,7 +28,7 @@ class FileRepositoryImpl @Inject constructor(
                 when (e.response()?.code()) {
                     400 -> throw NetworkException.FileUnsupportedException
                     401 -> throw NetworkException.UnauthorizedException
-                    else -> throw NetworkException.UnknownException
+                    else -> throw NetworkException.UnknownHostException
                 }
             }
         }

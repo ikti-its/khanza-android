@@ -5,5 +5,5 @@ object NetworkConstant {
     const val ERR_UNAUTHORIZED = "ErrUnauthorized"
     const val ERR_NOT_FOUND = "ErrNotFound"
     const val ERR_FILE_UNSUPPORTED = "ErrFileUnsupported"
-    const val ERR_UNKNOWN_ERROR = "ErrUnknownError"
+    const val ERR_UNKNOWN_HOST = "ErrUnknownHost"
 }

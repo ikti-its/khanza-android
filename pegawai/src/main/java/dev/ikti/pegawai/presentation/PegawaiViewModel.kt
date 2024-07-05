@@ -95,7 +95,7 @@ class PegawaiViewModel @Inject constructor(
                         NetworkConstant.ERR_NOT_FOUND
                     )
 
-                    else -> _stateLokasi.value = UIState.Error(NetworkConstant.ERR_UNKNOWN_ERROR)
+                    else -> _stateLokasi.value = UIState.Error(NetworkConstant.ERR_UNKNOWN_HOST)
                 }
             }
         }

@@ -28,7 +28,7 @@ class ProfileRepositoryImpl @Inject constructor(
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
                     401 -> throw NetworkException.UnauthorizedException
-                    else -> throw NetworkException.UnknownException
+                    else -> throw NetworkException.UnknownHostException
                 }
             }
         }

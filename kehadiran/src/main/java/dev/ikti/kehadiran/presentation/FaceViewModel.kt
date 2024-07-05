@@ -13,6 +13,7 @@ import dev.ikti.kehadiran.domain.usecase.PresensiGetFotoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,17 +26,23 @@ class FaceViewModel @Inject constructor(
 
     fun getFoto(token: String, pegawai: String) {
         viewModelScope.launch {
-            val response = getFotoUseCase.execute(token, pegawai)
-            response.collect { res ->
-                val loader = ImageLoader(application)
-                val request = ImageRequest.Builder(application)
-                    .data(res.data.foto)
-                    .build()
+            try {
+                val response = getFotoUseCase.execute(token, pegawai)
+                response.collect { res ->
+                    val loader = ImageLoader(application)
+                    val request = ImageRequest.Builder(application)
+                        .data(res.data.foto)
+                        .build()
 
-                val result = (loader.execute(request) as SuccessResult).drawable
-                val bitmap = (result as BitmapDrawable).bitmap
+                    val result = (loader.execute(request) as SuccessResult).drawable
+                    val bitmap = (result as BitmapDrawable).bitmap
 
-                _dataBitmap.value = bitmap
+                    _dataBitmap.value = bitmap
+                }
+            } catch (e: Exception) {
+                when (e) {
+                    is UnknownHostException -> _dataBitmap.value = null
+                }
             }
         }
     }

@@ -24,7 +24,7 @@ class AuthRepositoryImpl @Inject constructor(
                 when (e.response()?.code()) {
                     401 -> throw NetworkException.UnauthorizedException
                     404 -> throw NetworkException.NotFoundException
-                    else -> throw NetworkException.UnknownException
+                    else -> throw NetworkException.UnknownHostException
                 }
             }
         }

@@ -27,7 +27,7 @@ class KehadiranRepositoryImpl @Inject constructor(
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
                     404 -> throw NetworkException.NotFoundException
-                    else -> throw NetworkException.UnknownException
+                    else -> throw NetworkException.UnknownHostException
                 }
             }
         }
@@ -44,7 +44,7 @@ class KehadiranRepositoryImpl @Inject constructor(
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
                     404 -> throw NetworkException.NotFoundException
-                    else -> throw NetworkException.UnknownException
+                    else -> throw NetworkException.UnknownHostException
                 }
             }
         }

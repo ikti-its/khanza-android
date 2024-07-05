@@ -9,18 +9,19 @@ import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
 import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.InsertLocalUserUseCase
+import dev.ikti.core.util.NetworkConstant
 import dev.ikti.core.util.UIState
 import dev.ikti.home.data.model.HomeResponse
 import dev.ikti.home.domain.usecase.HomeUseCase
 import dev.ikti.home.util.HomeConstant.ERR_ACCOUNT_NOT_FOUND
 import dev.ikti.home.util.HomeConstant.ERR_ACCOUNT_UNAUTHORIZED
 import dev.ikti.home.util.HomeConstant.ERR_FAILED_TO_INSERT_USER
-import dev.ikti.home.util.HomeConstant.ERR_UNKNOWN_ERROR
 import dev.ikti.home.util.HomeException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -91,7 +92,8 @@ class HomeViewModel @Inject constructor(
                         ERR_ACCOUNT_NOT_FOUND
                     )
 
-                    else -> _stateHome.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    is UnknownHostException -> _stateHome.value =
+                        UIState.Error(NetworkConstant.ERR_UNKNOWN_HOST)
                 }
             }
         }
