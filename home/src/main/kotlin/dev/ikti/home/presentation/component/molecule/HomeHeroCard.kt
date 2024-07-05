@@ -136,7 +136,9 @@ fun HomeHeroCard(
                     Spacer(modifier = modifier.height(5.dp))
                     when (stateHome) {
                         is UIState.Success -> {
-                            HomeHeroNameText(stateHome.data.nama)
+                            Column(modifier = modifier.fillMaxWidth(0.6f)) {
+                                HomeHeroNameText(stateHome.data.nama)
+                            }
                             Spacer(modifier = modifier.height(25.dp))
                             Column(
                                 modifier = modifier.fillMaxWidth(),
