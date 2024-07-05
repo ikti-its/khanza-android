@@ -77,6 +77,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
+import dev.ikti.core.util.NetworkConstant
 import dev.ikti.core.util.UIState
 import dev.ikti.core.util.showToast
 import dev.ikti.kehadiran.R
@@ -84,7 +85,6 @@ import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import dev.ikti.kehadiran.util.FaceAnalyzer
-import kotlinx.coroutines.delay
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.FileUtil
 import java.util.concurrent.Executors
@@ -111,6 +111,7 @@ fun PresensiContent(
     getFoto: (String) -> Unit,
     navController: NavHostController
 ) {
+    var isInternetDialogHidden by remember { mutableStateOf(true) }
     var type by remember { mutableStateOf("Swafoto") }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val locationPermissionState = rememberMultiplePermissionsState(
@@ -136,7 +137,6 @@ fun PresensiContent(
         }
     }
 
-    var showPlaceholder by remember { mutableStateOf(true) }
     var isAttendDialogHidden by remember { mutableStateOf(true) }
     var isLeaveDialogHidden by remember { mutableStateOf(true) }
     var id by remember { mutableStateOf("") }
@@ -157,6 +157,12 @@ fun PresensiContent(
             isLeaveDialogHidden = false
         }
 
+        is UIState.Error -> {
+            when (stateStatus.error) {
+                NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
+            }
+        }
+
         else -> {}
     }
 
@@ -165,12 +171,24 @@ fun PresensiContent(
             jadwal = stateJadwal.data.id
         }
 
+        is UIState.Error -> {
+            when (stateJadwal.error) {
+                NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
+            }
+        }
+
         else -> {}
     }
 
     when (stateUpload) {
         is UIState.Success -> {
             foto = stateUpload.data
+        }
+
+        is UIState.Error -> {
+            when (stateUpload.error) {
+                NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
+            }
         }
 
         else -> {}
@@ -189,9 +207,14 @@ fun PresensiContent(
             }
 
             is UIState.Error -> {
-                if (!isAttendToastShown) {
-                    showToast(context, "Gagal mencatat kehadiran")
-                    isAttendToastShown = true
+                when (stateAttend.error) {
+                    NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
+                    else -> {
+                        if (!isAttendToastShown) {
+                            showToast(context, "Gagal mencatat kehadiran")
+                            isAttendToastShown = true
+                        }
+                    }
                 }
             }
 
@@ -215,9 +238,14 @@ fun PresensiContent(
             }
 
             is UIState.Error -> {
-                if (!isLeaveToastShown) {
-                    showToast(context, "Gagal mencatat kepulangan")
-                    isLeaveToastShown = true
+                when (stateLeave.error) {
+                    NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
+                    else -> {
+                        if (!isLeaveToastShown) {
+                            showToast(context, "Gagal mencatat kepulangan")
+                            isLeaveToastShown = true
+                        }
+                    }
                 }
             }
 
@@ -232,12 +260,6 @@ fun PresensiContent(
         if (foto != "") {
             isAttendDialogHidden = false
         }
-    }
-
-    LaunchedEffect(Unit) {
-        showPlaceholder = true
-        delay(3000L)
-        showPlaceholder = false
     }
 
     if (cameraPermissionState.status.isGranted) {
@@ -263,31 +285,6 @@ fun PresensiContent(
                             }
                         }
                     )
-                    AnimatedVisibility(
-                        visible = showPlaceholder,
-                        enter = fadeIn(
-                            animationSpec = spring(
-                                Spring.DampingRatioLowBouncy,
-                                Spring.StiffnessLow
-                            )
-                        ),
-                        exit = fadeOut(
-                            animationSpec = spring(
-                                Spring.DampingRatioLowBouncy,
-                                Spring.StiffnessLow
-                            )
-                        )
-                    ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_presensi_rotate),
-                                contentDescription = null
-                            )
-                        }
-                    }
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -853,7 +850,7 @@ fun PresensiContent(
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .height(180.dp)
+                            .height(360.dp)
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
                     )
@@ -1058,6 +1055,95 @@ fun PresensiContent(
                     ) {
                         Text(
                             text = "Pulang",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = !isInternetDialogHidden,
+        enter = fadeIn(
+            animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+        ),
+        exit = fadeOut(
+            animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+        )
+    ) {
+        val onDismiss = { navController.navigateUp() }
+
+        Dialog(onDismissRequest = { onDismiss() }) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFF7F7F7), RoundedCornerShape(12.dp))
+                    .padding(16.dp)
+            ) {
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ic_presensi_face_sad
+                        ),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                }
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Tidak Ada Internet",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            fontFamily = FontGilroy
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "OMNIA memerlukan koneksi internet Anda",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            fontFamily = FontGilroy
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(Modifier.height(36.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedButton(
+                        onClick = { onDismiss() },
+                        modifier = Modifier
+                            .height(48.dp)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = Color.Unspecified,
+                            contentColor = Color(0xFF272727)
+                        ),
+                        border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                    ) {
+                        Text(
+                            text = "Keluar",
                             style = TextStyle(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
