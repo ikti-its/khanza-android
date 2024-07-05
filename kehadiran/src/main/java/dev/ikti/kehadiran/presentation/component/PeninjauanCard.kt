@@ -144,49 +144,54 @@ fun PeninjauanCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(
-                    onClick = {
-                        showDialog(false, tinjauan)
-                    },
-                    modifier = Modifier
-                        .height(48.dp)
-                        .width(150.dp),
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFDA4141),
-                        contentColor = Color(0xFFFFFFFF)
-                    )
-                ) {
-                    Text(
-                        text = "Tolak",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            fontFamily = FontGilroy
+                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                    Button(
+                        onClick = {
+                            showDialog(false, tinjauan)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFDA4141),
+                            contentColor = Color(0xFFFFFFFF)
                         )
-                    )
+                    ) {
+                        Text(
+                            text = "Tolak",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
                 }
-                Button(
-                    onClick = {
-                        showDialog(true, tinjauan)
-                    },
-                    modifier = Modifier
-                        .height(48.dp)
-                        .width(150.dp),
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF0A2D27),
-                        contentColor = Color(0xFFACF2E7)
-                    )
-                ) {
-                    Text(
-                        text = "Setuju",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            fontFamily = FontGilroy
+                Spacer(Modifier.width(16.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Button(
+                        onClick = {
+                            showDialog(true, tinjauan)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF0A2D27),
+                            contentColor = Color(0xFFACF2E7)
                         )
-                    )
+                    ) {
+                        Text(
+                            text = "Setuju",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
                 }
             }
         }

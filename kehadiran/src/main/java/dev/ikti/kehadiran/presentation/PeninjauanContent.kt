@@ -387,122 +387,132 @@ fun PeninjauanContent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     if (reviewType) {
-                        OutlinedButton(
-                            onClick = {
-                                onDismiss()
-                            },
-                            modifier = Modifier
-                                .height(48.dp)
-                                .width(135.dp),
-                            shape = RoundedCornerShape(30.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                containerColor = Color.Unspecified,
-                                contentColor = Color(0xFF272727)
-                            ),
-                            border = BorderStroke(1.dp, Color(0xFFE5E7EB))
-                        ) {
-                            Text(
-                                text = "Batal",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                        }
-                        Button(
-                            onClick = {
-                                if (id != "") {
-                                    updateStatus(
-                                        id,
-                                        PengajuanRequest(
-                                            pegawai,
-                                            mulai,
-                                            selesai,
-                                            alasan,
-                                            "Diterima"
-                                        )
-                                    )
+                        Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                            OutlinedButton(
+                                onClick = {
                                     onDismiss()
-                                    isDataRefreshed = false
-                                }
-                            },
-                            modifier = Modifier
-                                .height(48.dp)
-                                .width(135.dp),
-                            shape = RoundedCornerShape(30.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF0A2D27),
-                                contentColor = Color(0xFFACF2E7)
-                            )
-                        ) {
-                            Text(
-                                text = "Setuju",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    fontFamily = FontGilroy
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(30.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    containerColor = Color.Unspecified,
+                                    contentColor = Color(0xFF272727)
+                                ),
+                                border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                            ) {
+                                Text(
+                                    text = "Batal",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
                                 )
-                            )
+                            }
+                        }
+                        Spacer(Modifier.width(16.dp))
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Button(
+                                onClick = {
+                                    if (id != "") {
+                                        updateStatus(
+                                            id,
+                                            PengajuanRequest(
+                                                pegawai,
+                                                mulai,
+                                                selesai,
+                                                alasan,
+                                                "Diterima"
+                                            )
+                                        )
+                                        onDismiss()
+                                        isDataRefreshed = false
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(30.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF0A2D27),
+                                    contentColor = Color(0xFFACF2E7)
+                                )
+                            ) {
+                                Text(
+                                    text = "Setuju",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                            }
                         }
                     } else {
-                        Button(
-                            onClick = {
-                                if (id != "") {
-                                    updateStatus(
-                                        id,
-                                        PengajuanRequest(
-                                            pegawai,
-                                            mulai,
-                                            selesai,
-                                            alasan,
-                                            "Ditolak"
+                        Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                            Button(
+                                onClick = {
+                                    if (id != "") {
+                                        updateStatus(
+                                            id,
+                                            PengajuanRequest(
+                                                pegawai,
+                                                mulai,
+                                                selesai,
+                                                alasan,
+                                                "Ditolak"
+                                            )
                                         )
+                                        onDismiss()
+                                        isDataRefreshed = false
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(30.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFDA4141),
+                                    contentColor = Color(0xFFFFFFFF)
+                                )
+                            ) {
+                                Text(
+                                    text = "Tolak",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
                                     )
-                                    onDismiss()
-                                    isDataRefreshed = false
-                                }
-                            },
-                            modifier = Modifier
-                                .height(48.dp)
-                                .width(135.dp),
-                            shape = RoundedCornerShape(30.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFDA4141),
-                                contentColor = Color(0xFFFFFFFF)
-                            )
-                        ) {
-                            Text(
-                                text = "Tolak",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    fontFamily = FontGilroy
                                 )
-                            )
+                            }
                         }
-                        OutlinedButton(
-                            onClick = {
-                                onDismiss()
-                            },
-                            modifier = Modifier
-                                .height(48.dp)
-                                .width(135.dp),
-                            shape = RoundedCornerShape(30.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                containerColor = Color.Unspecified,
-                                contentColor = Color(0xFF272727)
-                            ),
-                            border = BorderStroke(1.dp, Color(0xFFE5E7EB))
-                        ) {
-                            Text(
-                                text = "Batal",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    fontFamily = FontGilroy
+                        Spacer(Modifier.width(16.dp))
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            OutlinedButton(
+                                onClick = {
+                                    onDismiss()
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(30.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    containerColor = Color.Unspecified,
+                                    contentColor = Color(0xFF272727)
+                                ),
+                                border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                            ) {
+                                Text(
+                                    text = "Batal",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }

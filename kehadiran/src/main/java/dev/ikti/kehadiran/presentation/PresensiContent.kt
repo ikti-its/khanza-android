@@ -64,6 +64,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -342,52 +343,57 @@ fun PresensiContent(
                                     .background(Color(0xFFC4C4C4), RoundedCornerShape(24.dp)),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Button(
-                                    onClick = {
-                                        if (locationPermissionState.allPermissionsGranted) {
-                                            type = "Face Recognition"
-                                        } else {
-                                            locationPermissionState.launchMultiplePermissionRequest()
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .height(44.dp)
-                                        .width(183.dp),
-                                    shape = RoundedCornerShape(24.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFC4C4C4),
-                                        contentColor = Color(0xFF535353)
-                                    )
-                                ) {
-                                    Text(
-                                        text = "Face Recognition",
-                                        style = TextStyle(
-                                            fontWeight = FontWeight.SemiBold,
-                                            fontSize = 15.sp,
-                                            fontFamily = FontGilroy
-                                        ),
-                                        maxLines = 1
-                                    )
-                                }
-                                Button(
-                                    onClick = {},
-                                    modifier = Modifier
-                                        .height(44.dp)
-                                        .width(183.dp),
-                                    shape = RoundedCornerShape(24.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFFDFDFD),
-                                        contentColor = Color(0xFF272727)
-                                    )
-                                ) {
-                                    Text(
-                                        text = "Swafoto",
-                                        style = TextStyle(
-                                            fontWeight = FontWeight.SemiBold,
-                                            fontSize = 15.sp,
-                                            fontFamily = FontGilroy
+                                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                                    Button(
+                                        onClick = {
+                                            if (locationPermissionState.allPermissionsGranted) {
+                                                type = "Face Recognition"
+                                            } else {
+                                                locationPermissionState.launchMultiplePermissionRequest()
+                                            }
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp),
+                                        shape = RoundedCornerShape(24.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(0xFFC4C4C4),
+                                            contentColor = Color(0xFF535353)
                                         )
-                                    )
+                                    ) {
+                                        Text(
+                                            text = "Face Recognition",
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontSize = 15.sp,
+                                                fontFamily = FontGilroy
+                                            ),
+                                            overflow = TextOverflow.Ellipsis,
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Button(
+                                        onClick = {},
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp),
+                                        shape = RoundedCornerShape(24.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(0xFFFDFDFD),
+                                            contentColor = Color(0xFF272727)
+                                        )
+                                    ) {
+                                        Text(
+                                            text = "Swafoto",
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontSize = 15.sp,
+                                                fontFamily = FontGilroy
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -456,21 +462,23 @@ fun PresensiContent(
                     }
                 }
 
-                when (stateLokasi) {
-                    is UIState.Success -> {
-                        if (!stateLokasi.data) {
+                LaunchedEffect(stateLokasi) {
+                    when (stateLokasi) {
+                        is UIState.Success -> {
+                            if (!stateLokasi.data) {
+                                isValidLocation = false
+                                showLocationDialog = true
+                            }
+                        }
+
+                        is UIState.Error -> {
                             isValidLocation = false
+                            isLocationDisabled = true
                             showLocationDialog = true
                         }
-                    }
 
-                    is UIState.Error -> {
-                        isValidLocation = false
-                        isLocationDisabled = true
-                        showLocationDialog = true
+                        else -> {}
                     }
-
-                    else -> {}
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -559,48 +567,53 @@ fun PresensiContent(
                                     .background(Color(0xFFC4C4C4), RoundedCornerShape(24.dp)),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Button(
-                                    onClick = {},
-                                    modifier = Modifier
-                                        .height(44.dp)
-                                        .width(183.dp),
-                                    shape = RoundedCornerShape(24.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFFDFDFD),
-                                        contentColor = Color(0xFF272727)
-                                    )
-                                ) {
-                                    Text(
-                                        text = "Face Recognition",
-                                        style = TextStyle(
-                                            fontWeight = FontWeight.SemiBold,
-                                            fontSize = 15.sp,
-                                            fontFamily = FontGilroy
-                                        ),
-                                        maxLines = 1
-                                    )
-                                }
-                                Button(
-                                    onClick = {
-                                        type = "Swafoto"
-                                    },
-                                    modifier = Modifier
-                                        .height(44.dp)
-                                        .width(183.dp),
-                                    shape = RoundedCornerShape(24.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFC4C4C4),
-                                        contentColor = Color(0xFF535353)
-                                    )
-                                ) {
-                                    Text(
-                                        text = "Swafoto",
-                                        style = TextStyle(
-                                            fontWeight = FontWeight.SemiBold,
-                                            fontSize = 15.sp,
-                                            fontFamily = FontGilroy
+                                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                                    Button(
+                                        onClick = {},
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp),
+                                        shape = RoundedCornerShape(24.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(0xFFFDFDFD),
+                                            contentColor = Color(0xFF272727)
                                         )
-                                    )
+                                    ) {
+                                        Text(
+                                            text = "Face Recognition",
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontSize = 15.sp,
+                                                fontFamily = FontGilroy
+                                            ),
+                                            overflow = TextOverflow.Ellipsis,
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Button(
+                                        onClick = {
+                                            type = "Swafoto"
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp),
+                                        shape = RoundedCornerShape(24.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(0xFFC4C4C4),
+                                            contentColor = Color(0xFF535353)
+                                        )
+                                    ) {
+                                        Text(
+                                            text = "Swafoto",
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontSize = 15.sp,
+                                                fontFamily = FontGilroy
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -860,50 +873,55 @@ fun PresensiContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    OutlinedButton(
-                        onClick = { navController.navigateUp() },
-                        modifier = Modifier
-                            .height(48.dp)
-                            .width(135.dp),
-                        shape = RoundedCornerShape(30.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            containerColor = Color.Unspecified,
-                            contentColor = Color(0xFF272727)
-                        ),
-                        border = BorderStroke(1.dp, Color(0xFFE5E7EB))
-                    ) {
-                        Text(
-                            text = "Batal",
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                fontFamily = FontGilroy
+                    Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                        OutlinedButton(
+                            onClick = { navController.navigateUp() },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(30.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                containerColor = Color.Unspecified,
+                                contentColor = Color(0xFF272727)
+                            ),
+                            border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                        ) {
+                            Text(
+                                text = "Batal",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
                             )
-                        )
+                        }
                     }
-                    Button(
-                        onClick = {
-                            if (pegawai != "" && jadwal != "") {
-                                attend(pegawai, jadwal, foto)
-                            }
-                        },
-                        modifier = Modifier
-                            .height(48.dp)
-                            .width(135.dp),
-                        shape = RoundedCornerShape(30.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF0A2D27),
-                            contentColor = Color(0xFFACF2E7)
-                        )
-                    ) {
-                        Text(
-                            text = "Absen",
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                fontFamily = FontGilroy
+                    Spacer(Modifier.width(16.dp))
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Button(
+                            onClick = {
+                                if (pegawai != "" && jadwal != "") {
+                                    attend(pegawai, jadwal, foto)
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(30.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF0A2D27),
+                                contentColor = Color(0xFFACF2E7)
                             )
-                        )
+                        ) {
+                            Text(
+                                text = "Absen",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -1017,50 +1035,55 @@ fun PresensiContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    OutlinedButton(
-                        onClick = { onDismiss() },
-                        modifier = Modifier
-                            .height(48.dp)
-                            .width(135.dp),
-                        shape = RoundedCornerShape(30.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            containerColor = Color.Unspecified,
-                            contentColor = Color(0xFF272727)
-                        ),
-                        border = BorderStroke(1.dp, Color(0xFFE5E7EB))
-                    ) {
-                        Text(
-                            text = "Batal",
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                fontFamily = FontGilroy
+                    Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                        OutlinedButton(
+                            onClick = { onDismiss() },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(30.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                containerColor = Color.Unspecified,
+                                contentColor = Color(0xFF272727)
+                            ),
+                            border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                        ) {
+                            Text(
+                                text = "Batal",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
                             )
-                        )
+                        }
                     }
-                    Button(
-                        onClick = {
-                            if (id != "" && pegawai != "") {
-                                leave(id, pegawai, emergency)
-                            }
-                        },
-                        modifier = Modifier
-                            .height(48.dp)
-                            .width(135.dp),
-                        shape = RoundedCornerShape(30.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF0A2D27),
-                            contentColor = Color(0xFFACF2E7)
-                        )
-                    ) {
-                        Text(
-                            text = "Pulang",
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                fontFamily = FontGilroy
+                    Spacer(Modifier.width(16.dp))
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Button(
+                            onClick = {
+                                if (id != "" && pegawai != "") {
+                                    leave(id, pegawai, emergency)
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(30.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF0A2D27),
+                                contentColor = Color(0xFFACF2E7)
                             )
-                        )
+                        ) {
+                            Text(
+                                text = "Pulang",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
                     }
                 }
             }
