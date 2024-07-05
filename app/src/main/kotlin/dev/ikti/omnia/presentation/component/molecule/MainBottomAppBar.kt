@@ -63,15 +63,31 @@ fun MainBottomAppBarNavigation(
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(
-                        when (screen.route) {
-                            Nav.Profile.route -> screen.route.replace("{type}", "View")
-                            else -> screen.route
+                    if (currentDestination?.route == Nav.Home.route) {
+                        navController.navigate(
+                            when (screen.route) {
+                                Nav.Profile.route -> screen.route.replace("{type}", "View")
+                                else -> screen.route
+                            }
+                        ) {
+                            when (screen.route) {
+                                Nav.Profile.route -> {
+                                    launchSingleTop = true
+                                }
+
+                                Nav.Presensi.route -> {}
+
+                                Nav.Home.route -> {
+                                    popUpTo(0) {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            }
                         }
-                    ) {
-                        when (screen.route) {
-                            Nav.Profile.route, Nav.Presensi.route -> {}
-                            Nav.Home.route -> {
+                    } else {
+                        if (screen.route == Nav.Home.route) {
+                            navController.navigate(screen.route) {
                                 popUpTo(0) {
                                     inclusive = true
                                 }
