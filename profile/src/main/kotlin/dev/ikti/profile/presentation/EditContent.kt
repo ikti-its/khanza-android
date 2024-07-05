@@ -471,7 +471,8 @@ fun EditContent(
                                     textStyle = TextStyle(
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 15.sp,
-                                        fontFamily = FontGilroy
+                                        fontFamily = FontGilroy,
+                                        lineHeight = 20.sp
                                     ),
                                     modifier = Modifier
                                         .heightIn(min = 48.dp)

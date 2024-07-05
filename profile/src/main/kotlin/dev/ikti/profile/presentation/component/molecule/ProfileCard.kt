@@ -74,7 +74,11 @@ fun ProfileCard(
                     ) {
                         ProfileCardPhoto(url = data.foto)
                         Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.65f)
+                                .padding(vertical = 4.dp)
+                        ) {
                             ProfileCardName(name = data.nama)
                             Spacer(Modifier.height(6.dp))
                             ProfileCardEmail(email = data.email)
