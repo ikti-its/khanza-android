@@ -533,7 +533,11 @@ fun EditContent(
                                         if (newAlamatLocation.longitude == 0.0) profile.alamatLon else newAlamatLocation.longitude
                                     )
 
-                                    onSave(user)
+                                    if (newPassword != "") {
+                                        onSave(user)
+                                    } else {
+                                        showToast(context, "Lengkapi terlebih dahulu!")
+                                    }
                                 },
                                 modifier = Modifier
                                     .height(48.dp)
