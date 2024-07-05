@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.CameraController
@@ -15,7 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.domain.usecase.file.UploadImageUseCase
 import dev.ikti.core.util.NetworkConstant
 import dev.ikti.core.util.NetworkConstant.ERR_NOT_FOUND
-import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_ERROR
+import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_HOST
 import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
 import dev.ikti.kehadiran.data.model.AttendRequest
@@ -36,6 +37,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.net.UnknownHostException
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -111,7 +113,8 @@ class PresensiViewModel @Inject constructor(
                     NetworkException.NotFoundException -> _stateJadwal.value =
                         UIState.Error(ERR_NOT_FOUND)
 
-                    else -> _stateJadwal.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    is UnknownHostException -> _stateJadwal.value =
+                        UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
@@ -131,7 +134,8 @@ class PresensiViewModel @Inject constructor(
                         ERR_NOT_FOUND
                     )
 
-                    else -> _stateStatus.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    is UnknownHostException -> _stateStatus.value =
+                        UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
@@ -157,7 +161,8 @@ class PresensiViewModel @Inject constructor(
                         ERR_NOT_FOUND
                     )
 
-                    else -> _stateAttend.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    is UnknownHostException -> _stateAttend.value =
+                        UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
@@ -181,7 +186,8 @@ class PresensiViewModel @Inject constructor(
                         ERR_NOT_FOUND
                     )
 
-                    else -> _stateLeave.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    is UnknownHostException -> _stateLeave.value =
+                        UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
@@ -229,7 +235,8 @@ class PresensiViewModel @Inject constructor(
                                         NetworkConstant.ERR_UNAUTHORIZED
                                     )
 
-                                else -> _stateUpload.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                                is UnknownHostException -> _stateUpload.value =
+                                    UIState.Error(ERR_UNKNOWN_HOST)
                             }
                         }
                     }
@@ -242,14 +249,15 @@ class PresensiViewModel @Inject constructor(
         val buffer = image.planes[0].buffer
         val bytes = ByteArray(buffer.remaining())
         buffer.get(bytes)
+
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
-        val MAX_SIZE = 1024 * 1024
+        val size = 1024 * 1024
         var scale = 1
-        while (options.outWidth / scale / 2 >= MAX_SIZE &&
-            options.outHeight / scale / 2 >= MAX_SIZE
+        while (options.outWidth / scale / 2 >= size &&
+            options.outHeight / scale / 2 >= size
         ) {
             scale *= 2
         }
@@ -257,9 +265,17 @@ class PresensiViewModel @Inject constructor(
         options.inJustDecodeBounds = false
         options.inSampleSize = scale
 
-        val compressedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+        val decodedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+        val rotatedBitmap = with(decodedBitmap) {
+            val matrix = Matrix().apply {
+                preScale(-1f, 1f) // Flip horizontally
+                postRotate(90f) // Rotate 90f clockwise
+            }
+            Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
+        }
+
         val outputStream = ByteArrayOutputStream()
-        compressedBitmap.compress(
+        rotatedBitmap.compress(
             Bitmap.CompressFormat.JPEG,
             40,
             outputStream
@@ -300,7 +316,8 @@ class PresensiViewModel @Inject constructor(
                         ERR_NOT_FOUND
                     )
 
-                    else -> _stateLokasi.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    is UnknownHostException -> _stateLokasi.value =
+                        UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
