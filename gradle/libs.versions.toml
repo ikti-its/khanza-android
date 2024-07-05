@@ -24,11 +24,6 @@ navigation = "2.7.7"
 # Permissions
 permissions = "0.35.0-alpha"
 
-# Testing
-junit = "4.13.2"
-junitExt = "1.1.5"
-espresso = "3.5.1"
-
 # Maps
 maps = "18.2.0"
 location = "21.2.0"
@@ -63,11 +58,6 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 
 # Permissions
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
-
-# Testing
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 
 # Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
