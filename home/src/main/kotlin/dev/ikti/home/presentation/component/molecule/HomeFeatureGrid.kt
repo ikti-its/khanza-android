@@ -88,10 +88,10 @@ fun HomeFeatureGrid(
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.Top
                     ) {
                         HomeFeatureItem(label = "Pengadaan")
-                        HomeFeatureItem(label = "Rawat Inap")
+                        HomeFeatureItem(label = "Rawat\nInap")
                         HomeFeatureItem(label = "Pengobatan")
                         HomeFeatureItem(
                             label = "Lainnya",

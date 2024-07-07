@@ -1,5 +1,6 @@
 package dev.ikti.home.presentation.component.molecule
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +31,10 @@ fun HomeFeatureItem(
     iconColor: Color = Color(0xFF272727),
     onClick: () -> Unit = {}
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
         Card(
             modifier = modifier.size(68.dp),
             enabled = active,
