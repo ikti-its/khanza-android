@@ -11,7 +11,7 @@ interface LocalUserDao : BaseDao<LocalUserEntity> {
     @Query("SELECT * FROM user WHERE token = :token")
     suspend fun getLocalUser(token: String): LocalUserEntity
 
-    @Query("SELECT akun, nama, email, role, foto, alamat, alamat_lat, alamat_lon FROM user WHERE token = :token")
+    @Query("SELECT akun, nama, email, role, telepon, foto, alamat, alamat_lat, alamat_lon FROM user WHERE token = :token")
     suspend fun getLocalUserInfo(token: String): UserInfo
 
     @Query("SELECT alamat, alamat_lat, alamat_lon FROM user WHERE token = :token")
