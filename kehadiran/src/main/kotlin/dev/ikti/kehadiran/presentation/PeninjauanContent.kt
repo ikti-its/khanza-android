@@ -387,7 +387,7 @@ fun PeninjauanContent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     if (reviewType) {
-                        Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                        Row(modifier = Modifier.fillMaxWidth(0.5f)) {
                             OutlinedButton(
                                 onClick = {
                                     onDismiss()
@@ -411,9 +411,10 @@ fun PeninjauanContent(
                                     )
                                 )
                             }
+                            Spacer(Modifier.width(8.dp))
                         }
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Spacer(Modifier.width(8.dp))
                             Button(
                                 onClick = {
                                     if (id != "") {
@@ -451,7 +452,7 @@ fun PeninjauanContent(
                             }
                         }
                     } else {
-                        Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                        Row(modifier = Modifier.fillMaxWidth(0.5f)) {
                             Button(
                                 onClick = {
                                     if (id != "") {
@@ -487,9 +488,10 @@ fun PeninjauanContent(
                                     )
                                 )
                             }
+                            Spacer(Modifier.width(8.dp))
                         }
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Spacer(Modifier.width(8.dp))
                             OutlinedButton(
                                 onClick = {
                                     onDismiss()

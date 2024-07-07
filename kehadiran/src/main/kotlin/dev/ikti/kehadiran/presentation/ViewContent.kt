@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -90,222 +89,6 @@ fun ViewContent(
                     .padding(20.dp)
             ) {
                 when (role) {
-                    "Pegawai" -> {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            Screen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Presensi")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Presensi",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            Screen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Jadwal")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_jadwal),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Jadwal\nKehadiran",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            Screen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Riwayat")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_riwayat),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Riwayat\nKehadiran",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            Screen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Pengajuan")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_pengajuan),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Pengajuan\nPerizinan",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                        }
-                        Spacer(Modifier.height(16.dp))
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            Screen.Kehadiran.route.replace("{role}", role)
-                                                .replace("{feature}", "Status")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Status\nPengajuan",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                        }
-                    }
-
                     "Admin" -> {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -477,7 +260,10 @@ fun ViewContent(
                             }
                         }
                         Spacer(Modifier.height(16.dp))
-                        Row(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Card(
                                     modifier = Modifier.size(68.dp),
@@ -519,7 +305,6 @@ fun ViewContent(
                                     minLines = 2
                                 )
                             }
-                            Spacer(Modifier.width(30.dp))
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Card(
                                     modifier = Modifier.size(68.dp),
@@ -551,6 +336,250 @@ fun ViewContent(
                                 Spacer(Modifier.height(6.dp))
                                 Text(
                                     text = "Peninjauan\nPerizinan",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color.Unspecified,
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color.Unspecified,
+                                        disabledContentColor = Color.Unspecified,
+                                    ),
+                                    onClick = {}
+                                ) {
+                                }
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color.Unspecified,
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color.Unspecified,
+                                        disabledContentColor = Color.Unspecified,
+                                    ),
+                                    onClick = {}
+                                ) {
+                                }
+                            }
+                        }
+                    }
+
+                    else -> {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Presensi")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_presensi),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Presensi",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Jadwal")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_jadwal),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Jadwal\nKehadiran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Riwayat")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_riwayat),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Riwayat\nKehadiran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Pengajuan")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_pengajuan),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Pengajuan\nPerizinan",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                        }
+                        Spacer(Modifier.height(16.dp))
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Status")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Status\nPengajuan",
                                     color = Color(0xFF0C203C),
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,

@@ -47,7 +47,7 @@ fun PeninjauanCard(
                 .padding(20.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.width(130.dp)) {
+                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
                     Text(
                         text = "Nama Pegawai",
                         style = TextStyle(
@@ -68,8 +68,8 @@ fun PeninjauanCard(
                         maxLines = 1
                     )
                 }
-                Spacer(Modifier.width(50.dp))
-                Column {
+                Spacer(Modifier.width(8.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Alasan Cuti",
                         style = TextStyle(
@@ -99,7 +99,7 @@ fun PeninjauanCard(
             }
             Spacer(Modifier.height(20.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.width(130.dp)) {
+                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
                     Text(
                         text = "Tanggal Mulai",
                         style = TextStyle(
@@ -118,8 +118,8 @@ fun PeninjauanCard(
                         )
                     )
                 }
-                Spacer(Modifier.width(50.dp))
-                Column {
+                Spacer(Modifier.width(8.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Tanggal Selesai",
                         style = TextStyle(
@@ -144,7 +144,7 @@ fun PeninjauanCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                Row(modifier = Modifier.fillMaxWidth(0.5f)) {
                     Button(
                         onClick = {
                             showDialog(false, tinjauan)
@@ -168,8 +168,8 @@ fun PeninjauanCard(
                         )
                     }
                 }
-                Spacer(Modifier.width(16.dp))
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Spacer(Modifier.width(8.dp))
                     Button(
                         onClick = {
                             showDialog(true, tinjauan)

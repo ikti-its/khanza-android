@@ -183,7 +183,7 @@ fun StatusPengajuanCard(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Column {
+                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
                     Text(
                         text = "Tanggal Mulai",
                         style = TextStyle(
@@ -202,8 +202,8 @@ fun StatusPengajuanCard(
                         )
                     )
                 }
-                Spacer(Modifier.width(80.dp))
-                Column {
+                Spacer(Modifier.width(8.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Tanggal Selesai",
                         style = TextStyle(
