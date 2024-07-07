@@ -92,7 +92,9 @@ import dev.ikti.core.util.showToast
 import dev.ikti.profile.data.model.ProfileRequest
 import dev.ikti.profile.presentation.component.molecule.ProfileEditMap
 import dev.ikti.profile.util.ProfileConstant.MAXIMUM_PASSWORD_LENGTH
+import dev.ikti.profile.util.ProfileConstant.MAXIMUM_PHONE_LENGTH
 import dev.ikti.profile.util.ProfileConstant.MINIMUM_PASSWORD_LENGTH
+import dev.ikti.profile.util.ProfileConstant.MINIMUM_PHONE_LENGTH
 import dev.ikti.profile.util.validateEmail
 import dev.ikti.profile.util.validateInput
 import kotlinx.coroutines.delay
@@ -176,9 +178,12 @@ fun EditContent(
                 var newEmail by remember { mutableStateOf(profile.email) }
                 var newPassword by remember { mutableStateOf("") }
                 var newAlamat by remember { mutableStateOf(profile.alamat) }
+                var newTelepon by remember { mutableStateOf(profile.telepon.drop(1)) }
                 var isEmailError by remember { mutableStateOf(false) }
                 var isPasswordError by remember { mutableStateOf(false) }
                 var isPasswordHidden by remember { mutableStateOf(true) }
+                var isTeleponError by remember { mutableStateOf(false) }
+                var isAlamatError by remember { mutableStateOf(false) }
                 var newAlamatLocation by remember {
                     mutableStateOf(
                         LatLng(
@@ -373,7 +378,7 @@ fun EditContent(
                                     onValueChange = { input ->
                                         newPassword = input
                                         isPasswordError = validateInput(
-                                            input,
+                                            newPassword,
                                             MINIMUM_PASSWORD_LENGTH,
                                             MAXIMUM_PASSWORD_LENGTH
                                         )
@@ -457,6 +462,62 @@ fun EditContent(
                             Spacer(Modifier.height(10.dp))
                             Column {
                                 Text(
+                                    text = "Telepon",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                OutlinedTextField(
+                                    value = newTelepon,
+                                    onValueChange = { input ->
+                                        val filtered = Regex("[^0-9]").replace(input, "")
+                                        newTelepon = filtered
+                                        isTeleponError = validateInput(
+                                            newTelepon,
+                                            MINIMUM_PHONE_LENGTH,
+                                            MAXIMUM_PHONE_LENGTH
+                                        )
+                                    },
+                                    textStyle = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 15.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    modifier = Modifier
+                                        .height(48.dp)
+                                        .fillMaxWidth(),
+                                    enabled = true,
+                                    prefix = {
+                                        Text(
+                                            text = "+62",
+                                            color = Color(0xFF272727),
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 15.sp,
+                                                fontFamily = FontGilroy
+                                            )
+                                        )
+                                    },
+                                    isError = isTeleponError,
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        unfocusedTextColor = Color(0xFF272727),
+                                        focusedTextColor = Color(0xFF272727),
+                                        unfocusedBorderColor = Color(0xFFDCDCDC),
+                                        focusedBorderColor = Color(0xFFDCDCDC),
+                                        unfocusedContainerColor = Color(0xFFF7F7F7),
+                                        focusedContainerColor = Color(0xFFF7F7F7)
+                                    )
+                                )
+                            }
+                            Spacer(Modifier.height(14.dp))
+                            Column {
+                                Text(
                                     text = "Alamat Lengkap",
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
@@ -465,9 +526,12 @@ fun EditContent(
                                     )
                                 )
                                 Spacer(Modifier.height(8.dp))
-                                TextField(
+                                OutlinedTextField(
                                     value = newAlamat,
-                                    onValueChange = {},
+                                    onValueChange = { input ->
+                                        newAlamat = input
+                                        isAlamatError = (newAlamat == "")
+                                    },
                                     textStyle = TextStyle(
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 15.sp,
@@ -476,16 +540,17 @@ fun EditContent(
                                     ),
                                     modifier = Modifier
                                         .heightIn(min = 48.dp)
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            isMapsHidden = false
-                                        },
-                                    enabled = false,
+                                        .fillMaxWidth(),
+                                    enabled = true,
+                                    isError = isAlamatError,
                                     shape = RoundedCornerShape(8.dp),
-                                    colors = TextFieldDefaults.colors(
-                                        disabledTextColor = Color(0xFF272727),
-                                        disabledContainerColor = Color(0xFFF0F0F0),
-                                        disabledIndicatorColor = Color(0xFFF0F0F0)
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        unfocusedTextColor = Color(0xFF272727),
+                                        focusedTextColor = Color(0xFF272727),
+                                        unfocusedBorderColor = Color(0xFFDCDCDC),
+                                        focusedBorderColor = Color(0xFFDCDCDC),
+                                        unfocusedContainerColor = Color(0xFFF7F7F7),
+                                        focusedContainerColor = Color(0xFFF7F7F7)
                                     )
                                 )
                             }
@@ -524,11 +589,13 @@ fun EditContent(
                             Spacer(Modifier.height(30.dp))
                             Button(
                                 onClick = {
+                                    val telepon = "0$newTelepon"
                                     val user = ProfileRequest(
                                         profile.akun,
                                         newFoto,
                                         if (newEmail == "") profile.email else newEmail,
                                         newPassword,
+                                        if (telepon == "0") profile.telepon.drop(1) else telepon,
                                         if (newAlamat == "") profile.alamat else newAlamat,
                                         if (newAlamatLocation.latitude == 0.0) profile.alamatLat else newAlamatLocation.latitude,
                                         if (newAlamatLocation.longitude == 0.0) profile.alamatLon else newAlamatLocation.longitude
@@ -595,6 +662,11 @@ fun EditContent(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
+                    val onDismiss = {
+                        isMapsHidden = true
+                        columnScrollingEnabled = true
+                    }
+
                     LaunchedEffect(dialogCameraPositionState.position.target) {
                         delay(500L)
                         onMarkerSearch(
@@ -604,7 +676,7 @@ fun EditContent(
                     }
 
                     Dialog(
-                        onDismissRequest = { isMapsHidden = true },
+                        onDismissRequest = { onDismiss() },
                         properties = DialogProperties(usePlatformDefaultWidth = false)
                     ) {
                         GoogleMap(
@@ -636,10 +708,39 @@ fun EditContent(
                                 },
                             )
                         }
-                        Box(
+                        Column(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.BottomCenter
+                            verticalArrangement = Arrangement.SpaceBetween
                         ) {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                TopAppBar(
+                                    title = {
+                                        Text(
+                                            text = "Alamat Lokasi",
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontSize = 20.sp,
+                                                fontFamily = FontGilroy
+                                            )
+                                        )
+                                    },
+                                    navigationIcon = {
+                                        IconButton(onClick = { onDismiss() }
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                                contentDescription = null,
+                                                tint = Color(0xFF272727)
+                                            )
+                                        }
+                                    },
+                                    colors = TopAppBarDefaults.topAppBarColors(
+                                        containerColor = Color.Transparent,
+                                        navigationIconContentColor = Color(0xFF272727),
+                                        titleContentColor = Color(0xFF272727)
+                                    )
+                                )
+                            }
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -774,163 +875,6 @@ fun EditContent(
                         }
                     }
                 }
-            }
-
-            is UIState.Error -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Column(modifier = Modifier.fillMaxWidth()) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(55.dp)
-                                    .background(Color(0xFF0A2D27))
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(10.dp)
-                                    .background(Color(0xFFACF2E7))
-                            )
-                        }
-                        Spacer(Modifier.height(30.dp))
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(bottom = 120.dp)
-                                .padding(horizontal = 24.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Column(
-                                    modifier = Modifier.padding(
-                                        horizontal = 8.dp,
-                                        vertical = 4.dp
-                                    ),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Shimmer(
-                                        height = 16.dp,
-                                        width = 100.dp,
-                                        shape = RoundedCornerShape(8.dp),
-                                        color = Color(0xFF272727)
-                                    )
-                                }
-                            }
-                            Spacer(Modifier.height(20.dp))
-                            Column {
-                                Text(
-                                    text = "Email",
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 16.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                                Spacer(Modifier.height(8.dp))
-                                Shimmer(
-                                    height = 48.dp,
-                                    width = 370.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = Color(0xFF272727)
-                                )
-                            }
-                            Spacer(Modifier.height(10.dp))
-                            Column {
-                                Text(
-                                    text = "Kata sandi",
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 16.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                                Spacer(Modifier.height(8.dp))
-                                Shimmer(
-                                    height = 48.dp,
-                                    width = 370.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = Color(0xFF272727)
-                                )
-                            }
-                            Spacer(Modifier.height(10.dp))
-                            Column {
-                                Text(
-                                    text = "Role",
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 16.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                                Spacer(Modifier.height(8.dp))
-                                Shimmer(
-                                    height = 48.dp,
-                                    width = 370.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = Color(0xFF272727)
-                                )
-                            }
-                            Spacer(Modifier.height(10.dp))
-                            Column {
-                                Text(
-                                    text = "Alamat Lengkap",
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 16.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                                Spacer(Modifier.height(8.dp))
-                                Shimmer(
-                                    height = 48.dp,
-                                    width = 370.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = Color(0xFF272727)
-                                )
-                            }
-                            Spacer(Modifier.height(10.dp))
-                            Text(
-                                text = "Denah Lokasi",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 16.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                            Spacer(Modifier.height(8.dp))
-                            Shimmer(
-                                height = 200.dp,
-                                width = 370.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = Color(0xFF272727)
-                            )
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                    ) {
-                        Spacer(Modifier.height(10.dp))
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(6.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .background(color = Color(0xFFF7F7F7), shape = CircleShape)
-                            )
-                            Shimmer(72.dp, 72.dp, CircleShape, Color(0xFF272727))
-                        }
-                    }
-                }
-                showToast(context, "Gagal memuat profil")
             }
 
             else -> {

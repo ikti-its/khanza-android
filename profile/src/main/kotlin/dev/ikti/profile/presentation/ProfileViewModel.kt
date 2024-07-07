@@ -125,7 +125,7 @@ class ProfileViewModel @Inject constructor(
                                 local.nip,
                                 local.role,
                                 data.data.email,
-                                local.telepon,
+                                data.data.telepon,
                                 data.data.foto,
                                 data.data.alamat,
                                 data.data.alamatLat,

@@ -11,6 +11,8 @@ data class ProfileRequest(
     val email: String,
     @SerializedName("password")
     val password: String,
+    @SerializedName("telepon")
+    val telepon: String,
     @SerializedName("alamat")
     val alamat: String,
     @SerializedName("alamat_lat")

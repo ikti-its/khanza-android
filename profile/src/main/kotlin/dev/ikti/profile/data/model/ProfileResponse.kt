@@ -9,6 +9,8 @@ data class ProfileResponse(
     val foto: String,
     @SerializedName("email")
     val email: String,
+    @SerializedName("telepon")
+    val telepon: String,
     @SerializedName("alamat")
     val alamat: String,
     @SerializedName("alamat_lat")
