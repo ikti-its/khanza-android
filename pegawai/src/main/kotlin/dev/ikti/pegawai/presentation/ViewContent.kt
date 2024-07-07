@@ -90,50 +90,6 @@ fun ViewContent(
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     when (role) {
-                        "Pegawai" -> {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Card(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardColors(
-                                        containerColor = Color(0xFFACF2E7),
-                                        contentColor = Color.Unspecified,
-                                        disabledContainerColor = Color(0xFFE8E8E8),
-                                        disabledContentColor = Color(0xFFE8E8E8),
-                                    ),
-                                    onClick = {
-                                        navController.navigate(
-                                            Screen.Pegawai.route.replace("{role}", role)
-                                                .replace("{feature}", "Data")
-                                        )
-                                    }
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_pegawai_data),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Data\nPegawai",
-                                    color = Color(0xFF0C203C),
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp,
-                                        fontFamily = FontGilroy
-                                    ),
-                                    textAlign = TextAlign.Center,
-                                    minLines = 2
-                                )
-                            }
-                        }
-
                         "Admin" -> {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Card(
@@ -208,6 +164,50 @@ fun ViewContent(
                                 Spacer(Modifier.height(6.dp))
                                 Text(
                                     text = "Daftar\nPegawai",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                        }
+
+                        else -> {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Pegawai.route.replace("{role}", role)
+                                                .replace("{feature}", "Data")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_pegawai_data),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Data\nPegawai",
                                     color = Color(0xFF0C203C),
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,

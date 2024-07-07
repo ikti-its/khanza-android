@@ -17,7 +17,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -77,7 +76,6 @@ fun KetersediaanCard(
             .clickable(interactionSource = interactionSource, indication = null) {
                 isExpanded = !isExpanded
             }
-            .height(if (isExpanded) IntrinsicSize.Max else IntrinsicSize.Min)
             .border(width = 1.dp, color = Color(0xFFE5E7EB), shape = RoundedCornerShape(12.dp)),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -99,17 +97,19 @@ fun KetersediaanCard(
                             .clip(CircleShape)
                     )
                     Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = ketersediaan.nama,
-                        style = TextStyle(
-                            color = Color(0xFF0A2D27),
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
-                            fontFamily = FontGilroy
-                        ),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
+                    Column(modifier = Modifier.width(180.dp)) {
+                        Text(
+                            text = ketersediaan.nama,
+                            style = TextStyle(
+                                color = Color(0xFF0A2D27),
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            ),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
+                    }
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -149,7 +149,7 @@ fun KetersediaanCard(
                 ) {
                     Column {
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            Column {
+                            Column(modifier = Modifier.fillMaxWidth(0.4f)) {
                                 Text(
                                     text = "NIP",
                                     style = TextStyle(
@@ -169,7 +169,7 @@ fun KetersediaanCard(
                                 )
                                 Spacer(Modifier.height(16.dp))
                                 Text(
-                                    text = "No. Telepon",
+                                    text = "Telepon",
                                     style = TextStyle(
                                         fontWeight = FontWeight.SemiBold,
                                         fontSize = 14.sp,
@@ -178,7 +178,7 @@ fun KetersediaanCard(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = ketersediaan.telepon,
+                                    text = "+62 ${ketersediaan.telepon.drop(1)}",
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
@@ -186,8 +186,8 @@ fun KetersediaanCard(
                                     )
                                 )
                             }
-                            Spacer(Modifier.width(100.dp))
-                            Column {
+                            Spacer(Modifier.width(8.dp))
+                            Column(modifier = Modifier.fillMaxWidth()) {
                                 Text(
                                     text = "Jabatan",
                                     style = TextStyle(
@@ -203,7 +203,9 @@ fun KetersediaanCard(
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
                                         fontFamily = FontGilroy
-                                    )
+                                    ),
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 2
                                 )
                                 Spacer(Modifier.height(16.dp))
                                 Text(
@@ -221,7 +223,9 @@ fun KetersediaanCard(
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
                                         fontFamily = FontGilroy
-                                    )
+                                    ),
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 2
                                 )
                             }
                         }
@@ -241,7 +245,9 @@ fun KetersediaanCard(
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 14.sp,
                                 fontFamily = FontGilroy
-                            )
+                            ),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 3
                         )
                         Spacer(Modifier.height(16.dp))
                     }
@@ -325,17 +331,6 @@ fun KetersediaanCard(
                         tint = Color(0xFF292D32)
                     )
                 }
-//                AnimatedVisibility(
-//                    visible = !isExpanded,
-//                    enter = EnterTransition.None,
-//                    exit = ExitTransition.None
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Outlined.KeyboardArrowDown,
-//                        contentDescription = null,
-//                        tint = Color(0xFF292D32)
-//                    )
-//                }
             }
         }
     }

@@ -34,6 +34,7 @@ import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
+import dev.ikti.core.util.formatDateString
 import dev.ikti.pegawai.data.model.PegawaiResponse
 
 @Composable
@@ -245,7 +246,7 @@ fun DataContent(
                             )
                             Spacer(Modifier.height(8.dp))
                             TextField(
-                                value = user.tanggalLahir,
+                                value = formatDateString(user.tanggalLahir),
                                 onValueChange = {},
                                 textStyle = TextStyle(
                                     fontWeight = FontWeight.Medium,
@@ -448,7 +449,7 @@ fun DataContent(
                             )
                             Spacer(Modifier.height(8.dp))
                             TextField(
-                                value = user.telepon,
+                                value = "+62 ${user.telepon.drop(1)}",
                                 onValueChange = {},
                                 textStyle = TextStyle(
                                     fontWeight = FontWeight.Medium,
@@ -477,7 +478,7 @@ fun DataContent(
                             )
                             Spacer(Modifier.height(8.dp))
                             TextField(
-                                value = user.tanggalMasuk,
+                                value = formatDateString(user.tanggalMasuk),
                                 onValueChange = {},
                                 textStyle = TextStyle(
                                     fontWeight = FontWeight.Medium,
