@@ -9,14 +9,13 @@ import dev.ikti.core.domain.usecase.preference.GetUserTokenUseCase
 import dev.ikti.core.domain.usecase.user.DeleteLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.GetLocalUserUseCase
 import dev.ikti.core.domain.usecase.user.InsertLocalUserUseCase
-import dev.ikti.core.util.NetworkConstant
+import dev.ikti.core.util.NetworkConstant.ERR_NOT_FOUND
+import dev.ikti.core.util.NetworkConstant.ERR_UNAUTHORIZED
+import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_HOST
+import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
 import dev.ikti.home.data.model.HomeResponse
 import dev.ikti.home.domain.usecase.HomeUseCase
-import dev.ikti.home.util.HomeConstant.ERR_ACCOUNT_NOT_FOUND
-import dev.ikti.home.util.HomeConstant.ERR_ACCOUNT_UNAUTHORIZED
-import dev.ikti.home.util.HomeConstant.ERR_FAILED_TO_INSERT_USER
-import dev.ikti.home.util.HomeException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,16 +36,23 @@ class HomeViewModel @Inject constructor(
     private val _userToken = MutableStateFlow("")
     val userToken: StateFlow<String> = _userToken
 
+    private val _restricted = MutableStateFlow(false)
+    val restricted: StateFlow<Boolean> = _restricted
+
     private val _stateHome: MutableStateFlow<UIState<HomeResponse>> =
         MutableStateFlow(UIState.Empty)
     val stateHome: StateFlow<UIState<HomeResponse>> = _stateHome
 
     fun getUserToken(state: Unit) {
         viewModelScope.launch {
-            getUserTokenUseCase.execute(state)
-                .collect { token ->
-                    _userToken.value = token
-                }
+            try {
+                getUserTokenUseCase.execute(state)
+                    .collect { token ->
+                        _userToken.value = token
+                    }
+            } catch (_: Exception) {
+                _restricted.value = true
+            }
         }
     }
 
@@ -79,21 +85,18 @@ class HomeViewModel @Inject constructor(
 
                         insertLocalUserUseCase.execute(user)
                     } catch (_: Exception) {
-                        _stateHome.value = UIState.Error(ERR_FAILED_TO_INSERT_USER)
+                        _stateHome.value = UIState.Error("ErrInsertUser")
                     }
                 }
             } catch (e: Exception) {
                 when (e) {
-                    HomeException.AccountUnauthorizedException -> _stateHome.value = UIState.Error(
-                        ERR_ACCOUNT_UNAUTHORIZED
-                    )
+                    NetworkException.UnauthorizedException -> _stateHome.value =
+                        UIState.Error(ERR_UNAUTHORIZED)
 
-                    HomeException.AccountNotFoundException -> _stateHome.value = UIState.Error(
-                        ERR_ACCOUNT_NOT_FOUND
-                    )
+                    NetworkException.NotFoundException -> _stateHome.value =
+                        UIState.Error(ERR_NOT_FOUND)
 
-                    is UnknownHostException -> _stateHome.value =
-                        UIState.Error(NetworkConstant.ERR_UNKNOWN_HOST)
+                    is UnknownHostException -> _stateHome.value = UIState.Error(ERR_UNKNOWN_HOST)
                 }
             }
         }
@@ -101,11 +104,15 @@ class HomeViewModel @Inject constructor(
 
     fun userLogout(token: String) {
         viewModelScope.launch {
-            val response = getLocalUserUseCase.execute(token)
-            response.collect { data ->
-                deleteLocalUserUseCase.execute(data)
-                clearUserTokenUseCase.execute(Unit)
-                delay(500L)
+            try {
+                val response = getLocalUserUseCase.execute(token)
+                response.collect { data ->
+                    deleteLocalUserUseCase.execute(data)
+                    clearUserTokenUseCase.execute(Unit)
+                    delay(500L)
+                }
+            } catch (e: Exception) {
+                _restricted.value = true
             }
         }
     }

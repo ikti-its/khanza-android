@@ -1,10 +1,12 @@
 package dev.ikti.home.presentation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -17,7 +19,9 @@ fun HomeScreen(
     token: String,
     navController: NavHostController = rememberNavController()
 ) {
+    val activity = (LocalContext.current as? Activity)
     val userToken by viewModel.userToken.collectAsState(token)
+    val restricted by viewModel.restricted.collectAsState()
     val stateHome by viewModel.stateHome.collectAsState()
 
     LaunchedEffect(userToken) {
@@ -31,12 +35,16 @@ fun HomeScreen(
         modifier = modifier,
         stateHome = stateHome,
         onLogout = {
-            viewModel.userLogout(userToken)
-            navController.navigate(Screen.Onboarding.route) {
-                popUpTo(0) {
-                    inclusive = true
+            if (!restricted) {
+                viewModel.userLogout(userToken)
+                navController.navigate(Screen.Onboarding.route) {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
                 }
-                launchSingleTop = true
+            } else {
+                activity?.finish()
             }
         },
         navController = navController,

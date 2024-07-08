@@ -59,6 +59,7 @@ fun HomeContent(
     navController: NavHostController
 ) {
     var isInternetDialogHidden by remember { mutableStateOf(true) }
+    var isForbiddenDialogHidden by remember { mutableStateOf(true) }
 
     MainScaffold(
         modifier = modifier.navigationBarsPadding(),
@@ -105,6 +106,8 @@ fun HomeContent(
     when (stateHome) {
         is UIState.Error -> {
             when (stateHome.error) {
+                NetworkConstant.ERR_NOT_FOUND -> isForbiddenDialogHidden = false
+
                 NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
 
                 else -> onLogout()
@@ -168,6 +171,96 @@ fun HomeContent(
                 ) {
                     Text(
                         text = "OMNIA memerlukan koneksi internet Anda",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            fontFamily = FontGilroy
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(Modifier.height(36.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedButton(
+                        onClick = { activity?.finish() },
+                        modifier = Modifier
+                            .height(48.dp)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = Color.Unspecified,
+                            contentColor = Color(0xFF272727)
+                        ),
+                        border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                    ) {
+                        Text(
+                            text = "Keluar",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = !isForbiddenDialogHidden,
+        enter = fadeIn(
+            animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+        ),
+        exit = fadeOut(
+            animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+        )
+    ) {
+        val onDismiss = { }
+        val activity = (LocalContext.current as? Activity)
+
+        Dialog(onDismissRequest = { onDismiss() }) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFF7F7F7), RoundedCornerShape(12.dp))
+                    .padding(16.dp)
+            ) {
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ic_home_sad
+                        ),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                }
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Tidak Memiliki Akses",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            fontFamily = FontGilroy
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Anda tidak memiliki akses",
                         style = TextStyle(
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp,
