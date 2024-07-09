@@ -135,6 +135,37 @@ fun DetailContent(
                             Spacer(Modifier.height(50.dp))
                             Column {
                                 Text(
+                                    text = "Nama Lengkap",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                TextField(
+                                    value = profile.nama,
+                                    onValueChange = {},
+                                    textStyle = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 15.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    modifier = Modifier
+                                        .heightIn(min = 48.dp)
+                                        .fillMaxWidth(),
+                                    enabled = false,
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = TextFieldDefaults.colors(
+                                        disabledTextColor = Color(0xFF272727),
+                                        disabledContainerColor = Color(0xFFF0F0F0),
+                                        disabledIndicatorColor = Color(0xFFF0F0F0)
+                                    )
+                                )
+                            }
+                            Spacer(Modifier.height(10.dp))
+                            Column {
+                                Text(
                                     text = "Email",
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
@@ -152,7 +183,7 @@ fun DetailContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = false,
                                     shape = RoundedCornerShape(8.dp),
@@ -183,7 +214,7 @@ fun DetailContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = false,
                                     shape = RoundedCornerShape(8.dp),
@@ -214,7 +245,7 @@ fun DetailContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = false,
                                     shape = RoundedCornerShape(8.dp),
@@ -341,7 +372,25 @@ fun DetailContent(
                                 .fillMaxSize()
                                 .padding(horizontal = 24.dp)
                         ) {
-                            Spacer(Modifier.height(30.dp))
+                            Spacer(Modifier.height(50.dp))
+                            Column {
+                                Text(
+                                    text = "Nama Lengkap",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Shimmer(
+                                    height = 48.dp,
+                                    width = 370.dp,
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = Color(0xFF272727)
+                                )
+                            }
+                            Spacer(Modifier.height(10.dp))
                             Column {
                                 Text(
                                     text = "Email",

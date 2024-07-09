@@ -325,6 +325,37 @@ fun EditContent(
                             Spacer(Modifier.height(20.dp))
                             Column {
                                 Text(
+                                    text = "Nama Lengkap",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                TextField(
+                                    value = profile.nama,
+                                    onValueChange = {},
+                                    textStyle = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 15.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    modifier = Modifier
+                                        .heightIn(min = 48.dp)
+                                        .fillMaxWidth(),
+                                    enabled = false,
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = TextFieldDefaults.colors(
+                                        disabledTextColor = Color(0xFF272727),
+                                        disabledContainerColor = Color(0xFFF0F0F0),
+                                        disabledIndicatorColor = Color(0xFFF0F0F0)
+                                    )
+                                )
+                            }
+                            Spacer(Modifier.height(10.dp))
+                            Column {
+                                Text(
                                     text = "Email",
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,
@@ -345,7 +376,7 @@ fun EditContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = true,
                                     isError = isEmailError,
@@ -389,7 +420,7 @@ fun EditContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = true,
                                     trailingIcon = {
@@ -448,7 +479,7 @@ fun EditContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = false,
                                     shape = RoundedCornerShape(8.dp),
@@ -474,7 +505,8 @@ fun EditContent(
                                     value = newTelepon,
                                     onValueChange = { input ->
                                         val filtered = Regex("[^0-9]").replace(input, "")
-                                        newTelepon = filtered
+                                        val sanitized = Regex("^0*").replace(filtered, "")
+                                        newTelepon = sanitized
                                         isTeleponError = validateInput(
                                             newTelepon,
                                             MINIMUM_PHONE_LENGTH,
@@ -487,7 +519,7 @@ fun EditContent(
                                         fontFamily = FontGilroy
                                     ),
                                     modifier = Modifier
-                                        .height(48.dp)
+                                        .heightIn(min = 48.dp)
                                         .fillMaxWidth(),
                                     enabled = true,
                                     prefix = {
@@ -712,32 +744,27 @@ fun EditContent(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                TopAppBar(
-                                    title = {
-                                        Text(
-                                            text = "Alamat Lokasi",
-                                            style = TextStyle(
-                                                fontWeight = FontWeight.SemiBold,
-                                                fontSize = 20.sp,
-                                                fontFamily = FontGilroy
-                                            )
-                                        )
-                                    },
-                                    navigationIcon = {
-                                        IconButton(onClick = { onDismiss() }
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                                contentDescription = null,
-                                                tint = Color(0xFF272727)
-                                            )
-                                        }
-                                    },
-                                    colors = TopAppBarDefaults.topAppBarColors(
-                                        containerColor = Color.Transparent,
-                                        navigationIconContentColor = Color(0xFF272727),
-                                        titleContentColor = Color(0xFF272727)
+                            Row(
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                IconButton(onClick = { onDismiss() }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = null,
+                                        tint = Color(0xFF272727),
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    text = "Alamat Lokasi",
+                                    color = Color(0xFF272727),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontGilroy
                                     )
                                 )
                             }
@@ -906,21 +933,39 @@ fun EditContent(
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 Column(
-                                    modifier = Modifier.padding(
-                                        horizontal = 8.dp,
-                                        vertical = 4.dp
-                                    ),
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Shimmer(
-                                        height = 16.dp,
-                                        width = 100.dp,
-                                        shape = RoundedCornerShape(8.dp),
-                                        color = Color(0xFF272727)
+                                    Text(
+                                        text = "Ubah foto profil",
+                                        style = TextStyle(
+                                            color = Color(0xFF272727),
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 14.sp,
+                                            fontFamily = FontGilroy
+                                        )
                                     )
                                 }
                             }
                             Spacer(Modifier.height(20.dp))
+                            Column {
+                                Text(
+                                    text = "Nama Lengkap",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Shimmer(
+                                    height = 48.dp,
+                                    width = 370.dp,
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = Color(0xFF272727)
+                                )
+                            }
+                            Spacer(Modifier.height(10.dp))
                             Column {
                                 Text(
                                     text = "Email",
@@ -974,6 +1019,24 @@ fun EditContent(
                                     color = Color(0xFF272727)
                                 )
                             }
+                            Column {
+                                Text(
+                                    text = "Telepon",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Shimmer(
+                                    height = 48.dp,
+                                    width = 370.dp,
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = Color(0xFF272727)
+                                )
+                            }
+                            Spacer(Modifier.height(10.dp))
                             Spacer(Modifier.height(10.dp))
                             Column {
                                 Text(
