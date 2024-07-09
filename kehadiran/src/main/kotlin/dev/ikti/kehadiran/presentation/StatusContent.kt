@@ -1,6 +1,5 @@
 package dev.ikti.kehadiran.presentation
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,14 +37,12 @@ import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
-import dev.ikti.core.util.showToast
 import dev.ikti.kehadiran.R
 import dev.ikti.kehadiran.data.model.PengajuanResponse
 import dev.ikti.kehadiran.presentation.component.StatusPengajuanCard
 
 @Composable
 fun StatusContent(
-    context: Context = LocalContext.current,
     pegawai: String,
     stateStatus: UIState<List<PengajuanResponse>>,
     getData: (String) -> Unit,
@@ -166,6 +162,39 @@ fun StatusContent(
                     }
 
                     is UIState.Error -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_kehadiran_status),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(54.dp)
+                            )
+                            Spacer(Modifier.height(16.dp))
+                            Text(
+                                text = "Status Pengajuan",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                text = "Gagal memuat daftar status pengajuan",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
+                    }
+
+                    else -> {
                         Spacer(Modifier.height(24.dp))
                         Text(
                             text = "Status Pengajuan Izin",
@@ -183,50 +212,16 @@ fun StatusContent(
                                 .background(Color(0xFFF1F1F1))
                         )
                         Spacer(Modifier.height(20.dp))
-                        showToast(context, "Gagal memuat daftar pengajuan")
-                    }
-
-                    UIState.Loading -> {
-                        Spacer(Modifier.height(24.dp))
-                        Text(
-                            text = "Status Pengajuan Izin",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
+                        repeat(3) {
+                            Shimmer(
+                                height = 130.dp,
+                                width = 370.dp,
+                                shape = RoundedCornerShape(12.dp),
+                                color = Color(0xFF272727)
                             )
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Spacer(
-                            Modifier
-                                .height(2.dp)
-                                .fillMaxWidth()
-                                .background(Color(0xFFF1F1F1))
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Shimmer(
-                            height = 130.dp,
-                            width = 370.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF272727)
-                        )
-                        Spacer(Modifier.height(16.dp))
-                        Shimmer(
-                            height = 130.dp,
-                            width = 370.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF272727)
-                        )
-                        Spacer(Modifier.height(16.dp))
-                        Shimmer(
-                            height = 130.dp,
-                            width = 370.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF272727)
-                        )
+                            Spacer(Modifier.height(16.dp))
+                        }
                     }
-
-                    UIState.Empty -> {}
                 }
             }
         }

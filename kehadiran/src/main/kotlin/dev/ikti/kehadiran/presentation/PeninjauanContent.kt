@@ -139,7 +139,7 @@ fun PeninjauanContent(
                         if (peninjauan.isNotEmpty()) {
                             Spacer(Modifier.height(24.dp))
                             Text(
-                                text = "Ubah Status Pengajuan Izin",
+                                text = "Peninjauan Perizinan",
                                 style = TextStyle(
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 20.sp,
@@ -187,7 +187,7 @@ fun PeninjauanContent(
                                 )
                                 Spacer(Modifier.height(16.dp))
                                 Text(
-                                    text = "Ubah Status Pengajuan Izin",
+                                    text = "Peninjauan Perizinan",
                                     style = TextStyle(
                                         fontWeight = FontWeight.SemiBold,
                                         fontSize = 20.sp,
@@ -208,30 +208,42 @@ fun PeninjauanContent(
                     }
 
                     is UIState.Error -> {
-                        Spacer(Modifier.height(24.dp))
-                        Text(
-                            text = "Ubah Status Pengajuan Izin",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_kehadiran_riwayat),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(54.dp)
                             )
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Spacer(
-                            Modifier
-                                .height(2.dp)
-                                .fillMaxWidth()
-                                .background(Color(0xFFF1F1F1))
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        showToast(context, "Gagal memuat daftar tinjauan perizinan")
+                            Spacer(Modifier.height(16.dp))
+                            Text(
+                                text = "Peninjauan Perizinan",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                text = "Gagal memuat daftar pengajuan",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
                     }
 
-                    UIState.Loading -> {
+                    else -> {
                         Spacer(Modifier.height(24.dp))
                         Text(
-                            text = "Ubah Status Pengajuan Izin",
+                            text = "Peninjauan Perizinan",
                             style = TextStyle(
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 20.sp,
@@ -267,8 +279,6 @@ fun PeninjauanContent(
                             color = Color(0xFF272727)
                         )
                     }
-
-                    UIState.Empty -> {}
                 }
             }
         }

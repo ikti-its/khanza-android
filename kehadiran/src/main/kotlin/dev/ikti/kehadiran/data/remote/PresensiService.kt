@@ -48,7 +48,7 @@ interface PresensiService {
         @Path("id") id: String
     ): BaseResponse<FotoPegawaiResponse>
 
-    @GET("organisasi/current")
+    @GET("organisasi")
     suspend fun getLokasi(
         @Header("Authorization") token: String
     ): BaseResponse<OrganisasiResponse>

@@ -86,6 +86,7 @@ import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import dev.ikti.kehadiran.util.FaceAnalyzer
+import kotlinx.coroutines.delay
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.FileUtil
 import java.util.concurrent.Executors
@@ -266,9 +267,50 @@ fun PresensiContent(
     if (cameraPermissionState.status.isGranted) {
         when (type) {
             "Swafoto" -> {
-                LaunchedEffect(type) {
+                var status by remember { mutableStateOf("Memindai wajah...") }
+                var isButtonHidden by remember { mutableStateOf(true) }
+                val onDetect = { detected: Boolean ->
+                    status = if (detected) {
+                        isButtonHidden = false
+                        "Wajah dikenali"
+                    } else {
+                        isButtonHidden = true
+                        "Wajah tidak dikenali"
+                    }
+                }
+
+                val cameraExecutor = Executors.newSingleThreadExecutor()
+                val cameraSelector = CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                    .build()
+
+                val faceNetInterpreter = Interpreter(
+                    FileUtil.loadMappedFile(context, "mobile_face_net.tflite"),
+                    Interpreter.Options()
+                )
+                val faceAnalyzer = FaceAnalyzer(faceNetInterpreter, onDetect)
+
+                LaunchedEffect(dataBitmap) {
+                    delay(200L)
                     cameraController.unbind()
+                    cameraController.cameraSelector = cameraSelector
+                    cameraController.imageAnalysisBackpressureStrategy =
+                        ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
+                    cameraController.setImageAnalysisAnalyzer(
+                        cameraExecutor,
+                        faceAnalyzer
+                    )
                     cameraController.bindToLifecycle(lifecycleOwner)
+                }
+
+                LaunchedEffect(dataBitmap) {
+                    if (dataBitmap != null) {
+                        status = "Memuat foto pegawai..."
+                        faceAnalyzer.getPegawaiFace(dataBitmap)
+                        status = "Memindai wajah..."
+                    } else {
+                        status = "Memuat foto pegawai..."
+                    }
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -277,12 +319,8 @@ fun PresensiContent(
                         factory = { ctx ->
                             PreviewView(ctx).apply {
                                 scaleType = PreviewView.ScaleType.FILL_CENTER
-                                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                                implementationMode = PreviewView.ImplementationMode.PERFORMANCE
                                 controller = cameraController
-
-                                cameraController.cameraSelector = CameraSelector.Builder()
-                                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                                    .build()
                             }
                         }
                     )
@@ -292,50 +330,105 @@ fun PresensiContent(
                             .padding(horizontal = 8.dp, vertical = 24.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        TopAppBar(
-                            modifier = Modifier.navigationBarsPadding(),
-                            title = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            TopAppBar(
+                                modifier = Modifier.navigationBarsPadding(),
+                                title = {
+                                    Text(
+                                        text = "Swafoto",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 20.sp,
+                                            fontFamily = FontGilroy
+                                        )
+                                    )
+                                },
+                                navigationIcon = {
+                                    IconButton(onClick = { navController.navigateUp() }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                            contentDescription = null,
+                                            tint = Color(0xFFFFFFFF)
+                                        )
+                                    }
+                                },
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = Color.Transparent,
+                                    navigationIconContentColor = Color(0xFFFFFFFF),
+                                    titleContentColor = Color(0xFFFFFFFF)
+                                )
+                            )
+                            Spacer(Modifier.height(16.dp))
+                            Row(
+                                modifier = Modifier
+                                    .background(Color(0xFFF7F7F7), RoundedCornerShape(24.dp))
+                                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                when (status) {
+                                    "Wajah tidak dikenali" -> {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_presensi_face_sad),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(36.dp)
+                                        )
+                                    }
+
+                                    else -> {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_presensi_face),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(36.dp)
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.width(16.dp))
                                 Text(
-                                    text = "Swafoto",
+                                    text = status,
                                     style = TextStyle(
                                         fontWeight = FontWeight.SemiBold,
-                                        fontSize = 20.sp,
+                                        fontSize = 16.sp,
                                         fontFamily = FontGilroy
                                     )
                                 )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = { navController.navigateUp() }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                        contentDescription = null,
-                                        tint = Color(0xFFFFFFFF)
-                                    )
-                                }
-                            },
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = Color.Transparent,
-                                navigationIconContentColor = Color(0xFFFFFFFF),
-                                titleContentColor = Color(0xFFFFFFFF)
-                            )
-                        )
+                            }
+                        }
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .height(64.dp)
-                                    .width(64.dp)
-                                    .background(Color(0xFFFFFFFF), CircleShape)
-                                    .clip(CircleShape)
-                                    .clickable {
-                                        upload(cameraController)
-                                    }
-                            )
+                            AnimatedVisibility(
+                                visible = !isButtonHidden,
+                                enter = fadeIn(
+                                    animationSpec = spring(
+                                        Spring.DampingRatioLowBouncy,
+                                        Spring.StiffnessLow
+                                    )
+                                ),
+                                exit = fadeOut(
+                                    animationSpec = spring(
+                                        Spring.DampingRatioLowBouncy,
+                                        Spring.StiffnessLow
+                                    )
+                                )
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .height(64.dp)
+                                        .width(64.dp)
+                                        .background(Color(0xFFFFFFFF), CircleShape)
+                                        .clip(CircleShape)
+                                        .clickable {
+                                            upload(cameraController)
+                                        }
+                                )
+                            }
                             Spacer(Modifier.height(48.dp))
                             Row(
                                 modifier = Modifier
@@ -428,10 +521,7 @@ fun PresensiContent(
                     FileUtil.loadMappedFile(context, "mobile_face_net.tflite"),
                     Interpreter.Options()
                 )
-                val faceAnalyzer = FaceAnalyzer(
-                    faceNetInterpreter,
-                    onDetect
-                )
+                val faceAnalyzer = FaceAnalyzer(faceNetInterpreter, onDetect)
                 val imageAnalysis = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
@@ -459,6 +549,8 @@ fun PresensiContent(
                 LaunchedEffect(dataBitmap) {
                     if (dataBitmap != null) {
                         faceAnalyzer.getPegawaiFace(dataBitmap)
+                    } else {
+                        status = "Memuat foto pegawai..."
                     }
                 }
 
@@ -494,62 +586,63 @@ fun PresensiContent(
                             .padding(horizontal = 8.dp, vertical = 24.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        TopAppBar(
-                            modifier = Modifier.navigationBarsPadding(),
-                            title = {
-                                Text(
-                                    text = "Face Recognition",
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 20.sp,
-                                        fontFamily = FontGilroy
-                                    )
-                                )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = { navController.navigateUp() }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                        contentDescription = null,
-                                        tint = Color(0xFFFFFFFF)
-                                    )
-                                }
-                            },
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = Color.Transparent,
-                                navigationIconContentColor = Color(0xFFFFFFFF),
-                                titleContentColor = Color(0xFFFFFFFF)
-                            )
-                        )
                         Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(
+                            TopAppBar(
+                                modifier = Modifier.navigationBarsPadding(),
+                                title = {
+                                    Text(
+                                        text = "Face Recognition",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 20.sp,
+                                            fontFamily = FontGilroy
+                                        )
+                                    )
+                                },
+                                navigationIcon = {
+                                    IconButton(onClick = { navController.navigateUp() }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                            contentDescription = null,
+                                            tint = Color(0xFFFFFFFF)
+                                        )
+                                    }
+                                },
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = Color.Transparent,
+                                    navigationIconContentColor = Color(0xFFFFFFFF),
+                                    titleContentColor = Color(0xFFFFFFFF)
+                                )
+                            )
+                            Spacer(Modifier.height(16.dp))
+                            Row(
                                 modifier = Modifier
                                     .background(Color(0xFFF7F7F7), RoundedCornerShape(24.dp))
                                     .padding(horizontal = 24.dp, vertical = 16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 when (status) {
                                     "Wajah tidak dikenali" -> {
                                         Image(
                                             painter = painterResource(id = R.drawable.ic_presensi_face_sad),
-                                            contentDescription = null
+                                            contentDescription = null,
+                                            modifier = Modifier.size(36.dp)
                                         )
                                     }
 
                                     else -> {
                                         Image(
                                             painter = painterResource(id = R.drawable.ic_presensi_face),
-                                            contentDescription = null
+                                            contentDescription = null,
+                                            modifier = Modifier.size(36.dp)
                                         )
                                     }
                                 }
-                                Spacer(Modifier.height(16.dp))
+                                Spacer(Modifier.width(16.dp))
                                 Text(
                                     text = status,
                                     style = TextStyle(
@@ -558,9 +651,14 @@ fun PresensiContent(
                                         fontFamily = FontGilroy
                                     )
                                 )
-                                Spacer(Modifier.height(8.dp))
                             }
-                            Spacer(Modifier.height(24.dp))
+                        }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()

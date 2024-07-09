@@ -1,12 +1,6 @@
 package dev.ikti.kehadiran.util
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageFormat
-import android.graphics.Matrix
-import android.graphics.Rect
-import android.graphics.YuvImage
-import android.media.Image
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -15,12 +9,12 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
+import dev.ikti.kehadiran.util.AnalyzerConstant.FACE_NET_IMAGE_SIZE
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
-import java.io.ByteArrayOutputStream
 import kotlin.math.sqrt
 
 class FaceAnalyzer(
@@ -30,14 +24,13 @@ class FaceAnalyzer(
     private val faceNetInterpreter = interpreter
     private var recognizedFace: FloatArray = FloatArray(0)
     private val realTimeOpts = FaceDetectorOptions.Builder()
-        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE) // Bisa ganti ke PERFORMANCE_MODE_ACCURATE atau PERFORMANCE_MODE_FAST
+        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
         .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-        .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+        .setContourMode(FaceDetectorOptions.CONTOUR_MODE_NONE)
         .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_NONE)
-        .setMinFaceSize(0.2f)
+        .setMinFaceSize(0.75f)
         .enableTracking()
         .build()
-
     private val faceNetImageProcessor = ImageProcessor.Builder()
         .add(
             ResizeOp(
@@ -89,25 +82,6 @@ class FaceAnalyzer(
         }
     }
 
-    private fun toBitmap(image: Image): Bitmap {
-        val planes = image.planes
-        val yBuffer = planes[0].buffer
-        val uBuffer = planes[1].buffer
-        val vBuffer = planes[2].buffer
-        val ySize = yBuffer.remaining()
-        val uSize = uBuffer.remaining()
-        val vSize = vBuffer.remaining()
-        val nv21 = ByteArray(ySize + uSize + vSize)
-        yBuffer[nv21, 0, ySize]
-        vBuffer[nv21, ySize, vSize]
-        uBuffer[nv21, ySize + vSize, uSize]
-        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.width, image.height, null)
-        val out = ByteArrayOutputStream()
-        yuvImage.compressToJpeg(Rect(0, 0, yuvImage.width, yuvImage.height), 75, out)
-        val imageBytes = out.toByteArray()
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-    }
-
     private fun isSimilar(vector: FloatArray): Boolean {
         val knownVector: FloatArray = recognizedFace
         var distance = 0f
@@ -141,28 +115,5 @@ class FaceAnalyzer(
                     recognizedFace = faceOutputArray[0]
                 }
             }
-    }
-
-    private fun cropToBox(bitmap: Bitmap, bounding: Rect, rotation: Int): Bitmap? {
-        val converted = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        var image = converted
-        if (rotation != 0) {
-            val matrix = Matrix()
-            matrix.postRotate(rotation.toFloat())
-            image = Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, true)
-        }
-        return if (bounding.top >= 0 && bounding.bottom <= image.width && bounding.top + bounding.height() <= image.height && bounding.left >= 0 && bounding.left + bounding.width() <= image.width) {
-            Bitmap.createBitmap(
-                image,
-                bounding.left,
-                bounding.top,
-                bounding.width(),
-                bounding.height()
-            )
-        } else null
-    }
-
-    companion object {
-        private const val FACE_NET_IMAGE_SIZE = 112
     }
 }

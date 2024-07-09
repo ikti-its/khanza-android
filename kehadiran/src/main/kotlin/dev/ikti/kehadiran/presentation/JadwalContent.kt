@@ -1,7 +1,7 @@
 package dev.ikti.kehadiran.presentation
 
-import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,9 +24,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,13 +37,12 @@ import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
-import dev.ikti.core.util.showToast
+import dev.ikti.kehadiran.R
 import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.presentation.component.JadwalCard
 
 @Composable
 fun JadwalContent(
-    context: Context = LocalContext.current,
     pegawai: String,
     stateJadwal: UIState<List<JadwalResponse>>,
     getData: (String) -> Unit,
@@ -100,27 +101,27 @@ fun JadwalContent(
                     .fillMaxSize()
                     .padding(horizontal = 20.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
-                Text(
-                    text = "Jadwal Kerja",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 20.sp,
-                        fontFamily = FontGilroy
-                    )
-                )
-                Spacer(Modifier.height(20.dp))
-                Spacer(
-                    Modifier
-                        .height(2.dp)
-                        .fillMaxWidth()
-                        .background(Color(0xFFF1F1F1))
-                )
-                Spacer(Modifier.height(20.dp))
                 when (stateJadwal) {
                     is UIState.Success -> {
                         val jadwal = stateJadwal.data
 
+                        Spacer(Modifier.height(24.dp))
+                        Text(
+                            text = "Jadwal Kehadiran",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(20.dp))
+                        Spacer(
+                            Modifier
+                                .height(2.dp)
+                                .fillMaxWidth()
+                                .background(Color(0xFFF1F1F1))
+                        )
+                        Spacer(Modifier.height(20.dp))
                         if (jadwal.isNotEmpty()) {
                             LazyColumn(state = lazyListState) {
                                 items(items = jadwal) { jadwal ->
@@ -128,23 +129,60 @@ fun JadwalContent(
                                     Spacer(Modifier.height(16.dp))
                                 }
                             }
-                        } else {
+                        }
+                    }
+
+                    is UIState.Error -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_kehadiran_jadwal),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(54.dp)
+                            )
+                            Spacer(Modifier.height(16.dp))
                             Text(
-                                text = "Belum ada jadwal yang ditetapkan",
+                                text = "Jadwal Kehadiran",
                                 style = TextStyle(
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                text = "Gagal memuat jadwal kehadiran",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
                                     fontFamily = FontGilroy
                                 )
                             )
                         }
                     }
 
-                    is UIState.Error -> {
-                        showToast(context, "Gagal memuat daftar jadwal")
-                    }
-
                     else -> {
+                        Spacer(Modifier.height(24.dp))
+                        Text(
+                            text = "Jadwal Kehadiran",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(20.dp))
+                        Spacer(
+                            Modifier
+                                .height(2.dp)
+                                .fillMaxWidth()
+                                .background(Color(0xFFF1F1F1))
+                        )
+                        Spacer(Modifier.height(20.dp))
                         repeat(7) {
                             Shimmer(
                                 height = 72.dp,
