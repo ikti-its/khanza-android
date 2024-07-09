@@ -6,5 +6,7 @@ data class OrganisasiResponse(
     @SerializedName("latitude")
     val latitude: Double,
     @SerializedName("longitude")
-    val longitude: Double
+    val longitude: Double,
+    @SerializedName("radius")
+    val radius: Int
 )

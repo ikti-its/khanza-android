@@ -292,6 +292,7 @@ class PresensiViewModel @Inject constructor(
                 response.collect { res ->
                     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                         if (location != null) {
+                            val radius = res.data.radius * 0.001 // Radius perlu dalam kilometer
                             val latitude = res.data.latitude
                             val longitude = res.data.longitude
                             val userLatitude = location.latitude
@@ -300,7 +301,7 @@ class PresensiViewModel @Inject constructor(
                             val distance =
                                 calculateDistance(userLatitude, userLongitude, latitude, longitude)
 
-                            if (distance <= 0.50) {
+                            if (distance <= radius) {
                                 _stateLokasi.value = UIState.Success(true)
                             } else {
                                 _stateLokasi.value = UIState.Success(false)

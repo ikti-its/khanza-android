@@ -355,8 +355,7 @@ fun ViewContent(
                                         contentColor = Color.Unspecified,
                                         disabledContainerColor = Color.Unspecified,
                                         disabledContentColor = Color.Unspecified,
-                                    ),
-                                    onClick = {}
+                                    )
                                 ) {
                                 }
                             }
@@ -369,8 +368,7 @@ fun ViewContent(
                                         contentColor = Color.Unspecified,
                                         disabledContainerColor = Color.Unspecified,
                                         disabledContentColor = Color.Unspecified,
-                                    ),
-                                    onClick = {}
+                                    )
                                 ) {
                                 }
                             }
