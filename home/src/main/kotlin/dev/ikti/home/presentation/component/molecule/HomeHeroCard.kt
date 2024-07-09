@@ -137,7 +137,7 @@ fun HomeHeroCard(
                     when (stateHome) {
                         is UIState.Success -> {
                             Column(modifier = modifier.fillMaxWidth(0.6f)) {
-                                HomeHeroNameText(stateHome.data.nama)
+                                HomeHeroNameText(stateHome.data.nama.split(" ")[0])
                             }
                             Spacer(modifier = modifier.height(25.dp))
                             Column(
@@ -152,8 +152,6 @@ fun HomeHeroCard(
                                 )
                             }
                         }
-
-                        is UIState.Error -> {}
 
                         else -> {
                             Shimmer(

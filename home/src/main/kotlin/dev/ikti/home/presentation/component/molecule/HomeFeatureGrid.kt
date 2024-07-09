@@ -101,7 +101,7 @@ fun HomeFeatureGrid(
                     }
                 }
 
-                UIState.Loading -> {
+                else -> {
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -164,8 +164,6 @@ fun HomeFeatureGrid(
                         )
                     }
                 }
-
-                else -> {}
             }
         }
     }
