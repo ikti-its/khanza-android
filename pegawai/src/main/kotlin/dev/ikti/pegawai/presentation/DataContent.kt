@@ -1,6 +1,7 @@
 package dev.ikti.pegawai.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,8 +25,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +39,7 @@ import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
 import dev.ikti.core.util.formatDateString
+import dev.ikti.pegawai.R
 import dev.ikti.pegawai.data.model.PegawaiResponse
 
 @Composable
@@ -499,15 +504,36 @@ fun DataContent(
                     }
 
                     is UIState.Error -> {
-                        Spacer(Modifier.height(24.dp))
-                        Text(
-                            text = "Gagal memuat pegawai",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_pegawai_data),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(54.dp)
                             )
-                        )
+                            Spacer(Modifier.height(16.dp))
+                            Text(
+                                text = "Data Pegawai",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                text = "Gagal memuat data pegawai",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontGilroy
+                                )
+                            )
+                        }
                     }
 
                     else -> {

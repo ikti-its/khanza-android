@@ -2,15 +2,16 @@ package dev.ikti.pegawai.presentation
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,7 +48,7 @@ import dev.ikti.core.presentation.component.Shimmer
 import dev.ikti.core.presentation.component.template.MainScaffold
 import dev.ikti.core.presentation.theme.FontGilroy
 import dev.ikti.core.util.UIState
-import dev.ikti.core.util.showToast
+import dev.ikti.pegawai.R
 import dev.ikti.pegawai.domain.model.Ketersediaan
 import dev.ikti.pegawai.presentation.component.KetersediaanCard
 import kotlinx.coroutines.delay
@@ -71,7 +73,7 @@ fun DaftarContent(
             getLokasi(token)
         }
     }
-    
+
     when (stateLokasi) {
         is UIState.Success -> {
             latitude = stateLokasi.data.latitude
@@ -128,62 +130,60 @@ fun DaftarContent(
                     .height(10.dp)
                     .background(Color(0xFFACF2E7))
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
-            ) {
-                Row {
-                    OutlinedTextField(
-                        value = query,
-                        onValueChange = { input ->
-                            query = input
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        textStyle = TextStyle(
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 18.sp,
-                            fontFamily = FontGilroy
-                        ),
-                        placeholder = {
-                            Text(
-                                text = "Cari",
-                                style = TextStyle(
-                                    color = Color(0xFF666666),
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 18.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.Search,
-                                contentDescription = null,
-                                tint = Color(0xFF666666)
-                            )
-                        },
-                        singleLine = true,
-                        shape = RoundedCornerShape(8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color(0xFFF1F1F1),
-                            focusedContainerColor = Color(0xFFF1F1F1),
-                            unfocusedBorderColor = Color(0xFFE5E7EB),
-                            focusedBorderColor = Color(0xFFE5E7EB)
-                        )
-                    )
-                }
-            }
-            Spacer(
-                Modifier
-                    .height(2.dp)
-                    .fillMaxWidth()
-                    .background(Color(0xFFF1F1F1))
-            )
             when (stateKetersediaan) {
                 is UIState.Success -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 16.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = query,
+                            onValueChange = { input ->
+                                query = input
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            textStyle = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 18.sp,
+                                fontFamily = FontGilroy
+                            ),
+                            placeholder = {
+                                Text(
+                                    text = "Cari",
+                                    style = TextStyle(
+                                        color = Color(0xFF666666),
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 18.sp,
+                                        fontFamily = FontGilroy
+                                    )
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Search,
+                                    contentDescription = null,
+                                    tint = Color(0xFF666666)
+                                )
+                            },
+                            singleLine = true,
+                            shape = RoundedCornerShape(8.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                unfocusedContainerColor = Color(0xFFF1F1F1),
+                                focusedContainerColor = Color(0xFFF1F1F1),
+                                unfocusedBorderColor = Color(0xFFE5E7EB),
+                                focusedBorderColor = Color(0xFFE5E7EB)
+                            )
+                        )
+                    }
+                    Spacer(
+                        Modifier
+                            .height(2.dp)
+                            .fillMaxWidth()
+                            .background(Color(0xFFF1F1F1))
+                    )
                     Spacer(Modifier.height(16.dp))
                     LazyColumn(
                         modifier = Modifier.padding(horizontal = 20.dp),
@@ -197,10 +197,57 @@ fun DaftarContent(
                 }
 
                 is UIState.Error -> {
-                    showToast(context, "Gagal memuat daftar pegawai")
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_pegawai_ketersediaan),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(54.dp)
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Text(
+                            text = "Daftar Pegawai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Text(
+                            text = "Gagal memuat daftar pegawai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
                 }
 
                 else -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 16.dp)
+                    ) {
+                        Shimmer(
+                            height = 50.dp,
+                            width = 370.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF272727)
+                        )
+                    }
+                    Spacer(
+                        Modifier
+                            .height(2.dp)
+                            .fillMaxWidth()
+                            .background(Color(0xFFF1F1F1))
+                    )
                     Column(
                         modifier = Modifier
                             .fillMaxSize()

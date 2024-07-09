@@ -20,7 +20,7 @@ interface PegawaiService {
         @Query("tanggal") tanggal: String
     ): BaseResponse<List<KetersediaanResponse>>
 
-    @GET("organisasi/current")
+    @GET("organisasi")
     suspend fun getLokasi(
         @Header("Authorization") token: String
     ): BaseResponse<OrganisasiResponse>
