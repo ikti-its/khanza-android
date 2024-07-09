@@ -87,7 +87,10 @@ fun KetersediaanCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.6f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     SubcomposeAsyncImage(
                         model = ketersediaan.foto,
                         contentDescription = null,
@@ -97,7 +100,7 @@ fun KetersediaanCard(
                             .clip(CircleShape)
                     )
                     Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.width(180.dp)) {
+                    Column {
                         Text(
                             text = ketersediaan.nama,
                             style = TextStyle(
@@ -111,7 +114,11 @@ fun KetersediaanCard(
                         )
                     }
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_location),
                         contentDescription = null,
@@ -148,8 +155,28 @@ fun KetersediaanCard(
                     exit = ExitTransition.None
                 ) {
                     Column {
+                        Text(
+                            text = "Nama Lengkap",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            text = ketersediaan.nama,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 14.sp,
+                                fontFamily = FontGilroy
+                            ),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 2
+                        )
+                        Spacer(Modifier.height(16.dp))
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            Column(modifier = Modifier.fillMaxWidth(0.4f)) {
+                            Column(modifier = Modifier.fillMaxWidth(0.5f)) {
                                 Text(
                                     text = "NIP",
                                     style = TextStyle(
