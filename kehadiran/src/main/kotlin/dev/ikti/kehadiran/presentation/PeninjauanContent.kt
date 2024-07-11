@@ -138,22 +138,6 @@ fun PeninjauanContent(
 
                         if (peninjauan.isNotEmpty()) {
                             Spacer(Modifier.height(24.dp))
-                            Text(
-                                text = "Peninjauan Perizinan",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 20.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                            Spacer(Modifier.height(20.dp))
-                            Spacer(
-                                Modifier
-                                    .height(2.dp)
-                                    .fillMaxWidth()
-                                    .background(Color(0xFFF1F1F1))
-                            )
-                            Spacer(Modifier.height(20.dp))
                             LazyColumn(state = lazyListState) {
                                 items(items = peninjauan) { tinjauan ->
                                     PeninjauanCard(
@@ -242,42 +226,15 @@ fun PeninjauanContent(
 
                     else -> {
                         Spacer(Modifier.height(24.dp))
-                        Text(
-                            text = "Peninjauan Perizinan",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
+                        repeat(3) {
+                            Shimmer(
+                                height = 130.dp,
+                                width = 370.dp,
+                                shape = RoundedCornerShape(12.dp),
+                                color = Color(0xFF272727)
                             )
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Spacer(
-                            Modifier
-                                .height(2.dp)
-                                .fillMaxWidth()
-                                .background(Color(0xFFF1F1F1))
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Shimmer(
-                            height = 130.dp,
-                            width = 370.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF272727)
-                        )
-                        Spacer(Modifier.height(16.dp))
-                        Shimmer(
-                            height = 130.dp,
-                            width = 370.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF272727)
-                        )
-                        Spacer(Modifier.height(16.dp))
-                        Shimmer(
-                            height = 130.dp,
-                            width = 370.dp,
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF272727)
-                        )
+                            Spacer(Modifier.height(16.dp))
+                        }
                     }
                 }
             }

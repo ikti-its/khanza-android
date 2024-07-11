@@ -106,22 +106,6 @@ fun JadwalContent(
                         val jadwal = stateJadwal.data
 
                         Spacer(Modifier.height(24.dp))
-                        Text(
-                            text = "Jadwal Kehadiran",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
-                            )
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Spacer(
-                            Modifier
-                                .height(2.dp)
-                                .fillMaxWidth()
-                                .background(Color(0xFFF1F1F1))
-                        )
-                        Spacer(Modifier.height(20.dp))
                         if (jadwal.isNotEmpty()) {
                             LazyColumn(state = lazyListState) {
                                 items(items = jadwal) { jadwal ->
@@ -167,22 +151,6 @@ fun JadwalContent(
 
                     else -> {
                         Spacer(Modifier.height(24.dp))
-                        Text(
-                            text = "Jadwal Kehadiran",
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 20.sp,
-                                fontFamily = FontGilroy
-                            )
-                        )
-                        Spacer(Modifier.height(20.dp))
-                        Spacer(
-                            Modifier
-                                .height(2.dp)
-                                .fillMaxWidth()
-                                .background(Color(0xFFF1F1F1))
-                        )
-                        Spacer(Modifier.height(20.dp))
                         repeat(7) {
                             Shimmer(
                                 height = 72.dp,
