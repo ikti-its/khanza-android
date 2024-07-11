@@ -171,7 +171,8 @@ class PegawaiViewModel @Inject constructor(
                     PegawaiException.AccountNotFoundException -> _stateKetersediaan.value =
                         UIState.Error(ERR_ACCOUNT_NOT_FOUND)
 
-                    else -> _stateKetersediaan.value = UIState.Error(ERR_UNKNOWN_ERROR)
+                    else -> _stateKetersediaan.value =
+                        UIState.Error(NetworkConstant.ERR_UNKNOWN_HOST)
                 }
             }
         }

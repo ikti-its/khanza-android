@@ -130,6 +130,42 @@ fun DaftarContent(
                     .height(10.dp)
                     .background(Color(0xFFACF2E7))
             )
+            when (stateLokasi) {
+                is UIState.Error -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_pegawai_ketersediaan),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(54.dp)
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Text(
+                            text = "Daftar Pegawai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Text(
+                            text = "Gagal memuat daftar pegawai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
+                            )
+                        )
+                    }
+                }
+
+                else -> {}
+            }
             when (stateKetersediaan) {
                 is UIState.Success -> {
                     Column(

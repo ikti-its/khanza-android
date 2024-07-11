@@ -97,16 +97,16 @@ fun DataContent(
                     .height(10.dp)
                     .background(Color(0xFFACF2E7))
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 20.dp)
-                    .verticalScroll(verticalScrollState)
-            ) {
-                when (stateData) {
-                    is UIState.Success -> {
-                        val user = stateData.data
+            when (stateData) {
+                is UIState.Success -> {
+                    val user = stateData.data
 
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp)
+                            .verticalScroll(verticalScrollState)
+                    ) {
                         Spacer(Modifier.height(24.dp))
                         Text(
                             text = user.nama,
@@ -502,41 +502,47 @@ fun DataContent(
                         }
                         Spacer(Modifier.height(24.dp))
                     }
+                }
 
-                    is UIState.Error -> {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_pegawai_data),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(54.dp)
+                is UIState.Error -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_pegawai_data),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(54.dp)
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Text(
+                            text = "Data Pegawai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 20.sp,
+                                fontFamily = FontGilroy
                             )
-                            Spacer(Modifier.height(16.dp))
-                            Text(
-                                text = "Data Pegawai",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 20.sp,
-                                    fontFamily = FontGilroy
-                                )
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Text(
+                            text = "Gagal memuat data pegawai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                fontFamily = FontGilroy
                             )
-                            Spacer(Modifier.height(12.dp))
-                            Text(
-                                text = "Gagal memuat data pegawai",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp,
-                                    fontFamily = FontGilroy
-                                )
-                            )
-                        }
+                        )
                     }
+                }
 
-                    else -> {
+                else -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp)
+                    ) {
                         Spacer(Modifier.height(24.dp))
                         Shimmer(
                             height = 24.dp,
