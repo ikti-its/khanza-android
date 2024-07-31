@@ -318,6 +318,135 @@ fun ViewContent(
                                     onClick = {
                                         navController.navigate(
                                             Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Tukar")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_pengajuan),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Pengajuan\nPenukaran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "StatusTukar")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Status\nPenukaran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "TinjauTukar")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_status),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Peninjauan\nPenukaran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                        }
+                        Spacer(Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
                                                 .replace("{feature}", "Peninjauan")
                                         )
                                     }
@@ -345,6 +474,19 @@ fun ViewContent(
                                     textAlign = TextAlign.Center,
                                     minLines = 2
                                 )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color.Unspecified,
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color.Unspecified,
+                                        disabledContentColor = Color.Unspecified,
+                                    )
+                                ) {
+                                }
                             }
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Card(
@@ -546,7 +688,10 @@ fun ViewContent(
                             }
                         }
                         Spacer(Modifier.height(16.dp))
-                        Row(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Card(
                                     modifier = Modifier.size(68.dp),
@@ -578,6 +723,129 @@ fun ViewContent(
                                 Spacer(Modifier.height(6.dp))
                                 Text(
                                     text = "Status\nPengajuan",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "Tukar")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_pengajuan),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Pengajuan\nPenukaran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "StatusTukar")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_peninjauan),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Status\nPenukaran",
+                                    color = Color(0xFF0C203C),
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    minLines = 2
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Card(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardColors(
+                                        containerColor = Color(0xFFACF2E7),
+                                        contentColor = Color.Unspecified,
+                                        disabledContainerColor = Color(0xFFE8E8E8),
+                                        disabledContentColor = Color(0xFFE8E8E8),
+                                    ),
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.Kehadiran.route.replace("{role}", role)
+                                                .replace("{feature}", "TinjauTukar")
+                                        )
+                                    }
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_kehadiran_status),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Peninjauan\nPenukaran",
                                     color = Color(0xFF0C203C),
                                     style = TextStyle(
                                         fontWeight = FontWeight.Medium,

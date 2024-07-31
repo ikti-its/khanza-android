@@ -17,6 +17,7 @@ fun KehadiranScreen(
     pengajuanViewModel: PengajuanViewModel = hiltViewModel(),
     presensiViewModel: PresensiViewModel = hiltViewModel(),
     faceViewModel: FaceViewModel = hiltViewModel(),
+    tukarViewModel: TukarViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
     val token by viewModel.token.collectAsState()
@@ -34,6 +35,13 @@ fun KehadiranScreen(
     val stateLeave by presensiViewModel.stateLeave.collectAsState()
     val stateLokasi by presensiViewModel.stateLokasi.collectAsState()
     val dataBitmap by faceViewModel.dataBitmap.collectAsState()
+
+    val stateTukar by tukarViewModel.stateTukar.collectAsState()
+    val stateTukarJadwal by tukarViewModel.stateTukarJadwal.collectAsState()
+    val stateTukarPegawai by tukarViewModel.stateTukarPegawai.collectAsState()
+    val stateStatusTukar by tukarViewModel.stateStatusTukar.collectAsState()
+    val stateTinjauTukar by tukarViewModel.stateTinjauTukar.collectAsState()
+    val stateUpdateTukar by tukarViewModel.stateUpdateTukar.collectAsState()
 
     LaunchedEffect(token) {
         if (token != "") {
@@ -64,6 +72,9 @@ fun KehadiranScreen(
                 getJadwal = { presensiViewModel.getJadwal(token, it) },
                 attend = { idPegawai, jadwal, foto ->
                     presensiViewModel.attend(token, idPegawai, jadwal, foto)
+                },
+                attendKode = { idPegawai, jadwal, foto, kode ->
+                    presensiViewModel.attendKode(token, idPegawai, jadwal, foto, kode)
                 },
                 leave = { id, idPegawai, emergency ->
                     presensiViewModel.leave(token, id, idPegawai, emergency)
@@ -124,6 +135,43 @@ fun KehadiranScreen(
                 stateUpdate = stateUpdate,
                 getData = { pengajuanViewModel.getAll(it) },
                 updateStatus = { id, ajuan -> pengajuanViewModel.updateStatus(token, id, ajuan) },
+                navController = navController
+            )
+        }
+
+        "Tukar" -> {
+            TukarContent(
+                pegawai = pegawai,
+                stateTukar = stateTukar,
+                stateTukarJadwal = stateTukarJadwal,
+                stateTukarPegawai = stateTukarPegawai,
+                getJadwal = { id, hari -> tukarViewModel.getJadwal(token, id, hari) },
+                getPegawai = { hari -> tukarViewModel.getPegawai(token, hari) },
+                createTukar = { tukar -> tukarViewModel.createTukar(token, tukar) },
+                navController = navController
+            )
+        }
+
+        "StatusTukar" -> {
+            StatusTukarContent(
+                pegawai = pegawai,
+                stateStatusTukar = stateStatusTukar,
+                getData = { id ->
+                    tukarViewModel.getSender(token, id)
+                },
+                navController = navController
+            )
+        }
+
+        "TinjauTukar" -> {
+            TinjauTukarContent(
+                pegawai = pegawai,
+                stateTinjauTukar = stateTinjauTukar,
+                stateUpdateTukar = stateUpdateTukar,
+                getData = { id ->
+                    tukarViewModel.getRecipient(token, id)
+                },
+                updateStatus = { id, tukar -> tukarViewModel.updateStatus(token, id, tukar) },
                 navController = navController
             )
         }
