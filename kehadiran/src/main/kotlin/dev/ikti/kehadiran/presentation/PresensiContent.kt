@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,6 +43,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -107,6 +110,7 @@ fun PresensiContent(
     getJadwal: (String) -> Unit,
     getStatus: (String) -> Unit,
     attend: (String, String, String) -> Unit,
+    attendKode: (String, String, String, String) -> Unit,
     leave: (String, String, Boolean) -> Unit,
     upload: (CameraController) -> Unit,
     getLokasi: () -> Unit,
@@ -210,7 +214,22 @@ fun PresensiContent(
 
             is UIState.Error -> {
                 when (stateAttend.error) {
+                    NetworkConstant.ERR_UNAUTHORIZED -> {
+                        if (!isAttendToastShown) {
+                            showToast(context, "Kode PIN tidak sesuai")
+                            isAttendToastShown = true
+                        }
+                    }
+
+                    NetworkConstant.ERR_FORBIDDEN -> {
+                        if (!isAttendToastShown) {
+                            showToast(context, "Sudah melebihi batas maksimum")
+                            isAttendToastShown = true
+                        }
+                    }
+
                     NetworkConstant.ERR_UNKNOWN_HOST -> isInternetDialogHidden = false
+
                     else -> {
                         if (!isAttendToastShown) {
                             showToast(context, "Gagal mencatat kehadiran")
@@ -495,6 +514,7 @@ fun PresensiContent(
             }
 
             "Face Recognition" -> {
+                var isPinHidden by remember { mutableStateOf(true) }
                 var isValidLocation by remember { mutableStateOf(true) }
                 var isLocationDisabled by remember { mutableStateOf(false) }
                 var status by remember { mutableStateOf("Memindai wajah...") }
@@ -530,6 +550,7 @@ fun PresensiContent(
                     }
 
                 var showLocationDialog by remember { mutableStateOf(false) }
+                var showPinDialog by remember { mutableStateOf(false) }
 
                 LaunchedEffect(Unit) {
                     getLokasi()
@@ -571,6 +592,11 @@ fun PresensiContent(
 
                         else -> {}
                     }
+                }
+
+                LaunchedEffect(isPinHidden) {
+                    delay(3000L)
+                    isPinHidden = false
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -659,6 +685,47 @@ fun PresensiContent(
                                 .padding(horizontal = 20.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            AnimatedVisibility(
+                                visible = !isPinHidden,
+                                enter = fadeIn(
+                                    animationSpec = spring(
+                                        Spring.DampingRatioLowBouncy,
+                                        Spring.StiffnessLow
+                                    )
+                                ),
+                                exit = fadeOut(
+                                    animationSpec = spring(
+                                        Spring.DampingRatioLowBouncy,
+                                        Spring.StiffnessLow
+                                    )
+                                )
+                            ) {
+                                Button(
+                                    onClick = {
+                                        showPinDialog = true
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(44.dp),
+                                    shape = RoundedCornerShape(24.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFFDFDFD),
+                                        contentColor = Color(0xFF272727)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Hadir dengan PIN",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 15.sp,
+                                            fontFamily = FontGilroy
+                                        ),
+                                        overflow = TextOverflow.Ellipsis,
+                                        maxLines = 1
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.height(24.dp))
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -798,6 +865,129 @@ fun PresensiContent(
                                 ) {
                                     Text(
                                         text = "Keluar",
+                                        style = TextStyle(
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 16.sp,
+                                            fontFamily = FontGilroy
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = showPinDialog,
+                    enter = fadeIn(
+                        animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+                    ),
+                    exit = fadeOut(
+                        animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+                    )
+                ) {
+                    val onDismiss = { showPinDialog = false }
+                    var pin by remember { mutableStateOf("") }
+
+                    Dialog(onDismissRequest = { onDismiss() }) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFF7F7F7), RoundedCornerShape(12.dp))
+                                .padding(16.dp)
+                        ) {
+                            Spacer(Modifier.height(24.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.ic_presensi_face
+                                    ),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified
+                                )
+                            }
+                            Spacer(Modifier.height(16.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "Masukkan PIN",
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Spacer(Modifier.height(24.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                OutlinedTextField(
+                                    value = pin,
+                                    onValueChange = { input ->
+                                        pin = input
+                                    },
+                                    textStyle = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 15.sp,
+                                        fontFamily = FontGilroy
+                                    ),
+                                    modifier = Modifier
+                                        .heightIn(min = 48.dp)
+                                        .fillMaxWidth(),
+                                    enabled = true,
+                                    placeholder = {
+                                        Text(
+                                            text = "PIN",
+                                            style = TextStyle(
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 15.sp,
+                                                fontFamily = FontGilroy
+                                            )
+                                        )
+                                    },
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        unfocusedTextColor = Color(0xFF272727),
+                                        focusedTextColor = Color(0xFF272727),
+                                        unfocusedBorderColor = Color(0xFFDCDCDC),
+                                        focusedBorderColor = Color(0xFFDCDCDC),
+                                        unfocusedContainerColor = Color(0xFFF7F7F7),
+                                        focusedContainerColor = Color(0xFFF7F7F7)
+                                    )
+                                )
+                            }
+                            Spacer(Modifier.height(36.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                OutlinedButton(
+                                    onClick = {
+                                        if (pegawai != "" && jadwal != "" && pin != "") {
+                                            attendKode(pegawai, jadwal, foto, pin)
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .height(48.dp)
+                                        .fillMaxWidth(),
+                                    shape = RoundedCornerShape(30.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        containerColor = Color(0xFF0A2D27),
+                                        contentColor = Color(0xFFACF2E7)
+                                    ),
+                                    border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                                ) {
+                                    Text(
+                                        text = "Hadir",
                                         style = TextStyle(
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 16.sp,
@@ -1012,7 +1202,7 @@ fun PresensiContent(
                             )
                         ) {
                             Text(
-                                text = "Absen",
+                                text = "Hadir",
                                 style = TextStyle(
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp,

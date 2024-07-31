@@ -16,6 +16,12 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PresensiService {
+    @GET("m/kehadiran/jadwal")
+    suspend fun get(
+        @Header("Authorization") token: String,
+        @Query("hari") hari: Int
+    ): BaseResponse<List<JadwalResponse>>
+
     @GET("m/kehadiran/jadwal/{id}")
     suspend fun getJadwal(
         @Header("Authorization") token: String,
@@ -32,6 +38,13 @@ interface PresensiService {
     @POST("kehadiran/presensi/attend")
     suspend fun attend(
         @Header("Authorization") token: String,
+        @Body attend: AttendRequest
+    ): BaseResponse<PresensiResponse>
+
+    @POST("kehadiran/presensi/attend")
+    suspend fun attendKode(
+        @Header("Authorization") token: String,
+        @Query("kode") kode: String,
         @Body attend: AttendRequest
     ): BaseResponse<PresensiResponse>
 

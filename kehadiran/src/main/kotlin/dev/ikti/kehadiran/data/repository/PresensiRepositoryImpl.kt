@@ -21,6 +21,23 @@ import javax.inject.Singleton
 class PresensiRepositoryImpl @Inject constructor(
     private val presensiService: PresensiService
 ) : PresensiRepository {
+    override suspend fun get(
+        token: String,
+        hari: Int
+    ): Flow<BaseResponse<List<JadwalResponse>>> {
+        val bearer = "Bearer $token"
+        return flow {
+            try {
+                emit(presensiService.get(bearer, hari))
+            } catch (e: HttpException) {
+                when (e.response()?.code()) {
+                    404 -> throw NetworkException.NotFoundException
+                    else -> throw NetworkException.UnknownHostException
+                }
+            }
+        }
+    }
+
     override suspend fun getJadwal(
         token: String,
         id: String,
@@ -66,6 +83,27 @@ class PresensiRepositoryImpl @Inject constructor(
                 emit(presensiService.attend(bearer, attend))
             } catch (e: HttpException) {
                 when (e.response()?.code()) {
+                    403 -> throw NetworkException.ForbiddenException
+                    404 -> throw NetworkException.NotFoundException
+                    else -> throw NetworkException.UnknownHostException
+                }
+            }
+        }
+    }
+
+    override suspend fun attendKode(
+        token: String,
+        kode: String,
+        attend: AttendRequest
+    ): Flow<BaseResponse<PresensiResponse>> {
+        val bearer = "Bearer $token"
+        return flow {
+            try {
+                emit(presensiService.attendKode(bearer, kode, attend))
+            } catch (e: HttpException) {
+                when (e.response()?.code()) {
+                    401 -> throw NetworkException.UnauthorizedException
+                    403 -> throw NetworkException.ForbiddenException
                     404 -> throw NetworkException.NotFoundException
                     else -> throw NetworkException.UnknownHostException
                 }

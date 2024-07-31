@@ -11,6 +11,11 @@ import dev.ikti.kehadiran.data.model.StatusPresensiResponse
 import kotlinx.coroutines.flow.Flow
 
 interface PresensiRepository {
+    suspend fun get(
+        token: String,
+        hari: Int
+    ): Flow<BaseResponse<List<JadwalResponse>>>
+
     suspend fun getJadwal(
         token: String,
         id: String,
@@ -24,6 +29,12 @@ interface PresensiRepository {
 
     suspend fun attend(
         token: String,
+        attend: AttendRequest
+    ): Flow<BaseResponse<PresensiResponse>>
+
+    suspend fun attendKode(
+        token: String,
+        kode: String,
         attend: AttendRequest
     ): Flow<BaseResponse<PresensiResponse>>
 

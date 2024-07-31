@@ -7,11 +7,13 @@ import dagger.hilt.components.SingletonComponent
 import dev.ikti.kehadiran.data.remote.PresensiService
 import dev.ikti.kehadiran.data.repository.PresensiRepositoryImpl
 import dev.ikti.kehadiran.domain.repository.PresensiRepository
+import dev.ikti.kehadiran.domain.usecase.PresensiAttendKodeUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiAttendUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetFotoUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetJadwalUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetLokasiUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetPresensiUseCase
+import dev.ikti.kehadiran.domain.usecase.PresensiGetUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiLeaveUseCase
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -33,6 +35,12 @@ object PresensiModule {
 
     @Provides
     @Singleton
+    fun providePresensiGetUseCase(presensiRepository: PresensiRepository): PresensiGetUseCase {
+        return PresensiGetUseCase(presensiRepository)
+    }
+
+    @Provides
+    @Singleton
     fun providePresensiGetJadwalUseCase(presensiRepository: PresensiRepository): PresensiGetJadwalUseCase {
         return PresensiGetJadwalUseCase(presensiRepository)
     }
@@ -47,6 +55,12 @@ object PresensiModule {
     @Singleton
     fun providePresensiAttendUseCase(presensiRepository: PresensiRepository): PresensiAttendUseCase {
         return PresensiAttendUseCase(presensiRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePresensiAttendKodeUseCase(presensiRepository: PresensiRepository): PresensiAttendKodeUseCase {
+        return PresensiAttendKodeUseCase(presensiRepository)
     }
 
     @Provides

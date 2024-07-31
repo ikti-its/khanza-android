@@ -15,7 +15,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ikti.core.domain.usecase.file.UploadImageUseCase
 import dev.ikti.core.util.NetworkConstant
+import dev.ikti.core.util.NetworkConstant.ERR_FORBIDDEN
 import dev.ikti.core.util.NetworkConstant.ERR_NOT_FOUND
+import dev.ikti.core.util.NetworkConstant.ERR_UNAUTHORIZED
 import dev.ikti.core.util.NetworkConstant.ERR_UNKNOWN_HOST
 import dev.ikti.core.util.NetworkException
 import dev.ikti.core.util.UIState
@@ -24,6 +26,7 @@ import dev.ikti.kehadiran.data.model.JadwalResponse
 import dev.ikti.kehadiran.data.model.LeaveRequest
 import dev.ikti.kehadiran.data.model.PresensiResponse
 import dev.ikti.kehadiran.data.model.StatusPresensiResponse
+import dev.ikti.kehadiran.domain.usecase.PresensiAttendKodeUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiAttendUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetJadwalUseCase
 import dev.ikti.kehadiran.domain.usecase.PresensiGetLokasiUseCase
@@ -50,6 +53,7 @@ import kotlin.math.sqrt
 class PresensiViewModel @Inject constructor(
     private val application: Application,
     private val attendUseCase: PresensiAttendUseCase,
+    private val attendKodeUseCase: PresensiAttendKodeUseCase,
     private val fusedLocationClient: FusedLocationProviderClient,
     private val getJadwalUseCase: PresensiGetJadwalUseCase,
     private val getLokasiUseCase: PresensiGetLokasiUseCase,
@@ -157,6 +161,45 @@ class PresensiViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 when (e) {
+                    NetworkException.ForbiddenException -> _stateAttend.value = UIState.Error(
+                        ERR_FORBIDDEN
+                    )
+
+                    NetworkException.NotFoundException -> _stateAttend.value = UIState.Error(
+                        ERR_NOT_FOUND
+                    )
+
+                    is UnknownHostException -> _stateAttend.value =
+                        UIState.Error(ERR_UNKNOWN_HOST)
+                }
+            }
+        }
+    }
+
+    fun attendKode(token: String, pegawai: String, jadwal: String, foto: String, kode: String) {
+        _stateAttend.value = UIState.Loading
+        viewModelScope.launch {
+            try {
+                val attend = AttendRequest(
+                    pegawai,
+                    jadwal,
+                    retrieveDate(),
+                    foto
+                )
+                val response = attendKodeUseCase.execute(token, kode, attend)
+                response.collect { res ->
+                    _stateAttend.value = UIState.Success(res.data)
+                }
+            } catch (e: Exception) {
+                when (e) {
+                    NetworkException.UnauthorizedException -> _stateAttend.value = UIState.Error(
+                        ERR_UNAUTHORIZED
+                    )
+
+                    NetworkException.ForbiddenException -> _stateAttend.value = UIState.Error(
+                        ERR_FORBIDDEN
+                    )
+
                     NetworkException.NotFoundException -> _stateAttend.value = UIState.Error(
                         ERR_NOT_FOUND
                     )
@@ -232,7 +275,7 @@ class PresensiViewModel @Inject constructor(
 
                                 NetworkException.UnauthorizedException -> _stateUpload.value =
                                     UIState.Error(
-                                        NetworkConstant.ERR_UNAUTHORIZED
+                                        ERR_UNAUTHORIZED
                                     )
 
                                 is UnknownHostException -> _stateUpload.value =
